@@ -974,5 +974,127 @@
       "price": 789.36,
       "name": "BitMind"
     }
+  },
+  "1761943321": {
+    "figure-heloc": {
+      "price": 92.2,
+      "name": "Figure Heloc"
+    },
+    "green": {
+      "price": 0.03988703,
+      "name": "Green"
+    },
+    "the-innovation-game": {
+      "price": 85.4,
+      "name": "The Innovation Game"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "port3-network": {
+      "price": 4.63,
+      "name": "Port3 Network"
+    },
+    "hivemapper": {
+      "price": 1.26,
+      "name": "Hivemapper"
+    },
+    "ping": {
+      "price": 1.93,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.04,
+      "name": "Impossible Cloud Network Token"
+    },
+    "tao-bot": {
+      "price": 29.95,
+      "name": "tao.bot"
+    },
+    "lit-protocol": {
+      "price": 13.31,
+      "name": "Lit Protocol"
+    },
+    "ai16z": {
+      "price": 6.7,
+      "name": "ai16z"
+    },
+    "niza-global-2": {
+      "price": 6.27,
+      "name": "Niza Global"
+    },
+    "burnedfi": {
+      "price": 459.32,
+      "name": "BurnedFi"
+    },
+    "chainopera-ai": {
+      "price": 130.32,
+      "name": "ChainOpera AI"
+    },
+    "velodrome-finance": {
+      "price": 3.68,
+      "name": "Velodrome Finance"
+    },
+    "aurora-near": {
+      "price": 8.55,
+      "name": "Aurora"
+    },
+    "avici": {
+      "price": 189.87,
+      "name": "Avici"
+    },
+    "sportstensor": {
+      "price": 1170.59,
+      "name": "Sportstensor"
+    },
+    "coreum": {
+      "price": 9.49,
+      "name": "Coreum"
+    },
+    "zerebro": {
+      "price": 4.08,
+      "name": "Zerebro"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.22,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "non-playable-coin": {
+      "price": 1.22,
+      "name": "Non-Playable Coin"
+    },
+    "znd-token": {
+      "price": 14.95,
+      "name": "ZND Token"
+    },
+    "affine": {
+      "price": 2388.13,
+      "name": "affine"
+    },
+    "bittensor": {
+      "price": 43106,
+      "name": "Bittensor"
+    },
+    "iron-fish": {
+      "price": 30.5,
+      "name": "Iron Fish"
+    },
+    "gradients": {
+      "price": 1319.81,
+      "name": "Gradients"
+    },
+    "bitmind": {
+      "price": 789.35,
+      "name": "BitMind"
+    },
+    "railgun": {
+      "price": 254.23,
+      "name": "Railgun"
+    },
+    "binance-peg-zcash-token": {
+      "price": 34042,
+      "name": "Binance-Peg ZEC"
+    }
   }
 }
