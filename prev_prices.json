@@ -364,5 +364,127 @@
       "price": 1239.61,
       "name": "Proprietary Trading Network"
     }
+  },
+  "1761942005": {
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "the-innovation-game": {
+      "price": 83.65,
+      "name": "The Innovation Game"
+    },
+    "hivemapper": {
+      "price": 1.27,
+      "name": "Hivemapper"
+    },
+    "port3-network": {
+      "price": 4.62,
+      "name": "Port3 Network"
+    },
+    "ping": {
+      "price": 1.94,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.9,
+      "name": "Impossible Cloud Network Token"
+    },
+    "green": {
+      "price": 0.04064836,
+      "name": "Green"
+    },
+    "lit-protocol": {
+      "price": 13.63,
+      "name": "Lit Protocol"
+    },
+    "tao-bot": {
+      "price": 29.93,
+      "name": "tao.bot"
+    },
+    "niza-global-2": {
+      "price": 6.23,
+      "name": "Niza Global"
+    },
+    "ai16z": {
+      "price": 6.71,
+      "name": "ai16z"
+    },
+    "chainopera-ai": {
+      "price": 128.71,
+      "name": "ChainOpera AI"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.29,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "velodrome-finance": {
+      "price": 3.79,
+      "name": "Velodrome Finance"
+    },
+    "trevee-plasma-usd": {
+      "price": 88.53,
+      "name": "Trevee Plasma USD"
+    },
+    "aurora-near": {
+      "price": 8.13,
+      "name": "Aurora"
+    },
+    "optio": {
+      "price": 0.677134,
+      "name": "Optio"
+    },
+    "zerebro": {
+      "price": 4.13,
+      "name": "Zerebro"
+    },
+    "sportstensor": {
+      "price": 1164.73,
+      "name": "Sportstensor"
+    },
+    "avici": {
+      "price": 180.5,
+      "name": "Avici"
+    },
+    "coreum": {
+      "price": 9.48,
+      "name": "Coreum"
+    },
+    "non-playable-coin": {
+      "price": 1.23,
+      "name": "Non-Playable Coin"
+    },
+    "affine": {
+      "price": 2382.47,
+      "name": "affine"
+    },
+    "railgun": {
+      "price": 253.02,
+      "name": "Railgun"
+    },
+    "znd-token": {
+      "price": 14.92,
+      "name": "ZND Token"
+    },
+    "bittensor": {
+      "price": 43007,
+      "name": "Bittensor"
+    },
+    "sperax": {
+      "price": 0.804782,
+      "name": "Sperax"
+    },
+    "bitmind": {
+      "price": 787.14,
+      "name": "BitMind"
+    },
+    "proprietary-trading-network": {
+      "price": 1244.54,
+      "name": "Proprietary Trading Network"
+    },
+    "celium": {
+      "price": 2378.84,
+      "name": "Celium"
+    }
   }
 }
