@@ -852,5 +852,127 @@
       "price": 789.36,
       "name": "BitMind"
     }
+  },
+  "1761943246": {
+    "figure-heloc": {
+      "price": 92.2,
+      "name": "Figure Heloc"
+    },
+    "green": {
+      "price": 0.03988573,
+      "name": "Green"
+    },
+    "the-innovation-game": {
+      "price": 85.39,
+      "name": "The Innovation Game"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "port3-network": {
+      "price": 4.62,
+      "name": "Port3 Network"
+    },
+    "hivemapper": {
+      "price": 1.25,
+      "name": "Hivemapper"
+    },
+    "ping": {
+      "price": 1.94,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.01,
+      "name": "Impossible Cloud Network Token"
+    },
+    "tao-bot": {
+      "price": 29.92,
+      "name": "tao.bot"
+    },
+    "lit-protocol": {
+      "price": 13.31,
+      "name": "Lit Protocol"
+    },
+    "ai16z": {
+      "price": 6.7,
+      "name": "ai16z"
+    },
+    "niza-global-2": {
+      "price": 6.27,
+      "name": "Niza Global"
+    },
+    "burnedfi": {
+      "price": 459.12,
+      "name": "BurnedFi"
+    },
+    "chainopera-ai": {
+      "price": 130.02,
+      "name": "ChainOpera AI"
+    },
+    "avici": {
+      "price": 189.61,
+      "name": "Avici"
+    },
+    "aurora-near": {
+      "price": 8.41,
+      "name": "Aurora"
+    },
+    "velodrome-finance": {
+      "price": 3.69,
+      "name": "Velodrome Finance"
+    },
+    "sportstensor": {
+      "price": 1171.82,
+      "name": "Sportstensor"
+    },
+    "coreum": {
+      "price": 9.49,
+      "name": "Coreum"
+    },
+    "payai-network": {
+      "price": 2.51,
+      "name": "PayAI Network"
+    },
+    "zerebro": {
+      "price": 4.07,
+      "name": "Zerebro"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.22,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "non-playable-coin": {
+      "price": 1.23,
+      "name": "Non-Playable Coin"
+    },
+    "znd-token": {
+      "price": 14.97,
+      "name": "ZND Token"
+    },
+    "affine": {
+      "price": 2388.14,
+      "name": "affine"
+    },
+    "celium": {
+      "price": 2385.5,
+      "name": "Celium"
+    },
+    "bittensor": {
+      "price": 43151,
+      "name": "Bittensor"
+    },
+    "ridges-ai": {
+      "price": 3152.96,
+      "name": "Ridges AI"
+    },
+    "gradients": {
+      "price": 1319.81,
+      "name": "Gradients"
+    },
+    "bitmind": {
+      "price": 789.36,
+      "name": "BitMind"
+    }
   }
 }
