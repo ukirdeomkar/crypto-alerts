@@ -608,5 +608,127 @@
       "price": 787.96,
       "name": "BitMind"
     }
+  },
+  "1761943008": {
+    "figure-heloc": {
+      "price": 92.2,
+      "name": "Figure Heloc"
+    },
+    "green": {
+      "price": 0.03989925,
+      "name": "Green"
+    },
+    "the-innovation-game": {
+      "price": 85.37,
+      "name": "The Innovation Game"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "port3-network": {
+      "price": 4.63,
+      "name": "Port3 Network"
+    },
+    "hivemapper": {
+      "price": 1.26,
+      "name": "Hivemapper"
+    },
+    "ping": {
+      "price": 1.94,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.0,
+      "name": "Impossible Cloud Network Token"
+    },
+    "tao-bot": {
+      "price": 29.72,
+      "name": "tao.bot"
+    },
+    "niza-global-2": {
+      "price": 6.27,
+      "name": "Niza Global"
+    },
+    "lit-protocol": {
+      "price": 13.34,
+      "name": "Lit Protocol"
+    },
+    "optio": {
+      "price": 0.703156,
+      "name": "Optio"
+    },
+    "ai16z": {
+      "price": 6.7,
+      "name": "ai16z"
+    },
+    "chainopera-ai": {
+      "price": 129.73,
+      "name": "ChainOpera AI"
+    },
+    "avici": {
+      "price": 189.17,
+      "name": "Avici"
+    },
+    "aurora-near": {
+      "price": 8.4,
+      "name": "Aurora"
+    },
+    "velodrome-finance": {
+      "price": 3.69,
+      "name": "Velodrome Finance"
+    },
+    "sportstensor": {
+      "price": 1170.86,
+      "name": "Sportstensor"
+    },
+    "coreum": {
+      "price": 9.49,
+      "name": "Coreum"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.23,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "payai-network": {
+      "price": 2.5,
+      "name": "PayAI Network"
+    },
+    "zerebro": {
+      "price": 4.08,
+      "name": "Zerebro"
+    },
+    "non-playable-coin": {
+      "price": 1.23,
+      "name": "Non-Playable Coin"
+    },
+    "burnedfi": {
+      "price": 463.07,
+      "name": "BurnedFi"
+    },
+    "znd-token": {
+      "price": 14.97,
+      "name": "ZND Token"
+    },
+    "affine": {
+      "price": 2386.17,
+      "name": "affine"
+    },
+    "celium": {
+      "price": 2383.54,
+      "name": "Celium"
+    },
+    "bittensor": {
+      "price": 43142,
+      "name": "Bittensor"
+    },
+    "iron-fish": {
+      "price": 30.89,
+      "name": "Iron Fish"
+    },
+    "bitmind": {
+      "price": 788.71,
+      "name": "BitMind"
+    }
   }
 }
