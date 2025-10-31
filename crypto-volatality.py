@@ -122,17 +122,25 @@ def main():
         name = coin_data["name"]
         
         old_price = None
-        for timestamp in sorted(history.keys()):
-            if float(timestamp) <= cutoff_time:
-                if coin_id in history[timestamp]:
+        closest_timestamp = None
+        min_time_diff = float('inf')
+        
+        for timestamp in history.keys():
+            ts = float(timestamp)
+            if ts < current_time and coin_id in history[timestamp]:
+                time_diff = abs(ts - cutoff_time)
+                if time_diff < min_time_diff:
+                    min_time_diff = time_diff
+                    closest_timestamp = timestamp
                     old_price = history[timestamp][coin_id]["price"]
         
         if old_price is None:
-            print(f"{name}: no data from {TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS} min ago (first run or new coin)")
+            print(f"{name}: no historical data available")
             continue
         
+        actual_minutes = (current_time - float(closest_timestamp)) / 60
         change = (current_price - old_price) / old_price * 100
-        print(f"{name}: ₹{old_price:.2f} -> ₹{current_price:.2f}, change: {change:.2f}%")
+        print(f"{name}: ₹{old_price:.2f} -> ₹{current_price:.2f}, change: {change:.2f}% ({actual_minutes:.1f} min)")
         
         if abs(change) >= THRESHOLD:
             alerts.append((name, change))
