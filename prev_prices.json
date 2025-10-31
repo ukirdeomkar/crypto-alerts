@@ -1,736 +1,4 @@
 {
-  "1761942375": {
-    "figure-heloc": {
-      "price": 92.19,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03989093,
-      "name": "Green"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "the-innovation-game": {
-      "price": 84.11,
-      "name": "The Innovation Game"
-    },
-    "port3-network": {
-      "price": 4.67,
-      "name": "Port3 Network"
-    },
-    "hivemapper": {
-      "price": 1.27,
-      "name": "Hivemapper"
-    },
-    "ping": {
-      "price": 1.94,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.84,
-      "name": "Impossible Cloud Network Token"
-    },
-    "lit-protocol": {
-      "price": 13.55,
-      "name": "Lit Protocol"
-    },
-    "tao-bot": {
-      "price": 29.93,
-      "name": "tao.bot"
-    },
-    "niza-global-2": {
-      "price": 6.25,
-      "name": "Niza Global"
-    },
-    "chainopera-ai": {
-      "price": 126.65,
-      "name": "ChainOpera AI"
-    },
-    "ai16z": {
-      "price": 6.68,
-      "name": "ai16z"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.28,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "velodrome-finance": {
-      "price": 3.76,
-      "name": "Velodrome Finance"
-    },
-    "optio": {
-      "price": 0.683073,
-      "name": "Optio"
-    },
-    "aurora-near": {
-      "price": 8.17,
-      "name": "Aurora"
-    },
-    "avici": {
-      "price": 180.6,
-      "name": "Avici"
-    },
-    "sportstensor": {
-      "price": 1168.18,
-      "name": "Sportstensor"
-    },
-    "non-playable-coin": {
-      "price": 1.23,
-      "name": "Non-Playable Coin"
-    },
-    "coreum": {
-      "price": 9.5,
-      "name": "Coreum"
-    },
-    "zerebro": {
-      "price": 4.07,
-      "name": "Zerebro"
-    },
-    "railgun": {
-      "price": 253.97,
-      "name": "Railgun"
-    },
-    "znd-token": {
-      "price": 14.96,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2386.81,
-      "name": "affine"
-    },
-    "sperax": {
-      "price": 0.809162,
-      "name": "Sperax"
-    },
-    "punkstrategy": {
-      "price": 5.87,
-      "name": "PunkStrategy"
-    },
-    "bittensor": {
-      "price": 43082,
-      "name": "Bittensor"
-    },
-    "celium": {
-      "price": 2381.26,
-      "name": "Celium"
-    },
-    "bitmind": {
-      "price": 787.96,
-      "name": "BitMind"
-    }
-  },
-  "1761943008": {
-    "figure-heloc": {
-      "price": 92.2,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03989925,
-      "name": "Green"
-    },
-    "the-innovation-game": {
-      "price": 85.37,
-      "name": "The Innovation Game"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "port3-network": {
-      "price": 4.63,
-      "name": "Port3 Network"
-    },
-    "hivemapper": {
-      "price": 1.26,
-      "name": "Hivemapper"
-    },
-    "ping": {
-      "price": 1.94,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.0,
-      "name": "Impossible Cloud Network Token"
-    },
-    "tao-bot": {
-      "price": 29.72,
-      "name": "tao.bot"
-    },
-    "niza-global-2": {
-      "price": 6.27,
-      "name": "Niza Global"
-    },
-    "lit-protocol": {
-      "price": 13.34,
-      "name": "Lit Protocol"
-    },
-    "optio": {
-      "price": 0.703156,
-      "name": "Optio"
-    },
-    "ai16z": {
-      "price": 6.7,
-      "name": "ai16z"
-    },
-    "chainopera-ai": {
-      "price": 129.73,
-      "name": "ChainOpera AI"
-    },
-    "avici": {
-      "price": 189.17,
-      "name": "Avici"
-    },
-    "aurora-near": {
-      "price": 8.4,
-      "name": "Aurora"
-    },
-    "velodrome-finance": {
-      "price": 3.69,
-      "name": "Velodrome Finance"
-    },
-    "sportstensor": {
-      "price": 1170.86,
-      "name": "Sportstensor"
-    },
-    "coreum": {
-      "price": 9.49,
-      "name": "Coreum"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.23,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "payai-network": {
-      "price": 2.5,
-      "name": "PayAI Network"
-    },
-    "zerebro": {
-      "price": 4.08,
-      "name": "Zerebro"
-    },
-    "non-playable-coin": {
-      "price": 1.23,
-      "name": "Non-Playable Coin"
-    },
-    "burnedfi": {
-      "price": 463.07,
-      "name": "BurnedFi"
-    },
-    "znd-token": {
-      "price": 14.97,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2386.17,
-      "name": "affine"
-    },
-    "celium": {
-      "price": 2383.54,
-      "name": "Celium"
-    },
-    "bittensor": {
-      "price": 43142,
-      "name": "Bittensor"
-    },
-    "iron-fish": {
-      "price": 30.89,
-      "name": "Iron Fish"
-    },
-    "bitmind": {
-      "price": 788.71,
-      "name": "BitMind"
-    }
-  },
-  "1761943189": {
-    "figure-heloc": {
-      "price": 92.2,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03988573,
-      "name": "Green"
-    },
-    "the-innovation-game": {
-      "price": 85.39,
-      "name": "The Innovation Game"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "port3-network": {
-      "price": 4.62,
-      "name": "Port3 Network"
-    },
-    "hivemapper": {
-      "price": 1.25,
-      "name": "Hivemapper"
-    },
-    "ping": {
-      "price": 1.94,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.01,
-      "name": "Impossible Cloud Network Token"
-    },
-    "tao-bot": {
-      "price": 29.92,
-      "name": "tao.bot"
-    },
-    "lit-protocol": {
-      "price": 13.31,
-      "name": "Lit Protocol"
-    },
-    "ai16z": {
-      "price": 6.7,
-      "name": "ai16z"
-    },
-    "niza-global-2": {
-      "price": 6.27,
-      "name": "Niza Global"
-    },
-    "burnedfi": {
-      "price": 459.12,
-      "name": "BurnedFi"
-    },
-    "chainopera-ai": {
-      "price": 130.02,
-      "name": "ChainOpera AI"
-    },
-    "avici": {
-      "price": 189.61,
-      "name": "Avici"
-    },
-    "aurora-near": {
-      "price": 8.41,
-      "name": "Aurora"
-    },
-    "velodrome-finance": {
-      "price": 3.69,
-      "name": "Velodrome Finance"
-    },
-    "sportstensor": {
-      "price": 1171.82,
-      "name": "Sportstensor"
-    },
-    "coreum": {
-      "price": 9.49,
-      "name": "Coreum"
-    },
-    "payai-network": {
-      "price": 2.51,
-      "name": "PayAI Network"
-    },
-    "zerebro": {
-      "price": 4.07,
-      "name": "Zerebro"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.22,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "non-playable-coin": {
-      "price": 1.23,
-      "name": "Non-Playable Coin"
-    },
-    "znd-token": {
-      "price": 14.97,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2388.14,
-      "name": "affine"
-    },
-    "celium": {
-      "price": 2385.5,
-      "name": "Celium"
-    },
-    "bittensor": {
-      "price": 43151,
-      "name": "Bittensor"
-    },
-    "ridges-ai": {
-      "price": 3152.96,
-      "name": "Ridges AI"
-    },
-    "gradients": {
-      "price": 1319.81,
-      "name": "Gradients"
-    },
-    "bitmind": {
-      "price": 789.36,
-      "name": "BitMind"
-    }
-  },
-  "1761943246": {
-    "figure-heloc": {
-      "price": 92.2,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03988573,
-      "name": "Green"
-    },
-    "the-innovation-game": {
-      "price": 85.39,
-      "name": "The Innovation Game"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "port3-network": {
-      "price": 4.62,
-      "name": "Port3 Network"
-    },
-    "hivemapper": {
-      "price": 1.25,
-      "name": "Hivemapper"
-    },
-    "ping": {
-      "price": 1.94,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.01,
-      "name": "Impossible Cloud Network Token"
-    },
-    "tao-bot": {
-      "price": 29.92,
-      "name": "tao.bot"
-    },
-    "lit-protocol": {
-      "price": 13.31,
-      "name": "Lit Protocol"
-    },
-    "ai16z": {
-      "price": 6.7,
-      "name": "ai16z"
-    },
-    "niza-global-2": {
-      "price": 6.27,
-      "name": "Niza Global"
-    },
-    "burnedfi": {
-      "price": 459.12,
-      "name": "BurnedFi"
-    },
-    "chainopera-ai": {
-      "price": 130.02,
-      "name": "ChainOpera AI"
-    },
-    "avici": {
-      "price": 189.61,
-      "name": "Avici"
-    },
-    "aurora-near": {
-      "price": 8.41,
-      "name": "Aurora"
-    },
-    "velodrome-finance": {
-      "price": 3.69,
-      "name": "Velodrome Finance"
-    },
-    "sportstensor": {
-      "price": 1171.82,
-      "name": "Sportstensor"
-    },
-    "coreum": {
-      "price": 9.49,
-      "name": "Coreum"
-    },
-    "payai-network": {
-      "price": 2.51,
-      "name": "PayAI Network"
-    },
-    "zerebro": {
-      "price": 4.07,
-      "name": "Zerebro"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.22,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "non-playable-coin": {
-      "price": 1.23,
-      "name": "Non-Playable Coin"
-    },
-    "znd-token": {
-      "price": 14.97,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2388.14,
-      "name": "affine"
-    },
-    "celium": {
-      "price": 2385.5,
-      "name": "Celium"
-    },
-    "bittensor": {
-      "price": 43151,
-      "name": "Bittensor"
-    },
-    "ridges-ai": {
-      "price": 3152.96,
-      "name": "Ridges AI"
-    },
-    "gradients": {
-      "price": 1319.81,
-      "name": "Gradients"
-    },
-    "bitmind": {
-      "price": 789.36,
-      "name": "BitMind"
-    }
-  },
-  "1761943321": {
-    "figure-heloc": {
-      "price": 92.2,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03988703,
-      "name": "Green"
-    },
-    "the-innovation-game": {
-      "price": 85.4,
-      "name": "The Innovation Game"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "port3-network": {
-      "price": 4.63,
-      "name": "Port3 Network"
-    },
-    "hivemapper": {
-      "price": 1.26,
-      "name": "Hivemapper"
-    },
-    "ping": {
-      "price": 1.93,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.04,
-      "name": "Impossible Cloud Network Token"
-    },
-    "tao-bot": {
-      "price": 29.95,
-      "name": "tao.bot"
-    },
-    "lit-protocol": {
-      "price": 13.31,
-      "name": "Lit Protocol"
-    },
-    "ai16z": {
-      "price": 6.7,
-      "name": "ai16z"
-    },
-    "niza-global-2": {
-      "price": 6.27,
-      "name": "Niza Global"
-    },
-    "burnedfi": {
-      "price": 459.32,
-      "name": "BurnedFi"
-    },
-    "chainopera-ai": {
-      "price": 130.32,
-      "name": "ChainOpera AI"
-    },
-    "velodrome-finance": {
-      "price": 3.68,
-      "name": "Velodrome Finance"
-    },
-    "aurora-near": {
-      "price": 8.55,
-      "name": "Aurora"
-    },
-    "avici": {
-      "price": 189.87,
-      "name": "Avici"
-    },
-    "sportstensor": {
-      "price": 1170.59,
-      "name": "Sportstensor"
-    },
-    "coreum": {
-      "price": 9.49,
-      "name": "Coreum"
-    },
-    "zerebro": {
-      "price": 4.08,
-      "name": "Zerebro"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.22,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "non-playable-coin": {
-      "price": 1.22,
-      "name": "Non-Playable Coin"
-    },
-    "znd-token": {
-      "price": 14.95,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2388.13,
-      "name": "affine"
-    },
-    "bittensor": {
-      "price": 43106,
-      "name": "Bittensor"
-    },
-    "iron-fish": {
-      "price": 30.5,
-      "name": "Iron Fish"
-    },
-    "gradients": {
-      "price": 1319.81,
-      "name": "Gradients"
-    },
-    "bitmind": {
-      "price": 789.35,
-      "name": "BitMind"
-    },
-    "railgun": {
-      "price": 254.23,
-      "name": "Railgun"
-    },
-    "binance-peg-zcash-token": {
-      "price": 34042,
-      "name": "Binance-Peg ZEC"
-    }
-  },
-  "1761943453": {
-    "figure-heloc": {
-      "price": 92.2,
-      "name": "Figure Heloc"
-    },
-    "green": {
-      "price": 0.03986177,
-      "name": "Green"
-    },
-    "the-innovation-game": {
-      "price": 85.8,
-      "name": "The Innovation Game"
-    },
-    "mine-blue": {
-      "price": 3.64,
-      "name": "Mine Blue"
-    },
-    "hivemapper": {
-      "price": 1.26,
-      "name": "Hivemapper"
-    },
-    "port3-network": {
-      "price": 4.63,
-      "name": "Port3 Network"
-    },
-    "ping": {
-      "price": 1.93,
-      "name": "Ping"
-    },
-    "impossible-cloud-network-token": {
-      "price": 26.14,
-      "name": "Impossible Cloud Network Token"
-    },
-    "lit-protocol": {
-      "price": 13.31,
-      "name": "Lit Protocol"
-    },
-    "ai16z": {
-      "price": 6.71,
-      "name": "ai16z"
-    },
-    "tao-bot": {
-      "price": 29.75,
-      "name": "tao.bot"
-    },
-    "niza-global-2": {
-      "price": 6.27,
-      "name": "Niza Global"
-    },
-    "burnedfi": {
-      "price": 462.06,
-      "name": "BurnedFi"
-    },
-    "avici": {
-      "price": 193.01,
-      "name": "Avici"
-    },
-    "chainopera-ai": {
-      "price": 130.23,
-      "name": "ChainOpera AI"
-    },
-    "velodrome-finance": {
-      "price": 3.69,
-      "name": "Velodrome Finance"
-    },
-    "aurora-near": {
-      "price": 8.68,
-      "name": "Aurora"
-    },
-    "coreum": {
-      "price": 9.52,
-      "name": "Coreum"
-    },
-    "zerebro": {
-      "price": 4.1,
-      "name": "Zerebro"
-    },
-    "sportstensor": {
-      "price": 1168.46,
-      "name": "Sportstensor"
-    },
-    "non-playable-coin": {
-      "price": 1.23,
-      "name": "Non-Playable Coin"
-    },
-    "1-coin-can-change-your-life": {
-      "price": 2.21,
-      "name": "1 Coin Can Change Your Life"
-    },
-    "znd-token": {
-      "price": 14.95,
-      "name": "ZND Token"
-    },
-    "affine": {
-      "price": 2383.78,
-      "name": "affine"
-    },
-    "iron-fish": {
-      "price": 30.56,
-      "name": "Iron Fish"
-    },
-    "binance-peg-zcash-token": {
-      "price": 34185,
-      "name": "Binance-Peg ZEC"
-    },
-    "bittensor": {
-      "price": 43050,
-      "name": "Bittensor"
-    },
-    "railgun": {
-      "price": 254.14,
-      "name": "Railgun"
-    },
-    "bitmind": {
-      "price": 787.92,
-      "name": "BitMind"
-    },
-    "proprietary-trading-network": {
-      "price": 1246.39,
-      "name": "Proprietary Trading Network"
-    }
-  },
   "1761943898": {
     "figure-heloc": {
       "price": 92.19,
@@ -9601,6 +8869,1756 @@
     "sysinr": {
       "price": 2.43,
       "name": "SYS"
+    }
+  },
+  "1761949149": {
+    "lazioinr": {
+      "price": 75.42,
+      "name": "LAZIO"
+    },
+    "acminr": {
+      "price": 57.79,
+      "name": "ACM"
+    },
+    "fioinr": {
+      "price": 1.0342,
+      "name": "FIO"
+    },
+    "oginr": {
+      "price": 974.72,
+      "name": "OG"
+    },
+    "hiveinr": {
+      "price": 11.675,
+      "name": "HIVE"
+    },
+    "portoinr": {
+      "price": 86.181,
+      "name": "PORTO"
+    },
+    "aceinr": {
+      "price": 25.67,
+      "name": "ACE"
+    },
+    "hookinr": {
+      "price": 5.56,
+      "name": "HOOK"
+    },
+    "acainr": {
+      "price": 1.6,
+      "name": "ACA"
+    },
+    "mlninr": {
+      "price": 615.0,
+      "name": "MLN"
+    },
+    "chessinr": {
+      "price": 3.98,
+      "name": "CHESS"
+    },
+    "arkinr": {
+      "price": 28.6,
+      "name": "ARK"
+    },
+    "steeminr": {
+      "price": 7.562,
+      "name": "STEEM"
+    },
+    "ghstinr": {
+      "price": 26.58,
+      "name": "GHST"
+    },
+    "cityinr": {
+      "price": 63.97,
+      "name": "CITY"
+    },
+    "bakeinr": {
+      "price": 1.211,
+      "name": "BAKE"
+    },
+    "nexoinr": {
+      "price": 104.9,
+      "name": "NEXO"
+    },
+    "belinr": {
+      "price": 20.317,
+      "name": "BEL"
+    },
+    "alcxinr": {
+      "price": 666.07,
+      "name": "ALCX"
+    },
+    "juvinr": {
+      "price": 75.02,
+      "name": "JUV"
+    },
+    "idexinr": {
+      "price": 1.8499,
+      "name": "IDEX"
+    },
+    "bifiinr": {
+      "price": 12475.0,
+      "name": "BIFI"
+    },
+    "farminr": {
+      "price": 2022.4,
+      "name": "FARM"
+    },
+    "rareinr": {
+      "price": 3.1,
+      "name": "RARE"
+    },
+    "mdtinr": {
+      "price": 1.7121,
+      "name": "MDT"
+    },
+    "psginr": {
+      "price": 105.35,
+      "name": "PSG"
+    },
+    "fisinr": {
+      "price": 6.32,
+      "name": "FIS"
+    },
+    "vicinr": {
+      "price": 12.395,
+      "name": "VIC"
+    },
+    "aiinr": {
+      "price": 6.629,
+      "name": "AI"
+    },
+    "cosinr": {
+      "price": 0.16832,
+      "name": "COS"
+    },
+    "forminr": {
+      "price": 48.97,
+      "name": "FORM"
+    },
+    "xvsinr": {
+      "price": 404.9,
+      "name": "XVS"
+    },
+    "asrinr": {
+      "price": 194.39,
+      "name": "ASR"
+    },
+    "dfinr": {
+      "price": 1.647,
+      "name": "DF"
+    },
+    "reiinr": {
+      "price": 0.943,
+      "name": "REI"
+    },
+    "gnoinr": {
+      "price": 12400.0,
+      "name": "GNO"
+    },
+    "radinr": {
+      "price": 41.15,
+      "name": "RAD"
+    },
+    "btcinr": {
+      "price": 10128884.0,
+      "name": "BTC"
+    },
+    "erainr": {
+      "price": 25.234,
+      "name": "ERA"
+    },
+    "rifinr": {
+      "price": 4.091,
+      "name": "RIF"
+    },
+    "mapoinr": {
+      "price": 0.37593,
+      "name": "MAPO"
+    },
+    "ctcinr": {
+      "price": 43.846,
+      "name": "CTC"
+    },
+    "mntinr": {
+      "price": 137.445,
+      "name": "MNT"
+    },
+    "tstinr": {
+      "price": 1.5872,
+      "name": "TST"
+    },
+    "tfuelinr": {
+      "price": 2.1403,
+      "name": "TFUEL"
+    },
+    "joeinr": {
+      "price": 9.847,
+      "name": "JOE"
+    },
+    "ainr": {
+      "price": 23.944,
+      "name": "A"
+    },
+    "sophinr": {
+      "price": 2.1941,
+      "name": "SOPH"
+    },
+    "sxtinr": {
+      "price": 4.6641,
+      "name": "SXT"
+    },
+    "haedalinr": {
+      "price": 7.5068,
+      "name": "HAEDAL"
+    },
+    "atminr": {
+      "price": 97.17,
+      "name": "ATM"
+    },
+    "ogninr": {
+      "price": 4.1073,
+      "name": "OGN"
+    },
+    "mtlinr": {
+      "price": 41.7,
+      "name": "MTL"
+    },
+    "bmtinr": {
+      "price": 3.644,
+      "name": "BMT"
+    },
+    "signinr": {
+      "price": 3.4399,
+      "name": "SIGN"
+    },
+    "mboxinr": {
+      "price": 4.242,
+      "name": "MBOX"
+    },
+    "kncinr": {
+      "price": 26.92,
+      "name": "KNC"
+    },
+    "qtuminr": {
+      "price": 167.81,
+      "name": "QTUM"
+    },
+    "partiinr": {
+      "price": 5.868,
+      "name": "PARTI"
+    },
+    "csprinr": {
+      "price": 0.6907,
+      "name": "CSPR"
+    },
+    "scinr": {
+      "price": 0.178,
+      "name": "SC"
+    },
+    "berainr": {
+      "price": 159.97,
+      "name": "BERA"
+    },
+    "swapinr": {
+      "price": 5.167,
+      "name": "SWAP"
+    },
+    "meinr": {
+      "price": 39.7939,
+      "name": "ME"
+    },
+    "venominr": {
+      "price": 8.243,
+      "name": "VENOM"
+    },
+    "reninr": {
+      "price": 0.5494,
+      "name": "REN"
+    },
+    "qntinr": {
+      "price": 7491.44,
+      "name": "QNT"
+    },
+    "ordiinr": {
+      "price": 439.32,
+      "name": "ORDI"
+    },
+    "eigeninr": {
+      "price": 86.885,
+      "name": "EIGEN"
+    },
+    "peipeiinr": {
+      "price": 1.2213e-06,
+      "name": "PEIPEI"
+    },
+    "resolvinr": {
+      "price": 4.694,
+      "name": "RESOLV"
+    },
+    "cowinr": {
+      "price": 20.366,
+      "name": "COW"
+    },
+    "ponkeinr": {
+      "price": 5.211,
+      "name": "PONKE"
+    },
+    "movrinr": {
+      "price": 302.0,
+      "name": "MOVR"
+    },
+    "sagainr": {
+      "price": 8.909,
+      "name": "SAGA"
+    },
+    "geodinr": {
+      "price": 11.2301,
+      "name": "GEOD"
+    },
+    "wavesinr": {
+      "price": 67.502,
+      "name": "WAVES"
+    },
+    "initinr": {
+      "price": 12.709,
+      "name": "INIT"
+    },
+    "proveinr": {
+      "price": 61.55,
+      "name": "PROVE"
+    },
+    "bdxinr": {
+      "price": 7.4673,
+      "name": "BDX"
+    },
+    "listainr": {
+      "price": 23.6,
+      "name": "LISTA"
+    },
+    "xtzinr": {
+      "price": 53.429,
+      "name": "XTZ"
+    },
+    "highinr": {
+      "price": 26.859,
+      "name": "HIGH"
+    },
+    "zcxinr": {
+      "price": 1.0666,
+      "name": "ZCX"
+    },
+    "orbsinr": {
+      "price": 1.1799,
+      "name": "ORBS"
+    },
+    "ctsiinr": {
+      "price": 4.371,
+      "name": "CTSI"
+    },
+    "wctinr": {
+      "price": 13.2211,
+      "name": "WCT"
+    },
+    "datainr": {
+      "price": 0.6991,
+      "name": "DATA"
+    },
+    "proinr": {
+      "price": 52.27,
+      "name": "PRO"
+    },
+    "saharainr": {
+      "price": 6.8509,
+      "name": "SAHARA"
+    },
+    "umainr": {
+      "price": 98.62,
+      "name": "UMA"
+    },
+    "mblinr": {
+      "price": 0.12747,
+      "name": "MBL"
+    },
+    "onginr": {
+      "price": 10.056,
+      "name": "ONG"
+    },
+    "roseinr": {
+      "price": 1.3922,
+      "name": "ROSE"
+    },
+    "sxpinr": {
+      "price": 10.483,
+      "name": "SXP"
+    },
+    "ioinr": {
+      "price": 27.611,
+      "name": "IO"
+    },
+    "celoinr": {
+      "price": 21.242,
+      "name": "CELO"
+    },
+    "rezinr": {
+      "price": 0.764,
+      "name": "REZ"
+    },
+    "arkminr": {
+      "price": 29.789,
+      "name": "ARKM"
+    },
+    "pushinr": {
+      "price": 2.396,
+      "name": "PUSH"
+    },
+    "dentinr": {
+      "price": 0.037,
+      "name": "DENT"
+    },
+    "xautinr": {
+      "price": 363250.0,
+      "name": "XAUT"
+    },
+    "sdexinr": {
+      "price": 0.31484,
+      "name": "SDEX"
+    },
+    "blurinr": {
+      "price": 4.112,
+      "name": "BLUR"
+    },
+    "humainr": {
+      "price": 2.21354,
+      "name": "HUMA"
+    },
+    "dinr": {
+      "price": 1.8939,
+      "name": "D"
+    },
+    "lainr": {
+      "price": 30.8152,
+      "name": "LA"
+    },
+    "fidainr": {
+      "price": 5.189,
+      "name": "FIDA"
+    },
+    "blueinr": {
+      "price": 5.6193,
+      "name": "BLUE"
+    },
+    "adxinr": {
+      "price": 11.1338,
+      "name": "ADX"
+    },
+    "osmoinr": {
+      "price": 10.5,
+      "name": "OSMO"
+    },
+    "perpinr": {
+      "price": 17.579,
+      "name": "PERP"
+    },
+    "prominr": {
+      "price": 965.21,
+      "name": "PROM"
+    },
+    "zroinr": {
+      "price": 142.313,
+      "name": "ZRO"
+    },
+    "rootinr": {
+      "price": 0.086,
+      "name": "ROOT"
+    },
+    "lmwrinr": {
+      "price": 4.7686,
+      "name": "LMWR"
+    },
+    "cfginr": {
+      "price": 17.305,
+      "name": "CFG"
+    },
+    "cfxinr": {
+      "price": 9.467,
+      "name": "CFX"
+    },
+    "usualinr": {
+      "price": 2.6084,
+      "name": "USUAL"
+    },
+    "beamxinr": {
+      "price": 0.46759,
+      "name": "BEAMX"
+    },
+    "ipinr": {
+      "price": 404.6866,
+      "name": "IP"
+    },
+    "sidusinr": {
+      "price": 0.02674,
+      "name": "SIDUS"
+    },
+    "waxpinr": {
+      "price": 1.1368,
+      "name": "WAXP"
+    },
+    "kaitoinr": {
+      "price": 92.9068,
+      "name": "KAITO"
+    },
+    "mewinr": {
+      "price": 0.16016,
+      "name": "MEW"
+    },
+    "tokeninr": {
+      "price": 0.6821,
+      "name": "TOKEN"
+    },
+    "aeroinr": {
+      "price": 97.57,
+      "name": "AERO"
+    },
+    "sinr": {
+      "price": 12.967,
+      "name": "S"
+    },
+    "twtinr": {
+      "price": 111.248,
+      "name": "TWT"
+    },
+    "orcainr": {
+      "price": 137.249,
+      "name": "ORCA"
+    },
+    "gasinr": {
+      "price": 230.044,
+      "name": "GAS"
+    },
+    "skyinr": {
+      "price": 5.2246,
+      "name": "SKY"
+    },
+    "ewtinr": {
+      "price": 71.56,
+      "name": "EWT"
+    },
+    "moveinr": {
+      "price": 6.337,
+      "name": "MOVE"
+    },
+    "kavainr": {
+      "price": 11.796,
+      "name": "KAVA"
+    },
+    "kernelinr": {
+      "price": 12.399,
+      "name": "KERNEL"
+    },
+    "fttinr": {
+      "price": 80.172,
+      "name": "FTT"
+    },
+    "maskinr": {
+      "price": 75.254,
+      "name": "MASK"
+    },
+    "dodoinr": {
+      "price": 2.7641,
+      "name": "DODO"
+    },
+    "altinr": {
+      "price": 1.554,
+      "name": "ALT"
+    },
+    "redinr": {
+      "price": 28.89,
+      "name": "RED"
+    },
+    "telinr": {
+      "price": 0.325,
+      "name": "TEL"
+    },
+    "cotiinr": {
+      "price": 2.888,
+      "name": "COTI"
+    },
+    "xeminr": {
+      "price": 0.12145,
+      "name": "XEM"
+    },
+    "polyxinr": {
+      "price": 7.682,
+      "name": "POLYX"
+    },
+    "cinr": {
+      "price": 9.8498,
+      "name": "C"
+    },
+    "metisinr": {
+      "price": 856.2,
+      "name": "METIS"
+    },
+    "stxinr": {
+      "price": 39.101,
+      "name": "STX"
+    },
+    "flokiinr": {
+      "price": 0.0064,
+      "name": "FLOKI"
+    },
+    "vscinr": {
+      "price": 0.1726,
+      "name": "VSC"
+    },
+    "nibiinr": {
+      "price": 1.12,
+      "name": "NIBI"
+    },
+    "waxlinr": {
+      "price": 15.473,
+      "name": "WAXL"
+    },
+    "cookieinr": {
+      "price": 7.6548,
+      "name": "COOKIE"
+    },
+    "usdcinr": {
+      "price": 90.946,
+      "name": "USDC"
+    },
+    "strkinr": {
+      "price": 9.98,
+      "name": "STRK"
+    },
+    "ethfiinr": {
+      "price": 87.03,
+      "name": "ETHFI"
+    },
+    "athinr": {
+      "price": 2.50421,
+      "name": "ATH"
+    },
+    "egldinr": {
+      "price": 861.9,
+      "name": "EGLD"
+    },
+    "ampinr": {
+      "price": 0.22181,
+      "name": "AMP"
+    },
+    "sushiinr": {
+      "price": 46.29,
+      "name": "SUSHI"
+    },
+    "iotxinr": {
+      "price": 1.0478,
+      "name": "IOTX"
+    },
+    "soloinr": {
+      "price": 23.375,
+      "name": "SOLO"
+    },
+    "rayinr": {
+      "price": 151.011,
+      "name": "RAY"
+    },
+    "htxinr": {
+      "price": 0.00017294,
+      "name": "HTX"
+    },
+    "notinr": {
+      "price": 0.071535,
+      "name": "NOT"
+    },
+    "yfiinr": {
+      "price": 433695.9,
+      "name": "YFI"
+    },
+    "uniinr": {
+      "price": 535.0,
+      "name": "UNI"
+    },
+    "defiinr": {
+      "price": 0.079,
+      "name": "DEFI"
+    },
+    "bomeinr": {
+      "price": 0.09084,
+      "name": "BOME"
+    },
+    "lrcinr": {
+      "price": 6.184,
+      "name": "LRC"
+    },
+    "chillguyinr": {
+      "price": 2.4382,
+      "name": "CHILLGUY"
+    },
+    "grtinr": {
+      "price": 5.8306,
+      "name": "GRT"
+    },
+    "iceinr": {
+      "price": 0.2735,
+      "name": "ICE"
+    },
+    "pnutinr": {
+      "price": 11.771,
+      "name": "PNUT"
+    },
+    "jasmyinr": {
+      "price": 0.94127,
+      "name": "JASMY"
+    },
+    "chrinr": {
+      "price": 7.242,
+      "name": "CHR"
+    },
+    "baxinr": {
+      "price": 0.0012787,
+      "name": "BAX"
+    },
+    "fartcoininr": {
+      "price": 31.675,
+      "name": "FARTCOIN"
+    },
+    "ultimainr": {
+      "price": 353500.0,
+      "name": "ULTIMA"
+    },
+    "nftinr": {
+      "price": 3.798e-05,
+      "name": "NFT"
+    },
+    "xrinr": {
+      "price": 1.018,
+      "name": "XR"
+    },
+    "majorinr": {
+      "price": 9.93,
+      "name": "MAJOR"
+    },
+    "bigtimeinr": {
+      "price": 2.8844,
+      "name": "BIGTIME"
+    },
+    "driftinr": {
+      "price": 37.075,
+      "name": "DRIFT"
+    },
+    "layerinr": {
+      "price": 24.124,
+      "name": "LAYER"
+    },
+    "artfiinr": {
+      "price": 0.2476,
+      "name": "ARTFI"
+    },
+    "degeninr": {
+      "price": 0.1719,
+      "name": "DEGEN"
+    },
+    "peopleinr": {
+      "price": 1.0468,
+      "name": "PEOPLE"
+    },
+    "pythinr": {
+      "price": 9.92213,
+      "name": "PYTH"
+    },
+    "csixinr": {
+      "price": 0.2475,
+      "name": "CSIX"
+    },
+    "mubarakinr": {
+      "price": 1.8702,
+      "name": "MUBARAK"
+    },
+    "vinuinr": {
+      "price": 9.5e-07,
+      "name": "VINU"
+    },
+    "alexinr": {
+      "price": 0.39917,
+      "name": "ALEX"
+    },
+    "alkimiinr": {
+      "price": 2.645,
+      "name": "ALKIMI"
+    },
+    "syninr": {
+      "price": 6.706,
+      "name": "SYN"
+    },
+    "nxpcinr": {
+      "price": 33.1002,
+      "name": "NXPC"
+    },
+    "tlminr": {
+      "price": 0.2928,
+      "name": "TLM"
+    },
+    "ldoinr": {
+      "price": 80.84,
+      "name": "LDO"
+    },
+    "alphainr": {
+      "price": 0.86802,
+      "name": "ALPHA"
+    },
+    "pixelinr": {
+      "price": 1.4256,
+      "name": "PIXEL"
+    },
+    "aiozinr": {
+      "price": 16.5718,
+      "name": "AIOZ"
+    },
+    "paxginr": {
+      "price": 371275.0,
+      "name": "PAXG"
+    },
+    "cgptinr": {
+      "price": 4.7848,
+      "name": "CGPT"
+    },
+    "emtinr": {
+      "price": 0.1787,
+      "name": "EMT"
+    },
+    "iqinr": {
+      "price": 0.21714,
+      "name": "IQ"
+    },
+    "solvinr": {
+      "price": 1.7741,
+      "name": "SOLV"
+    },
+    "snxinr": {
+      "price": 92.33,
+      "name": "SNX"
+    },
+    "vineinr": {
+      "price": 3.984,
+      "name": "VINE"
+    },
+    "rsrinr": {
+      "price": 0.5358,
+      "name": "RSR"
+    },
+    "theinr": {
+      "price": 20.433,
+      "name": "THE"
+    },
+    "wifinr": {
+      "price": 47.443,
+      "name": "WIF"
+    },
+    "memefiinr": {
+      "price": 0.0932,
+      "name": "MEMEFI"
+    },
+    "baninr": {
+      "price": 6.392,
+      "name": "BAN"
+    },
+    "nilinr": {
+      "price": 21.5,
+      "name": "NIL"
+    },
+    "copiinr": {
+      "price": 1.05,
+      "name": "COPI"
+    },
+    "suninr": {
+      "price": 1.9858,
+      "name": "SUN"
+    },
+    "spkinr": {
+      "price": 3.2696,
+      "name": "SPK"
+    },
+    "hntinr": {
+      "price": 232.19,
+      "name": "HNT"
+    },
+    "funinr": {
+      "price": 0.29704,
+      "name": "FUN"
+    },
+    "goatinr": {
+      "price": 4.721,
+      "name": "GOAT"
+    },
+    "gmmtinr": {
+      "price": 0.367,
+      "name": "GMMT"
+    },
+    "availinr": {
+      "price": 0.81,
+      "name": "AVAIL"
+    },
+    "philinr": {
+      "price": 0.11055,
+      "name": "PHIL"
+    },
+    "audioinr": {
+      "price": 3.664,
+      "name": "AUDIO"
+    },
+    "shellinr": {
+      "price": 9.8279,
+      "name": "SHELL"
+    },
+    "syrupinr": {
+      "price": 38.681,
+      "name": "SYRUP"
+    },
+    "eurtinr": {
+      "price": 84.988,
+      "name": "EURT"
+    },
+    "apeinr": {
+      "price": 37.171,
+      "name": "APE"
+    },
+    "bananainr": {
+      "price": 1151.8,
+      "name": "BANANA"
+    },
+    "usdtinr": {
+      "price": 91.7,
+      "name": "USDT"
+    },
+    "moodenginr": {
+      "price": 9.715,
+      "name": "MOODENG"
+    },
+    "latinr": {
+      "price": 0.21968,
+      "name": "LAT"
+    },
+    "prclinr": {
+      "price": 3.97,
+      "name": "PRCL"
+    },
+    "e4cinr": {
+      "price": 0.25571,
+      "name": "E4C"
+    },
+    "portalinr": {
+      "price": 2.2337,
+      "name": "PORTAL"
+    },
+    "bsvinr": {
+      "price": 1990.001,
+      "name": "BSV"
+    },
+    "migglesinr": {
+      "price": 1.6453,
+      "name": "MIGGLES"
+    },
+    "mantainr": {
+      "price": 9.316,
+      "name": "MANTA"
+    },
+    "wininr": {
+      "price": 0.0035135,
+      "name": "WIN"
+    },
+    "fltinr": {
+      "price": 1.537,
+      "name": "FLT"
+    },
+    "bcutinr": {
+      "price": 0.8118,
+      "name": "BCUT"
+    },
+    "xaiinr": {
+      "price": 2.2102,
+      "name": "XAI"
+    },
+    "vrainr": {
+      "price": 0.060549,
+      "name": "VRA"
+    },
+    "memeinr": {
+      "price": 0.14398,
+      "name": "MEME"
+    },
+    "hotinr": {
+      "price": 0.0545,
+      "name": "HOT"
+    },
+    "bswinr": {
+      "price": 0.51995,
+      "name": "BSW"
+    },
+    "peninr": {
+      "price": 0.0539,
+      "name": "PEN"
+    },
+    "lumiainr": {
+      "price": 13.561,
+      "name": "LUMIA"
+    },
+    "voltinr": {
+      "price": 9.27e-06,
+      "name": "VOLT"
+    },
+    "sundoginr": {
+      "price": 1.596,
+      "name": "SUNDOG"
+    },
+    "galainr": {
+      "price": 0.998,
+      "name": "GALA"
+    },
+    "aaveinr": {
+      "price": 21335.4,
+      "name": "AAVE"
+    },
+    "arbinr": {
+      "price": 26.928,
+      "name": "ARB"
+    },
+    "virtualinr": {
+      "price": 126.957,
+      "name": "VIRTUAL"
+    },
+    "rvninr": {
+      "price": 0.8703,
+      "name": "RVN"
+    },
+    "tiainr": {
+      "price": 85.364,
+      "name": "TIA"
+    },
+    "hmstrinr": {
+      "price": 0.03916,
+      "name": "HMSTR"
+    },
+    "dogsinr": {
+      "price": 0.004815,
+      "name": "DOGS"
+    },
+    "thetainr": {
+      "price": 45.369,
+      "name": "THETA"
+    },
+    "oasinr": {
+      "price": 0.419,
+      "name": "OAS"
+    },
+    "acxinr": {
+      "price": 5.847,
+      "name": "ACX"
+    },
+    "straxinr": {
+      "price": 2.7223,
+      "name": "STRAX"
+    },
+    "winr": {
+      "price": 6.068,
+      "name": "W"
+    },
+    "townsinr": {
+      "price": 0.97573,
+      "name": "TOWNS"
+    },
+    "vvvinr": {
+      "price": 140.01,
+      "name": "VVV"
+    },
+    "chzinr": {
+      "price": 2.8754,
+      "name": "CHZ"
+    },
+    "omginr": {
+      "price": 10.422,
+      "name": "OMG"
+    },
+    "ckbinr": {
+      "price": 0.2945,
+      "name": "CKB"
+    },
+    "azeroinr": {
+      "price": 1.181,
+      "name": "AZERO"
+    },
+    "dyminr": {
+      "price": 8.31,
+      "name": "DYM"
+    },
+    "grassinr": {
+      "price": 30.551,
+      "name": "GRASS"
+    },
+    "superinr": {
+      "price": 34.09,
+      "name": "SUPER"
+    },
+    "ai16zinr": {
+      "price": 6.7536,
+      "name": "AI16Z"
+    },
+    "xinr": {
+      "price": 0.0030685,
+      "name": "X"
+    },
+    "weninr": {
+      "price": 0.002596,
+      "name": "WEN"
+    },
+    "griffaininr": {
+      "price": 1.7933,
+      "name": "GRIFFAIN"
+    },
+    "vetinr": {
+      "price": 1.429,
+      "name": "VET"
+    },
+    "nmrinr": {
+      "price": 1104.81,
+      "name": "NMR"
+    },
+    "dioneinr": {
+      "price": 0.04465,
+      "name": "DIONE"
+    },
+    "sklinr": {
+      "price": 1.6415,
+      "name": "SKL"
+    },
+    "imxinr": {
+      "price": 45.517,
+      "name": "IMX"
+    },
+    "ginr": {
+      "price": 0.6007,
+      "name": "G"
+    },
+    "compinr": {
+      "price": 3184.3,
+      "name": "COMP"
+    },
+    "celrinr": {
+      "price": 0.48,
+      "name": "CELR"
+    },
+    "ziginr": {
+      "price": 8.0,
+      "name": "ZIG"
+    },
+    "houseinr": {
+      "price": 0.4798,
+      "name": "HOUSE"
+    },
+    "diainr": {
+      "price": 45.485,
+      "name": "DIA"
+    },
+    "xyoinr": {
+      "price": 0.66435,
+      "name": "XYO"
+    },
+    "crvinr": {
+      "price": 45.045,
+      "name": "CRV"
+    },
+    "spellinr": {
+      "price": 0.029878,
+      "name": "SPELL"
+    },
+    "animeinr": {
+      "price": 0.76606,
+      "name": "ANIME"
+    },
+    "konetinr": {
+      "price": 2.4568,
+      "name": "KONET"
+    },
+    "dydxinr": {
+      "price": 27.477,
+      "name": "DYDX"
+    },
+    "axsinr": {
+      "price": 134.5,
+      "name": "AXS"
+    },
+    "turboinr": {
+      "price": 0.20433,
+      "name": "TURBO"
+    },
+    "aptinr": {
+      "price": 304.805,
+      "name": "APT"
+    },
+    "plumeinr": {
+      "price": 5.50564,
+      "name": "PLUME"
+    },
+    "xcadinr": {
+      "price": 1.2069,
+      "name": "XCAD"
+    },
+    "etcinr": {
+      "price": 1480.617,
+      "name": "ETC"
+    },
+    "bbinr": {
+      "price": 9.616,
+      "name": "BB"
+    },
+    "elyinr": {
+      "price": 0.23454,
+      "name": "ELY"
+    },
+    "swchinr": {
+      "price": 17.346,
+      "name": "SWCH"
+    },
+    "lunainr": {
+      "price": 8.604,
+      "name": "LUNA"
+    },
+    "aixbtinr": {
+      "price": 6.761,
+      "name": "AIXBT"
+    },
+    "nakainr": {
+      "price": 14.3865,
+      "name": "NAKA"
+    },
+    "taoinr": {
+      "price": 44783.8,
+      "name": "TAO"
+    },
+    "tnsrinr": {
+      "price": 4.918,
+      "name": "TNSR"
+    },
+    "jupinr": {
+      "price": 36.881,
+      "name": "JUP"
+    },
+    "phainr": {
+      "price": 5.041,
+      "name": "PHA"
+    },
+    "veloinr": {
+      "price": 0.78028,
+      "name": "VELO"
+    },
+    "merlinr": {
+      "price": 29.222,
+      "name": "MERL"
+    },
+    "wldinr": {
+      "price": 74.975,
+      "name": "WLD"
+    },
+    "dmtrinr": {
+      "price": 2.23391,
+      "name": "DMTR"
+    },
+    "algoinr": {
+      "price": 16.339,
+      "name": "ALGO"
+    },
+    "hyperinr": {
+      "price": 16.141,
+      "name": "HYPER"
+    },
+    "fetinr": {
+      "price": 21.6,
+      "name": "FET"
+    },
+    "wlfiinr": {
+      "price": 12.762,
+      "name": "WLFI"
+    },
+    "ksminr": {
+      "price": 889.0,
+      "name": "KSM"
+    },
+    "ominr": {
+      "price": 9.6331,
+      "name": "OM"
+    },
+    "ilvinr": {
+      "price": 960.0,
+      "name": "ILV"
+    },
+    "adainr": {
+      "price": 56.303,
+      "name": "ADA"
+    },
+    "catinr": {
+      "price": 0.0004653,
+      "name": "CAT"
+    },
+    "melaniainr": {
+      "price": 10.82,
+      "name": "MELANIA"
+    },
+    "spxinr": {
+      "price": 78.977,
+      "name": "SPX"
+    },
+    "xlminr": {
+      "price": 28.034,
+      "name": "XLM"
+    },
+    "goatsinr": {
+      "price": 0.00455,
+      "name": "GOATS"
+    },
+    "injinr": {
+      "price": 710.35,
+      "name": "INJ"
+    },
+    "linkinr": {
+      "price": 1598.814,
+      "name": "LINK"
+    },
+    "xdbinr": {
+      "price": 0.0364,
+      "name": "XDB"
+    },
+    "dgbinr": {
+      "price": 0.56283,
+      "name": "DGB"
+    },
+    "myroinr": {
+      "price": 1.6272,
+      "name": "MYRO"
+    },
+    "achinr": {
+      "price": 1.11998,
+      "name": "ACH"
+    },
+    "actinr": {
+      "price": 1.8795,
+      "name": "ACT"
+    },
+    "suprainr": {
+      "price": 0.12863,
+      "name": "SUPRA"
+    },
+    "pumpinr": {
+      "price": 0.43412,
+      "name": "PUMP"
+    },
+    "trxinr": {
+      "price": 27.275,
+      "name": "TRX"
+    },
+    "shibinr": {
+      "price": 0.00091887,
+      "name": "SHIB"
+    },
+    "briseinr": {
+      "price": 3.817e-06,
+      "name": "BRISE"
+    },
+    "velodromeinr": {
+      "price": 3.8882,
+      "name": "VELODROME"
+    },
+    "arinr": {
+      "price": 321.21,
+      "name": "AR"
+    },
+    "bchinr": {
+      "price": 49445.4,
+      "name": "BCH"
+    },
+    "lfinr": {
+      "price": 0.00982,
+      "name": "LF"
+    },
+    "atominr": {
+      "price": 278.188,
+      "name": "ATOM"
+    },
+    "catsinr": {
+      "price": 6.75e-05,
+      "name": "CATS"
+    },
+    "seiinr": {
+      "price": 17.95,
+      "name": "SEI"
+    },
+    "trbinr": {
+      "price": 2302.96,
+      "name": "TRB"
+    },
+    "brettinr": {
+      "price": 2.4945,
+      "name": "BRETT"
+    },
+    "avaxinr": {
+      "price": 1681.03,
+      "name": "AVAX"
+    },
+    "cakeinr": {
+      "price": 223.83,
+      "name": "CAKE"
+    },
+    "hypeinr": {
+      "price": 4108.2,
+      "name": "HYPE"
+    },
+    "myriainr": {
+      "price": 0.03884,
+      "name": "MYRIA"
+    },
+    "trumpinr": {
+      "price": 730.17,
+      "name": "TRUMP"
+    },
+    "filinr": {
+      "price": 140.821,
+      "name": "FIL"
+    },
+    "solinr": {
+      "price": 17327.72,
+      "name": "SOL"
+    },
+    "xrpinr": {
+      "price": 232.45,
+      "name": "XRP"
+    },
+    "ethinr": {
+      "price": 355786.4,
+      "name": "ETH"
+    },
+    "hbarinr": {
+      "price": 18.1517,
+      "name": "HBAR"
+    },
+    "hippoinr": {
+      "price": 0.17463,
+      "name": "HIPPO"
+    },
+    "dogeinr": {
+      "price": 17.1999,
+      "name": "DOGE"
+    },
+    "toshiinr": {
+      "price": 0.064705,
+      "name": "TOSHI"
+    },
+    "oneinr": {
+      "price": 0.53113,
+      "name": "ONE"
+    },
+    "ccdinr": {
+      "price": 2.28996,
+      "name": "CCD"
+    },
+    "xdcinr": {
+      "price": 5.603,
+      "name": "XDC"
+    },
+    "aktinr": {
+      "price": 66.576,
+      "name": "AKT"
+    },
+    "ondoinr": {
+      "price": 63.2106,
+      "name": "ONDO"
+    },
+    "kasinr": {
+      "price": 4.9278,
+      "name": "KAS"
+    },
+    "pepeinr": {
+      "price": 0.00060542,
+      "name": "PEPE"
+    },
+    "popcatinr": {
+      "price": 13.117,
+      "name": "POPCAT"
+    },
+    "enainr": {
+      "price": 35.991,
+      "name": "ENA"
+    },
+    "neiroethinr": {
+      "price": 0.31,
+      "name": "NEIROETH"
+    },
+    "dotinr": {
+      "price": 265.783,
+      "name": "DOT"
+    },
+    "icpinr": {
+      "price": 275.69,
+      "name": "ICP"
+    },
+    "bnbinr": {
+      "price": 100000.0,
+      "name": "BNB"
+    },
+    "phbinr": {
+      "price": 39.202,
+      "name": "PHB"
+    },
+    "bonkinr": {
+      "price": 0.00128868,
+      "name": "BONK"
+    },
+    "suiinr": {
+      "price": 217.703,
+      "name": "SUI"
+    },
+    "penguinr": {
+      "price": 1.65382,
+      "name": "PENGU"
+    },
+    "zecinr": {
+      "price": 36492.82,
+      "name": "ZEC"
+    },
+    "coreinr": {
+      "price": 19.66073,
+      "name": "CORE"
+    },
+    "gmtinr": {
+      "price": 2.2121,
+      "name": "GMT"
+    },
+    "polinr": {
+      "price": 16.995,
+      "name": "POL"
+    },
+    "nearinr": {
+      "price": 194.991,
+      "name": "NEAR"
+    },
+    "zerebroinr": {
+      "price": 4.1708,
+      "name": "ZEREBRO"
+    },
+    "masainr": {
+      "price": 0.6072,
+      "name": "MASA"
+    },
+    "maviainr": {
+      "price": 9.653,
+      "name": "MAVIA"
+    },
+    "toninr": {
+      "price": 211.507,
+      "name": "TON"
+    },
+    "renderinr": {
+      "price": 208.36,
+      "name": "RENDER"
+    },
+    "flminr": {
+      "price": 2.2431,
+      "name": "FLM"
+    },
+    "aliceinr": {
+      "price": 25.256,
+      "name": "ALICE"
+    },
+    "bioinr": {
+      "price": 7.7308,
+      "name": "BIO"
+    },
+    "zkinr": {
+      "price": 2.633,
+      "name": "ZK"
+    },
+    "vanainr": {
+      "price": 259.0,
+      "name": "VANA"
+    },
+    "wemixinr": {
+      "price": 54.068,
+      "name": "WEMIX"
+    },
+    "storjinr": {
+      "price": 15.353,
+      "name": "STORJ"
+    },
+    "bntinr": {
+      "price": 54.299,
+      "name": "BNT"
+    },
+    "aergoinr": {
+      "price": 6.7487,
+      "name": "AERGO"
+    },
+    "sysinr": {
+      "price": 2.43,
+      "name": "SYS"
+    },
+    "ronininr": {
+      "price": 30.81,
+      "name": "RONIN"
+    },
+    "neoinr": {
+      "price": 464.788,
+      "name": "NEO"
+    },
+    "minainr": {
+      "price": 8.81,
+      "name": "MINA"
+    },
+    "zilinr": {
+      "price": 0.6884,
+      "name": "ZIL"
+    },
+    "slpinr": {
+      "price": 0.09715,
+      "name": "SLP"
+    },
+    "nkninr": {
+      "price": 1.7056,
+      "name": "NKN"
+    },
+    "cetusinr": {
+      "price": 4.4438,
+      "name": "CETUS"
+    },
+    "zetainr": {
+      "price": 10.477,
+      "name": "ZETA"
+    },
+    "scrinr": {
+      "price": 13.371,
+      "name": "SCR"
+    },
+    "lcxinr": {
+      "price": 9.59,
+      "name": "LCX"
+    },
+    "reqinr": {
+      "price": 10.9361,
+      "name": "REQ"
+    },
+    "cvcinr": {
+      "price": 5.063,
+      "name": "CVC"
+    },
+    "bicoinr": {
+      "price": 5.51,
+      "name": "BICO"
+    },
+    "bobainr": {
+      "price": 5.9262,
+      "name": "BOBA"
+    },
+    "marshinr": {
+      "price": 0.81,
+      "name": "MARSH"
+    },
+    "ctkinr": {
+      "price": 28.631,
+      "name": "CTK"
+    },
+    "wooinr": {
+      "price": 3.4621,
+      "name": "WOO"
+    },
+    "ensinr": {
+      "price": 1321.66,
+      "name": "ENS"
+    },
+    "ankrinr": {
+      "price": 0.9448,
+      "name": "ANKR"
+    },
+    "glminr": {
+      "price": 16.508,
+      "name": "GLM"
+    },
+    "iostinr": {
+      "price": 0.20798,
+      "name": "IOST"
+    },
+    "pdexinr": {
+      "price": 3.859,
+      "name": "PDEX"
+    },
+    "zbuinr": {
+      "price": 153.82,
+      "name": "ZBU"
+    },
+    "tlosinr": {
+      "price": 2.4268,
+      "name": "TLOS"
+    },
+    "vthoinr": {
+      "price": 0.10402,
+      "name": "VTHO"
+    },
+    "xcninr": {
+      "price": 0.77,
+      "name": "XCN"
+    },
+    "powrinr": {
+      "price": 9.607,
+      "name": "POWR"
+    },
+    "daoinr": {
+      "price": 7.7445,
+      "name": "DAO"
+    },
+    "qiinr": {
+      "price": 0.4586,
+      "name": "QI"
+    },
+    "pyrinr": {
+      "price": 56.95,
+      "name": "PYR"
+    },
+    "rlcinr": {
+      "price": 79.569,
+      "name": "RLC"
+    },
+    "mahainr": {
+      "price": 16.0,
+      "name": "MAHA"
+    },
+    "tusdinr": {
+      "price": 91.191,
+      "name": "TUSD"
+    },
+    "ftninr": {
+      "price": 163.661,
+      "name": "FTN"
+    },
+    "santosinr": {
+      "price": 123.3,
+      "name": "SANTOS"
+    },
+    "fortinr": {
+      "price": 3.065,
+      "name": "FORT"
+    },
+    "lptinr": {
+      "price": 426.706,
+      "name": "LPT"
+    },
+    "nfpinr": {
+      "price": 3.312,
+      "name": "NFP"
+    },
+    "tkoinr": {
+      "price": 11.324,
+      "name": "TKO"
+    },
+    "daiinr": {
+      "price": 90.5,
+      "name": "DAI"
     }
   }
 }
