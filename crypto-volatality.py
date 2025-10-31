@@ -9,40 +9,35 @@ THRESHOLD = float(os.getenv("THRESHOLD", "5"))
 TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS = int(os.getenv("TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS", "30"))
 PRICES_FILE = Path("prev_prices.json")
 
-def get_top_30_coins_by_24h_change():
-    url = "https://api.coingecko.com/api/v3/coins/markets"
-    all_coins = []
-    
+def get_all_coindcx_coins():
     try:
-        for page in range(1, 6):
-            params = {
-                "vs_currency": "inr",
-                "order": "market_cap_desc",
-                "per_page": 250,
-                "page": page,
-                "price_change_percentage": "24h"
-            }
-            response = requests.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            coins = response.json()
-            if not coins:
-                break
-            all_coins.extend(coins)
+        print(f"Fetching all tradeable coins from CoinDCX...")
+        response = requests.get("https://api.coindcx.com/exchange/ticker", timeout=10)
+        response.raise_for_status()
+        tickers = response.json()
         
-        valid_coins = [
-            c for c in all_coins 
-            if c.get("price_change_percentage_24h") is not None
-            and c.get("current_price") is not None
-            and c.get("current_price") > 0
-        ]
+        inr_markets = []
+        for ticker in tickers:
+            market = ticker.get("market", "")
+            last_price = ticker.get("last_price")
+            
+            if "INR" in market and last_price is not None:
+                try:
+                    price = float(last_price)
+                    symbol = market.replace("INR", "")
+                    
+                    inr_markets.append({
+                        "id": market.lower(),
+                        "symbol": symbol,
+                        "name": symbol,
+                        "market": market,
+                        "current_price": price
+                    })
+                except (ValueError, TypeError):
+                    continue
         
-        sorted_coins = sorted(
-            valid_coins,
-            key=lambda x: abs(x.get("price_change_percentage_24h", 0)),
-            reverse=True
-        )
-        
-        return sorted_coins[:30]
+        print(f"Monitoring {len(inr_markets)} coins from CoinDCX\n")
+        return inr_markets
         
     except Exception as e:
         print(f"Error fetching top coins: {e}")
@@ -80,19 +75,10 @@ def clean_old_entries(history, cutoff_time):
     return {ts: prices for ts, prices in history.items() if float(ts) > cutoff_time}
 
 def main():
-    print(f"Fetching top 30 most volatile coins (by 24h % change)...")
-    
-    coins = get_top_30_coins_by_24h_change()
+    coins = get_all_coindcx_coins()
     if not coins:
         print("No coins data retrieved.")
         return
-    
-    print(f"\nTop 30 coins by 24h volatility:")
-    for i, coin in enumerate(coins[:10], 1):
-        name = coin.get("name", "Unknown")
-        change_24h = coin.get("price_change_percentage_24h", 0)
-        print(f"  {i}. {name}: {change_24h:+.2f}% (24h)")
-    print(f"  ... and 20 more\n")
     
     print(f"Checking {TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS} min volatility...")
     print(f"Alert threshold: ≥{THRESHOLD}%\n")
