@@ -48,9 +48,9 @@ def get_top_30_coins_by_24h_change():
         print(f"Error fetching top coins: {e}")
         return []
 
-def send_discord_alert(symbol, change):
+def send_discord_alert(symbol, change, actual_minutes):
     msg = {
-        "content": f"⚡ **{symbol}** moved **{change:.2f}%** in last {TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS} min!"
+        "content": f"⚡ **{symbol}** moved **{change:.2f}%** in last {actual_minutes:.1f} min!"
     }
     if DISCORD_WEBHOOK:
         try:
@@ -143,12 +143,12 @@ def main():
         print(f"{name}: ₹{old_price:.2f} -> ₹{current_price:.2f}, change: {change:.2f}% ({actual_minutes:.1f} min)")
         
         if abs(change) >= THRESHOLD:
-            alerts.append((name, change))
+            alerts.append((name, change, actual_minutes))
     
     if alerts:
         print(f"\n🚨 {len(alerts)} alert(s) triggered!")
-        for sym, chg in alerts:
-            send_discord_alert(sym, chg)
+        for sym, chg, mins in alerts:
+            send_discord_alert(sym, chg, mins)
     else:
         print("\nNo volatility alerts this run.")
 
