@@ -486,5 +486,127 @@
       "price": 2378.84,
       "name": "Celium"
     }
+  },
+  "1761942375": {
+    "figure-heloc": {
+      "price": 92.19,
+      "name": "Figure Heloc"
+    },
+    "green": {
+      "price": 0.03989093,
+      "name": "Green"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "the-innovation-game": {
+      "price": 84.11,
+      "name": "The Innovation Game"
+    },
+    "port3-network": {
+      "price": 4.67,
+      "name": "Port3 Network"
+    },
+    "hivemapper": {
+      "price": 1.27,
+      "name": "Hivemapper"
+    },
+    "ping": {
+      "price": 1.94,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.84,
+      "name": "Impossible Cloud Network Token"
+    },
+    "lit-protocol": {
+      "price": 13.55,
+      "name": "Lit Protocol"
+    },
+    "tao-bot": {
+      "price": 29.93,
+      "name": "tao.bot"
+    },
+    "niza-global-2": {
+      "price": 6.25,
+      "name": "Niza Global"
+    },
+    "chainopera-ai": {
+      "price": 126.65,
+      "name": "ChainOpera AI"
+    },
+    "ai16z": {
+      "price": 6.68,
+      "name": "ai16z"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.28,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "velodrome-finance": {
+      "price": 3.76,
+      "name": "Velodrome Finance"
+    },
+    "optio": {
+      "price": 0.683073,
+      "name": "Optio"
+    },
+    "aurora-near": {
+      "price": 8.17,
+      "name": "Aurora"
+    },
+    "avici": {
+      "price": 180.6,
+      "name": "Avici"
+    },
+    "sportstensor": {
+      "price": 1168.18,
+      "name": "Sportstensor"
+    },
+    "non-playable-coin": {
+      "price": 1.23,
+      "name": "Non-Playable Coin"
+    },
+    "coreum": {
+      "price": 9.5,
+      "name": "Coreum"
+    },
+    "zerebro": {
+      "price": 4.07,
+      "name": "Zerebro"
+    },
+    "railgun": {
+      "price": 253.97,
+      "name": "Railgun"
+    },
+    "znd-token": {
+      "price": 14.96,
+      "name": "ZND Token"
+    },
+    "affine": {
+      "price": 2386.81,
+      "name": "affine"
+    },
+    "sperax": {
+      "price": 0.809162,
+      "name": "Sperax"
+    },
+    "punkstrategy": {
+      "price": 5.87,
+      "name": "PunkStrategy"
+    },
+    "bittensor": {
+      "price": 43082,
+      "name": "Bittensor"
+    },
+    "celium": {
+      "price": 2381.26,
+      "name": "Celium"
+    },
+    "bitmind": {
+      "price": 787.96,
+      "name": "BitMind"
+    }
   }
 }
