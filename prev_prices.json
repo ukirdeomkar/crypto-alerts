@@ -1,0 +1,368 @@
+{
+  "1761941004": {
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "port3-network": {
+      "price": 4.67,
+      "name": "Port3 Network"
+    },
+    "the-innovation-game": {
+      "price": 83.85,
+      "name": "The Innovation Game"
+    },
+    "hivemapper": {
+      "price": 1.27,
+      "name": "Hivemapper"
+    },
+    "green": {
+      "price": 0.0429431,
+      "name": "Green"
+    },
+    "ping": {
+      "price": 1.92,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.44,
+      "name": "Impossible Cloud Network Token"
+    },
+    "niza-global-2": {
+      "price": 6.25,
+      "name": "Niza Global"
+    },
+    "lit-protocol": {
+      "price": 13.51,
+      "name": "Lit Protocol"
+    },
+    "tao-bot": {
+      "price": 29.71,
+      "name": "tao.bot"
+    },
+    "aurora-near": {
+      "price": 8.12,
+      "name": "Aurora"
+    },
+    "chainopera-ai": {
+      "price": 129.2,
+      "name": "ChainOpera AI"
+    },
+    "velodrome-finance": {
+      "price": 3.78,
+      "name": "Velodrome Finance"
+    },
+    "ai16z": {
+      "price": 6.59,
+      "name": "ai16z"
+    },
+    "pippin": {
+      "price": 3.48,
+      "name": "pippin"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.25,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "zerebro": {
+      "price": 4.14,
+      "name": "Zerebro"
+    },
+    "sportstensor": {
+      "price": 1159.51,
+      "name": "Sportstensor"
+    },
+    "payai-network": {
+      "price": 2.48,
+      "name": "PayAI Network"
+    },
+    "coreum": {
+      "price": 9.47,
+      "name": "Coreum"
+    },
+    "non-playable-coin": {
+      "price": 1.22,
+      "name": "Non-Playable Coin"
+    },
+    "railgun": {
+      "price": 254.02,
+      "name": "Railgun"
+    },
+    "affine": {
+      "price": 2370.25,
+      "name": "affine"
+    },
+    "bittensor": {
+      "price": 43029,
+      "name": "Bittensor"
+    },
+    "avici": {
+      "price": 180.48,
+      "name": "Avici"
+    },
+    "bitmind": {
+      "price": 783.26,
+      "name": "BitMind"
+    },
+    "proprietary-trading-network": {
+      "price": 1239.02,
+      "name": "Proprietary Trading Network"
+    },
+    "zcash": {
+      "price": 34043,
+      "name": "Zcash"
+    },
+    "sperax": {
+      "price": 0.79457,
+      "name": "Sperax"
+    },
+    "gradients": {
+      "price": 1310.24,
+      "name": "Gradients"
+    }
+  },
+  "1761941195": {
+    "port3-network": {
+      "price": 4.72,
+      "name": "Port3 Network"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "hivemapper": {
+      "price": 1.28,
+      "name": "Hivemapper"
+    },
+    "the-innovation-game": {
+      "price": 83.83,
+      "name": "The Innovation Game"
+    },
+    "green": {
+      "price": 0.04326086,
+      "name": "Green"
+    },
+    "ping": {
+      "price": 1.93,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.23,
+      "name": "Impossible Cloud Network Token"
+    },
+    "niza-global-2": {
+      "price": 6.26,
+      "name": "Niza Global"
+    },
+    "lit-protocol": {
+      "price": 13.57,
+      "name": "Lit Protocol"
+    },
+    "tao-bot": {
+      "price": 29.82,
+      "name": "tao.bot"
+    },
+    "chainopera-ai": {
+      "price": 129.13,
+      "name": "ChainOpera AI"
+    },
+    "aurora-near": {
+      "price": 8.13,
+      "name": "Aurora"
+    },
+    "ai16z": {
+      "price": 6.59,
+      "name": "ai16z"
+    },
+    "velodrome-finance": {
+      "price": 3.74,
+      "name": "Velodrome Finance"
+    },
+    "pippin": {
+      "price": 3.49,
+      "name": "pippin"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.23,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "zerebro": {
+      "price": 4.12,
+      "name": "Zerebro"
+    },
+    "sportstensor": {
+      "price": 1154.22,
+      "name": "Sportstensor"
+    },
+    "coreum": {
+      "price": 9.48,
+      "name": "Coreum"
+    },
+    "non-playable-coin": {
+      "price": 1.22,
+      "name": "Non-Playable Coin"
+    },
+    "railgun": {
+      "price": 254.15,
+      "name": "Railgun"
+    },
+    "payai-network": {
+      "price": 2.45,
+      "name": "PayAI Network"
+    },
+    "affine": {
+      "price": 2360.45,
+      "name": "affine"
+    },
+    "bittensor": {
+      "price": 42827,
+      "name": "Bittensor"
+    },
+    "avici": {
+      "price": 179.7,
+      "name": "Avici"
+    },
+    "zcash": {
+      "price": 34052,
+      "name": "Zcash"
+    },
+    "bitmind": {
+      "price": 780.02,
+      "name": "BitMind"
+    },
+    "proprietary-trading-network": {
+      "price": 1234.5,
+      "name": "Proprietary Trading Network"
+    },
+    "binance-peg-zcash-token": {
+      "price": 34014,
+      "name": "Binance-Peg ZEC"
+    },
+    "openkaito": {
+      "price": 990.06,
+      "name": "OpenKaito"
+    }
+  },
+  "1761941601": {
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "hivemapper": {
+      "price": 1.29,
+      "name": "Hivemapper"
+    },
+    "the-innovation-game": {
+      "price": 83.82,
+      "name": "The Innovation Game"
+    },
+    "port3-network": {
+      "price": 4.65,
+      "name": "Port3 Network"
+    },
+    "ping": {
+      "price": 1.92,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.58,
+      "name": "Impossible Cloud Network Token"
+    },
+    "green": {
+      "price": 0.04062796,
+      "name": "Green"
+    },
+    "lit-protocol": {
+      "price": 13.63,
+      "name": "Lit Protocol"
+    },
+    "niza-global-2": {
+      "price": 6.27,
+      "name": "Niza Global"
+    },
+    "tao-bot": {
+      "price": 29.91,
+      "name": "tao.bot"
+    },
+    "chainopera-ai": {
+      "price": 128.5,
+      "name": "ChainOpera AI"
+    },
+    "ai16z": {
+      "price": 6.63,
+      "name": "ai16z"
+    },
+    "aurora-near": {
+      "price": 8.13,
+      "name": "Aurora"
+    },
+    "velodrome-finance": {
+      "price": 3.76,
+      "name": "Velodrome Finance"
+    },
+    "optio": {
+      "price": 0.677122,
+      "name": "Optio"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.26,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "zerebro": {
+      "price": 4.12,
+      "name": "Zerebro"
+    },
+    "sportstensor": {
+      "price": 1158.42,
+      "name": "Sportstensor"
+    },
+    "pippin": {
+      "price": 3.52,
+      "name": "pippin"
+    },
+    "coreum": {
+      "price": 9.48,
+      "name": "Coreum"
+    },
+    "non-playable-coin": {
+      "price": 1.22,
+      "name": "Non-Playable Coin"
+    },
+    "affine": {
+      "price": 2379.04,
+      "name": "affine"
+    },
+    "railgun": {
+      "price": 253.89,
+      "name": "Railgun"
+    },
+    "bitmind": {
+      "price": 783.26,
+      "name": "BitMind"
+    },
+    "znd-token": {
+      "price": 14.84,
+      "name": "ZND Token"
+    },
+    "sperax": {
+      "price": 0.802484,
+      "name": "Sperax"
+    },
+    "bittensor": {
+      "price": 42879,
+      "name": "Bittensor"
+    },
+    "openkaito": {
+      "price": 994.16,
+      "name": "OpenKaito"
+    },
+    "gradients": {
+      "price": 1309.57,
+      "name": "Gradients"
+    },
+    "proprietary-trading-network": {
+      "price": 1239.61,
+      "name": "Proprietary Trading Network"
+    }
+  }
+}
