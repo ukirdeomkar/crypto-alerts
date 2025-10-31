@@ -1218,5 +1218,127 @@
       "price": 1246.39,
       "name": "Proprietary Trading Network"
     }
+  },
+  "1761943898": {
+    "figure-heloc": {
+      "price": 92.19,
+      "name": "Figure Heloc"
+    },
+    "hivemapper": {
+      "price": 1.29,
+      "name": "Hivemapper"
+    },
+    "the-innovation-game": {
+      "price": 85.82,
+      "name": "The Innovation Game"
+    },
+    "mine-blue": {
+      "price": 3.64,
+      "name": "Mine Blue"
+    },
+    "port3-network": {
+      "price": 4.63,
+      "name": "Port3 Network"
+    },
+    "burnedfi": {
+      "price": 465.23,
+      "name": "BurnedFi"
+    },
+    "ping": {
+      "price": 1.93,
+      "name": "Ping"
+    },
+    "impossible-cloud-network-token": {
+      "price": 26.04,
+      "name": "Impossible Cloud Network Token"
+    },
+    "tao-bot": {
+      "price": 29.75,
+      "name": "tao.bot"
+    },
+    "ai16z": {
+      "price": 6.68,
+      "name": "ai16z"
+    },
+    "lit-protocol": {
+      "price": 13.31,
+      "name": "Lit Protocol"
+    },
+    "niza-global-2": {
+      "price": 6.27,
+      "name": "Niza Global"
+    },
+    "chainopera-ai": {
+      "price": 129.88,
+      "name": "ChainOpera AI"
+    },
+    "avici": {
+      "price": 193.35,
+      "name": "Avici"
+    },
+    "velodrome-finance": {
+      "price": 3.69,
+      "name": "Velodrome Finance"
+    },
+    "coreum": {
+      "price": 9.55,
+      "name": "Coreum"
+    },
+    "zerebro": {
+      "price": 4.09,
+      "name": "Zerebro"
+    },
+    "sportstensor": {
+      "price": 1170.6,
+      "name": "Sportstensor"
+    },
+    "aurora-near": {
+      "price": 9.11,
+      "name": "Aurora"
+    },
+    "non-playable-coin": {
+      "price": 1.21,
+      "name": "Non-Playable Coin"
+    },
+    "affine": {
+      "price": 2388.99,
+      "name": "affine"
+    },
+    "znd-token": {
+      "price": 14.9,
+      "name": "ZND Token"
+    },
+    "railgun": {
+      "price": 256.61,
+      "name": "Railgun"
+    },
+    "1-coin-can-change-your-life": {
+      "price": 2.23,
+      "name": "1 Coin Can Change Your Life"
+    },
+    "ben-pasternak": {
+      "price": 3.19,
+      "name": "Believe"
+    },
+    "bittensor": {
+      "price": 43168,
+      "name": "Bittensor"
+    },
+    "bitmind": {
+      "price": 789.64,
+      "name": "BitMind"
+    },
+    "proprietary-trading-network": {
+      "price": 1249.12,
+      "name": "Proprietary Trading Network"
+    },
+    "gradients": {
+      "price": 1320.28,
+      "name": "Gradients"
+    },
+    "iron-fish": {
+      "price": 30.36,
+      "name": "Iron Fish"
+    }
   }
 }
