@@ -24,6 +24,6 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           THRESHOLD: ${{ vars.THRESHOLD || '5' }}
           TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS: ${{ vars.TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS || '30' }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIST_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID }}
         run: python crypto-volatality.py

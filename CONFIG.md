@@ -14,6 +14,7 @@ TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS=30
 **Secrets (Settings → Secrets and variables → Actions → Secrets):**
 - `DISCORD_WEBHOOK` - Your Discord webhook URL
 - `GIST_ID` - GitHub Gist ID for storing price history (see setup below)
+- `GIST_TOKEN` - Personal Access Token with `gist` scope (see setup below)
 
 **Variables (Settings → Secrets and variables → Actions → Variables):**
 - `THRESHOLD` - Minimum % change to trigger alert (default: 5)
@@ -21,14 +22,27 @@ TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS=30
 
 ## Setup GitHub Gist for Price Storage
 
-1. Create a new secret gist at https://gist.github.com/
-2. Name it `prev_prices.json`
+### 1. Create the Gist
+1. Go to https://gist.github.com/
+2. Filename: `prev_prices.json`
 3. Content: `{}`
-4. Click "Create secret gist"
-5. Copy the Gist ID from URL (e.g., `https://gist.github.com/USERNAME/GIST_ID`)
-6. Add `GIST_ID` to GitHub Secrets
+4. Click **"Create secret gist"**
+5. Copy the Gist ID from URL: `https://gist.github.com/USERNAME/GIST_ID`
 
-**Note:** The workflow automatically has access to `GITHUB_TOKEN` - no setup needed!
+### 2. Create Personal Access Token
+1. Go to https://github.com/settings/tokens
+2. Click **"Generate new token (classic)"**
+3. Name: `Crypto Alerts Gist Access`
+4. Expiration: Your choice
+5. Scopes: Check **only `gist`**
+6. Generate and copy the token (starts with `ghp_...`)
+
+### 3. Add to GitHub Secrets
+1. Go to repo Settings → Secrets and variables → Actions → Secrets
+2. Add `GIST_ID` with the gist ID
+3. Add `GIST_TOKEN` with the personal access token
+
+**Note:** For local development, use the same token in your `.env` file as `GITHUB_TOKEN`
 
 ## Cron Schedule vs Volatility Check Period
 

@@ -96,6 +96,7 @@ def load_previous_prices():
 def save_current_prices(price_data):
     if GITHUB_TOKEN and GIST_ID:
         try:
+            print(f"Attempting to save to gist: {GIST_ID[:8]}...")
             headers = {
                 "Authorization": f"token {GITHUB_TOKEN}",
                 "Accept": "application/vnd.github.v3+json"
@@ -109,17 +110,24 @@ def save_current_prices(price_data):
             }
             response = requests.patch(f"https://api.github.com/gists/{GIST_ID}", headers=headers, json=payload, timeout=10)
             response.raise_for_status()
-            print("Saved to GitHub Gist")
+            print("✅ Saved to GitHub Gist")
             return
+        except requests.exceptions.HTTPError as e:
+            print(f"❌ HTTP Error saving to gist: {e.response.status_code} - {e.response.text}")
         except Exception as e:
-            print(f"Error saving to gist: {e}")
+            print(f"❌ Error saving to gist: {e}")
+    else:
+        if not GITHUB_TOKEN:
+            print("⚠️  GITHUB_TOKEN not set, using local file")
+        if not GIST_ID:
+            print("⚠️  GIST_ID not set, using local file")
     
     try:
         with open(PRICES_FILE, 'w') as f:
             json.dump(price_data, f, indent=2)
-        print("Saved to local file")
+        print("💾 Saved to local file")
     except Exception as e:
-        print(f"Error saving prices: {e}")
+        print(f"❌ Error saving prices: {e}")
 
 def clean_old_entries(history, cutoff_time):
     return {ts: prices for ts, prices in history.items() if float(ts) > cutoff_time}
