@@ -153,6 +153,8 @@ def main():
     save_current_prices(history)
     
     alerts = []
+    coins_checked = 0
+    
     for coin_id, coin_data in current_prices.items():
         current_price = coin_data["price"]
         name = coin_data["name"]
@@ -174,6 +176,7 @@ def main():
             print(f"{name}: no historical data available")
             continue
         
+        coins_checked += 1
         actual_minutes = (current_time - float(closest_timestamp)) / 60
         change = (current_price - old_price) / old_price * 100
         print(f"{name}: ₹{old_price:.2f} -> ₹{current_price:.2f}, change: {change:.2f}% ({actual_minutes:.1f} min)")
@@ -186,11 +189,9 @@ def main():
         for sym, chg, mins in alerts:
             send_discord_alert(sym, chg, mins)
     else:
-        coins_with_data = sum(1 for coin_id in current_prices if any(
-            coin_id in history.get(ts, {}) for ts in history if float(ts) <= cutoff_time
-        ))
-        print(f"\nNo volatility alerts this run. Checked {coins_with_data} coins.")
-        send_no_volatility_alert(coins_with_data)
+        print(f"\nNo volatility alerts this run. Checked {coins_checked} coins.")
+        if coins_checked > 0:
+            send_no_volatility_alert(coins_checked)
 
 if __name__ == "__main__":
     main()
