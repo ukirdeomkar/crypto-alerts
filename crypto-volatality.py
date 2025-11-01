@@ -7,6 +7,8 @@ load_dotenv()
 DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK")
 THRESHOLD = float(os.getenv("THRESHOLD", "5"))
 TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS = int(os.getenv("TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS", "30"))
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GIST_ID = os.getenv("GIST_ID")
 PRICES_FILE = Path("prev_prices.json")
 
 def get_all_coindcx_coins():
@@ -55,19 +57,67 @@ def send_discord_alert(symbol, change, actual_minutes):
     else:
         print(msg["content"])
 
+def send_no_volatility_alert(coins_checked):
+    msg = {
+        "content": f"✅ No volatile coins found. Checked {coins_checked} coins for {TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS} min volatility ≥{THRESHOLD}%."
+    }
+    if DISCORD_WEBHOOK:
+        try:
+            requests.post(DISCORD_WEBHOOK, json=msg, timeout=10)
+        except Exception as e:
+            print(f"Failed to send Discord alert: {e}")
+    else:
+        print(msg["content"])
+
 def load_previous_prices():
-    if not PRICES_FILE.exists():
-        return {}
-    try:
-        with open(PRICES_FILE, 'r') as f:
-            return json.load(f)
-    except:
-        return {}
+    if GITHUB_TOKEN and GIST_ID:
+        try:
+            headers = {
+                "Authorization": f"token {GITHUB_TOKEN}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            response = requests.get(f"https://api.github.com/gists/{GIST_ID}", headers=headers, timeout=10)
+            response.raise_for_status()
+            gist_data = response.json()
+            content = gist_data.get("files", {}).get("prev_prices.json", {}).get("content", "{}")
+            return json.loads(content)
+        except Exception as e:
+            print(f"Error loading from gist: {e}")
+    
+    if PRICES_FILE.exists():
+        try:
+            with open(PRICES_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            pass
+    
+    return {}
 
 def save_current_prices(price_data):
+    if GITHUB_TOKEN and GIST_ID:
+        try:
+            headers = {
+                "Authorization": f"token {GITHUB_TOKEN}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            payload = {
+                "files": {
+                    "prev_prices.json": {
+                        "content": json.dumps(price_data, indent=2)
+                    }
+                }
+            }
+            response = requests.patch(f"https://api.github.com/gists/{GIST_ID}", headers=headers, json=payload, timeout=10)
+            response.raise_for_status()
+            print("Saved to GitHub Gist")
+            return
+        except Exception as e:
+            print(f"Error saving to gist: {e}")
+    
     try:
         with open(PRICES_FILE, 'w') as f:
             json.dump(price_data, f, indent=2)
+        print("Saved to local file")
     except Exception as e:
         print(f"Error saving prices: {e}")
 
@@ -136,7 +186,11 @@ def main():
         for sym, chg, mins in alerts:
             send_discord_alert(sym, chg, mins)
     else:
-        print("\nNo volatility alerts this run.")
+        coins_with_data = sum(1 for coin_id in current_prices if any(
+            coin_id in history.get(ts, {}) for ts in history if float(ts) <= cutoff_time
+        ))
+        print(f"\nNo volatility alerts this run. Checked {coins_with_data} coins.")
+        send_no_volatility_alert(coins_with_data)
 
 if __name__ == "__main__":
     main()

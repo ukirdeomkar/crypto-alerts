@@ -13,10 +13,22 @@ TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS=30
 
 **Secrets (Settings → Secrets and variables → Actions → Secrets):**
 - `DISCORD_WEBHOOK` - Your Discord webhook URL
+- `GIST_ID` - GitHub Gist ID for storing price history (see setup below)
 
 **Variables (Settings → Secrets and variables → Actions → Variables):**
 - `THRESHOLD` - Minimum % change to trigger alert (default: 5)
 - `TIME_INTERVAL_BETWEEN_VOLATALITY_CHECKS` - Minutes to compare prices (default: 30)
+
+## Setup GitHub Gist for Price Storage
+
+1. Create a new secret gist at https://gist.github.com/
+2. Name it `prev_prices.json`
+3. Content: `{}`
+4. Click "Create secret gist"
+5. Copy the Gist ID from URL (e.g., `https://gist.github.com/USERNAME/GIST_ID`)
+6. Add `GIST_ID` to GitHub Secrets
+
+**Note:** The workflow automatically has access to `GITHUB_TOKEN` - no setup needed!
 
 ## Cron Schedule vs Volatility Check Period
 
