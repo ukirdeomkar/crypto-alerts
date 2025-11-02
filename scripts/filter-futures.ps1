@@ -1,8 +1,8 @@
 # Input file path
-$filePath = ".\raw-data\futures-coins.txt"
+$filePath = "..\raw-data\futures-coins.txt"
 
 # Optional: Output file (uncomment the overwrite line below if you want to replace the same file)
-$outputFile = ".\data\futures-coins-filtered.txt"
+$outputFile = "..\data\futures-coins-filtered.txt"
 
 # Read, filter, and clean lines
 Get-Content $filePath |
