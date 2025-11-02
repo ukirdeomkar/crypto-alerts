@@ -1,63 +1,182 @@
 # Deployment Guide - CoinDCX Futures Trading System
 
-## Quick Start (Railway.app - Recommended)
+## Quick Start (Fly.io - Recommended)
 
 ### Prerequisites
 - GitHub account
 - Discord webhook URL ([Create one](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks))
-- Railway.app account (free tier: 500 hours/month)
+- Fly.io account (free tier: 3 VMs, 256MB RAM each)
 
 ---
 
-## Option 1: One-Click Railway Deployment
+## Option 1: Fly.io Deployment (Free Forever)
 
-### Step 1: Prepare Your Repository
+### Step 1: Install Prerequisites
+
+**Fly CLI (Windows PowerShell):**
+```powershell
+iwr https://fly.io/install.ps1 -useb | iex
+```
+
+**Docker Desktop:**
+- Download: https://www.docker.com/products/docker-desktop/
+- Install and start Docker Desktop
+
+Restart your terminal after installations.
+
+### Step 2: Login to Fly.io
+
 ```bash
-git add .
-git commit -m "Setup futures trading system"
-git push origin main
+fly auth login
 ```
 
-### Step 2: Deploy to Railway
+This opens your browser for authentication.
 
-1. Go to [Railway.app](https://railway.app/) and sign up/login
-2. Click **"New Project"** → **"Deploy from GitHub repo"**
-3. Select this repository (`crypto-alerts`)
-4. Railway will auto-detect Python and deploy
+### Step 3: Create Fly App
 
-### Step 3: Configure Environment Variables
+```bash
+cd C:\Projects\crypto-alerts
 
-In Railway dashboard, go to **Variables** tab and add:
-
-**Required:**
-```
-DISCORD_WEBHOOK=https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN
-TZ=Asia/Kolkata
+fly launch --no-deploy
 ```
 
-**Optional (for Telegram):**
+**Configuration prompts:**
+- Region: Select **Singapore (sin)** (closest to India)
+- Database: **No**
+- Deploy now: **No** (we'll set secrets first)
+
+### Step 4: Set Environment Secrets
+
+```bash
+# Required
+fly secrets set DISCORD_WEBHOOK="https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN"
+
+# Optional (Telegram)
+fly secrets set TELEGRAM_BOT_TOKEN="your_token"
+fly secrets set TELEGRAM_CHAT_ID="your_chat_id"
+
+# Optional (Personalized Mode)
+fly secrets set COINDCX_API_KEY="your_key"
+fly secrets set COINDCX_API_SECRET="your_secret"
 ```
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
+
+### Step 5: Deploy (Local Build)
+
+**Important: Start Docker Desktop first!**
+
+```bash
+fly deploy --local-only
 ```
 
-**Optional (for Personalized Mode):**
+First deployment takes 2-3 minutes.
+
+**Why `--local-only`?**
+- Mumbai region builder not available on free tier
+- Local build with Docker works perfectly
+- Faster subsequent deploys
+
+### Step 7: Verify Deployment
+
+```bash
+# Check if app is running
+fly status
+
+# View real-time logs
+fly logs
+
+# Check app info
+fly info
 ```
-COINDCX_API_KEY=your_api_key
-COINDCX_API_SECRET=your_api_secret
+
+You should see:
+```
+✅ System initialized successfully
+📊 Monitoring: 377 futures pairs
+⏰ Trading Hours: 10:55 - 17:05 IST
 ```
 
-### Step 4: Verify Deployment
+### Step 8: Monitor
 
-1. Check **Logs** tab in Railway dashboard
-2. You should see: "System initialized successfully"
-3. First trading session starts at 10:55 AM IST
+```bash
+# Real-time logs
+fly logs
 
-### Step 5: Monitor
+# Check app status
+fly status
 
-- View logs in real-time in Railway dashboard
-- Receive alerts in your Discord channel
-- System runs automatically every trading day
+# SSH into the container (if needed)
+fly ssh console
+```
+
+---
+
+## Fly.io Configuration Explained
+
+**`fly.toml` breakdown:**
+```toml
+app = "crypto-alerts"           # Your app name
+primary_region = "sin"          # Singapore (low latency to India)
+
+[vm]
+  memory = '256mb'              # Free tier: 256MB RAM
+  cpu_kind = 'shared'           # Shared CPU (free tier)
+  cpus = 1                      # 1 CPU core
+```
+
+**Free Tier Limits:**
+- ✅ 3 VMs with 256MB RAM
+- ✅ Shared CPU
+- ✅ 160GB outbound data/month
+- ✅ **No time limits** (unlike Render/Railway)
+
+---
+
+## Managing Your Deployment
+
+### Update Configuration
+
+Edit `config/config.yaml`, then:
+```bash
+fly deploy
+```
+
+### View Logs
+```bash
+# Tail logs
+fly logs
+
+# Last 200 lines
+fly logs -n 200
+```
+
+### Restart App
+```bash
+fly apps restart crypto-alerts
+```
+
+### Scale Resources (if needed)
+```bash
+# Upgrade to 512MB (still free tier)
+fly scale memory 512
+
+# Check current scaling
+fly scale show
+```
+
+### Stop App
+```bash
+fly apps pause crypto-alerts
+```
+
+### Resume App
+```bash
+fly apps resume crypto-alerts
+```
+
+### Delete App
+```bash
+fly apps destroy crypto-alerts
+```
 
 ---
 
@@ -81,415 +200,337 @@ pip install -r requirements.txt
 
 ### Step 3: Configure Environment
 
-Create `.env` file in project root:
+Create `.env` file:
 ```env
 DISCORD_WEBHOOK=https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN
-TZ=Asia/Kolkata
 ```
 
-### Step 4: Edit Configuration
-
-Edit `config.yaml` to customize:
-- Capital amount
-- Risk per trade
-- Scan interval
-- Trading hours
-
-### Step 5: Run System
+### Step 4: Run System
 
 ```powershell
-python main.py
+python run.py
 ```
 
-**To run as Windows Service (Always On):**
+### Step 5: Run on Startup (Optional)
 
-1. Install NSSM: `winget install NSSM`
-2. Create service:
-   ```powershell
-   nssm install CryptoAlerts "C:\Projects\crypto-alerts\.venv\Scripts\python.exe" "C:\Projects\crypto-alerts\main.py"
-   nssm start CryptoAlerts
-   ```
+**Using Task Scheduler:**
 
----
+1. Open Task Scheduler
+2. Create Basic Task
+3. Name: "Crypto Trading Alerts"
+4. Trigger: "When I log on"
+5. Action: "Start a program"
+   - Program: `C:\Users\YourName\AppData\Local\Programs\Python\Python311\python.exe`
+   - Arguments: `run.py`
+   - Start in: `C:\Projects\crypto-alerts`
+6. Finish
 
-## Option 3: GitHub Actions (5-Minute Intervals)
-
-### Step 1: Create Workflow File
-
-Already exists: `.github/workflows/futures-scanner.yml`
-
-### Step 2: Setup GitHub Secrets
-
-Go to **Settings → Secrets and variables → Actions → New repository secret**
-
-Add:
-- `DISCORD_WEBHOOK`
-- `COINDCX_API_KEY` (optional)
-- `COINDCX_API_SECRET` (optional)
-
-### Step 3: Enable Actions
-
-Go to **Actions** tab → Enable workflows
-
-**⚠️ Limitation:** Runs every 5 minutes minimum (not ideal for 1-4 min scalping)
-
----
-
-## Configuration Guide
-
-### Basic Settings (config.yaml)
-
-**Capital & Risk:**
-```yaml
-risk:
-  total_capital: 100000        # Your trading capital
-  risk_per_trade_percent: 2    # Max 2% loss per trade
-  max_concurrent_positions: 3  # Max 3 open trades
-  default_leverage: 5          # Default 5x leverage
-```
-
-**Trading Hours:**
-```yaml
-trading_hours:
-  start_time: "10:55"          # Start 5 min before market
-  end_time: "17:05"            # End 5 min after market
-  timezone: "Asia/Kolkata"
-```
-
-**Scan Frequency:**
-```yaml
-scanner:
-  interval_seconds: 5          # Scan every 5 seconds
-                               # Lower = faster signals, higher API usage
-                               # Recommended: 3-10 seconds
-```
-
-**Signal Quality:**
-```yaml
-signals:
-  min_confidence: 80           # Minimum 80% confidence
-  max_alerts_per_scan: 3       # Top 3 signals only
-  cooldown_minutes: 2          # Wait 2 min between same coin alerts
-```
-
----
-
-## Personalized Mode Setup
-
-### Step 1: Create Read-Only API Keys
-
-1. Login to [CoinDCX](https://coindcx.com/)
-2. Go to **Profile → API Management**
-3. Click **"Create New API"**
-4. **Important:** Enable ONLY:
-   - ✅ Read Account Balance
-   - ✅ Read Orders
-   - ✅ Read Positions
-   - ❌ **Disable** Place Orders
-   - ❌ **Disable** Withdrawals
-5. Copy API Key and Secret
-
-### Step 2: Configure System
-
-**In config.yaml:**
-```yaml
-mode: "personalized"
-
-personalized:
-  enabled: true
-```
-
-**In .env or Railway Variables:**
-```
-COINDCX_API_KEY=your_api_key_here
-COINDCX_API_SECRET=your_api_secret_here
-```
-
-### Step 3: Verify
-
-Check logs for:
-```
-Personalized mode enabled with API integration
-Account Balance: ₹100000.00
-Available Margin: ₹95000.00
-```
-
----
-
-## Discord Webhook Setup
-
-### Step 1: Create Webhook
-
-1. Open Discord Server
-2. Go to **Server Settings → Integrations → Webhooks**
-3. Click **"New Webhook"**
-4. Name it (e.g., "CoinDCX Signals")
-5. Select channel (e.g., #trading-signals)
-6. Click **"Copy Webhook URL"**
-
-### Step 2: Test Webhook
-
-```bash
-curl -X POST "YOUR_WEBHOOK_URL" \
-  -H "Content-Type: application/json" \
-  -d '{"content": "Test message from CoinDCX Trading System"}'
-```
-
-You should see message in Discord channel.
-
----
-
-## Telegram Setup (Optional)
-
-### Step 1: Create Bot
-
-1. Open Telegram, search for **@BotFather**
-2. Send `/newbot`
-3. Follow instructions to create bot
-4. Copy the **Bot Token** (format: `123456:ABC-DEF...`)
-
-### Step 2: Get Chat ID
-
-1. Start chat with your bot
-2. Send any message
-3. Visit: `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
-4. Find `"chat":{"id":123456789}` in response
-5. Copy the chat ID
-
-### Step 3: Configure
-
-**In config.yaml:**
-```yaml
-alerts:
-  telegram:
-    enabled: true
-```
-
-**In .env or Railway:**
-```
-TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
-TELEGRAM_CHAT_ID=123456789
-```
-
----
-
-## Monitoring & Logs
-
-### Railway.app
-
-- Real-time logs: **Railway Dashboard → Logs tab**
-- Metrics: **Railway Dashboard → Metrics tab**
-- Usage: Check free tier hours remaining
-
-### Local PC
-
-Logs saved to: `logs/trading.log`
-
-View real-time:
+**Or run manually during trading hours:**
 ```powershell
-Get-Content logs\trading.log -Wait -Tail 50
+.venv\Scripts\Activate.ps1
+python run.py
 ```
-
-### What to Monitor
-
-**System Health:**
-- "System initialized successfully" at startup
-- "Trading session started" at 10:55 AM
-- No repeated API errors
-
-**Trading Activity:**
-- "Generated X signals, sending top Y"
-- "Signal sent: SYMBOL DIRECTION at ₹PRICE"
-- Confidence scores 80-100%
-
-**Warnings to Watch:**
-- "API request failed" (network issues)
-- "Max concurrent positions reached"
-- "Insufficient margin"
 
 ---
 
 ## Troubleshooting
 
-### Issue: No Alerts Received
+### Fly.io Issues
 
-**Check:**
-1. Discord webhook URL is correct
-2. System is running (check logs)
-3. Currently in trading hours (11 AM - 5 PM IST)
-4. Confidence threshold not too high
-
-**Test webhook:**
+**"App not responding":**
 ```bash
+fly logs
+fly apps restart crypto-alerts
+```
+
+**"Out of memory":**
+```bash
+fly scale memory 512
+```
+
+**"Can't connect to API":**
+- Check secrets: `fly secrets list`
+- Re-set webhook: `fly secrets set DISCORD_WEBHOOK="..."`
+
+**"App keeps restarting":**
+```bash
+fly logs -n 500
+```
+Check for Python errors in logs.
+
+### Discord Not Receiving Alerts
+
+1. Check webhook URL:
+```bash
+fly secrets list
+```
+
+2. Test webhook:
+```bash
+fly ssh console
 python -c "import requests; requests.post('YOUR_WEBHOOK', json={'content': 'Test'})"
 ```
 
-### Issue: "API request failed"
+3. Check if system is in trading hours (10:55-17:05 IST)
 
-**Solutions:**
-1. Check internet connection
-2. Verify CoinDCX API is up: https://api.coindcx.com/exchange/ticker
-3. Reduce scan frequency in config (5s → 10s)
-4. Check Railway logs for specific error
+### System Not Starting
 
-### Issue: Railway App Stopped
-
-**Check:**
-1. Free tier hours remaining (500/month)
-2. Deployment logs for errors
-3. Environment variables are set correctly
-
-**Restart:**
-Railway Dashboard → **Deployments → Redeploy**
-
-### Issue: Too Many / Too Few Signals
-
-**Adjust config.yaml:**
-```yaml
-signals:
-  min_confidence: 85           # Increase for fewer, higher quality
-  max_alerts_per_scan: 2       # Reduce to top 2 only
-  cooldown_minutes: 5          # Increase to spread out alerts
+**Check logs:**
+```bash
+fly logs -n 200
 ```
 
-### Issue: Personalized Mode Not Working
+**Common issues:**
+- Missing environment variables
+- Invalid webhook URL
+- Timezone not set (should be Asia/Kolkata)
 
-**Verify:**
-1. API keys are correct (no extra spaces)
-2. Keys have read permissions enabled on CoinDCX
-3. Check logs: "Personalized mode enabled..."
-4. Test API manually:
-   ```python
-   # Test script provided in logs/
-   ```
+**Verify config:**
+```bash
+fly ssh console
+cat config/config.yaml
+```
 
 ---
 
-## Cost Analysis
+## Cost Optimization
 
-### Railway.app Free Tier
+### Fly.io Free Tier (Recommended for Your Use Case)
 
-**Limits:**
-- 500 hours/month free
-- 512MB RAM
-- Shared CPU
+**Your usage:**
+- 1 VM × 256MB RAM
+- Runs 6 hours/day (11 AM - 5 PM)
+- ~1GB data/month
 
-**Our Usage:**
-- 6 hours/day × 22 trading days = 132 hours/month
-- Plus idle time: ~200 hours/month total
-- **Well within free tier ✓**
+**Free tier includes:**
+- ✅ 3 VMs (you only need 1)
+- ✅ 256MB RAM each
+- ✅ 160GB data/month
+- ✅ **Always free, no expiration**
 
-### Alternative Costs
+**Result:** 100% free! ✅
 
-**Render.com:** 750 hours/month free  
-**Fly.io:** 3 shared VMs free  
-**Oracle Cloud:** Always free tier (2 VMs)
+### Auto-Stop (Optional)
 
-**Local PC:** $0 but requires PC running
+If you want to ensure it only runs during trading hours:
+
+**Option 1:** Use cron on another platform to wake/sleep the app
+**Option 2:** Just let it run 24/7 (still free)
+
+The system already has built-in trading hours (10:55-17:05), so it won't send alerts outside those times anyway.
 
 ---
 
-## Performance Optimization
+## Updating Your System
 
-### Reduce Latency
+### Update Code
 
-1. **Faster scans:** `interval_seconds: 3` (more API calls)
-2. **Use parallel requests:** Already enabled
-3. **Deploy near Mumbai:** Railway auto-selects region
+```bash
+# Make your changes locally
 
-### Reduce API Usage
-
-1. **Slower scans:** `interval_seconds: 10`
-2. **Batch processing:** Already implemented
-3. **Cache duration:** `cache_price_data_seconds: 5`
-
-### Balance Quality vs Speed
-
-**Fast Scalping (1-2 min holds):**
-```yaml
-scanner:
-  interval_seconds: 3
-signals:
-  min_confidence: 85
-  max_alerts_per_scan: 2
+# Deploy to Fly.io
+fly deploy --local-only
 ```
 
-**Moderate Scalping (2-5 min holds):**
-```yaml
-scanner:
-  interval_seconds: 5
-signals:
-  min_confidence: 80
-  max_alerts_per_scan: 3
+### Update Configuration
+
+Edit `config/config.yaml` locally, then:
+```bash
+fly deploy --local-only
 ```
+
+Changes take effect in ~2 minutes.
+
+### Update Dependencies
+
+Edit `requirements.txt`, then:
+```bash
+fly deploy --local-only
+```
+
+**Note:** Always use `--local-only` flag to avoid Mumbai builder region issue.
+
+---
+
+## Monitoring & Maintenance
+
+### Daily Checks
+
+1. **Check Discord** for session start/end alerts
+2. **Verify signals** are being sent
+3. **Review logs** (if any issues):
+```bash
+fly logs -n 50
+```
+
+### Weekly Maintenance
+
+1. Check free tier usage:
+```bash
+fly dashboard
+```
+
+2. Review trading performance (if personalized mode)
+3. Adjust `min_confidence` if needed
+
+### Monthly Review
+
+1. Check system uptime: `fly status`
+2. Review capital growth
+3. Adjust position sizing if capital increased
 
 ---
 
 ## Security Best Practices
 
-1. **Never commit .env file** (already in .gitignore)
-2. **Use read-only API keys** for personalized mode
-3. **Rotate API keys monthly**
-4. **Monitor API usage** on CoinDCX dashboard
-5. **Keep Railway variables private**
-6. **Don't share webhook URLs publicly**
+### Secrets Management
+
+✅ **DO:**
+- Use `fly secrets set` for sensitive data
+- Keep `.env` in `.gitignore`
+- Use read-only API keys (personalized mode)
+
+❌ **DON'T:**
+- Commit secrets to Git
+- Share webhook URLs publicly
+- Use write-enabled API keys
+
+### API Key Permissions (Personalized Mode)
+
+When creating CoinDCX API keys:
+- ✅ Enable: Read account info
+- ✅ Enable: Read positions
+- ❌ Disable: Place orders
+- ❌ Disable: Withdraw funds
 
 ---
 
-## Backup & Recovery
+## Advanced Configuration
 
-### Backup Configuration
+### Custom Domain (Optional)
 
 ```bash
-cp config.yaml config.yaml.backup
-cp .env .env.backup
+fly certs add trading-alerts.yourdomain.com
 ```
 
-### Export Logs
+### Multiple Environments
 
-Railway: **Logs → Export logs**
+**Production:**
+```bash
+fly deploy --app crypto-alerts-prod
+```
 
-Local: Logs automatically in `logs/` folder
+**Testing:**
+```bash
+fly deploy --app crypto-alerts-test
+```
 
-### Disaster Recovery
+### Automated Backups
 
-1. Keep config files in private repo
-2. Document custom settings
-3. Export trading history periodically
-4. Test deployment on new Railway project
+```bash
+# Backup logs weekly
+fly logs -n 10000 > backup-$(date +%Y%m%d).log
+```
 
 ---
 
-## Support & Updates
+## Migration from Other Platforms
 
-### Check for Updates
+### From Railway
 
+1. Export environment variables from Railway
+2. Set them in Fly.io:
 ```bash
-git pull origin main
-pip install -r requirements.txt --upgrade
+fly secrets set DISCORD_WEBHOOK="..."
 ```
+3. Deploy: `fly deploy`
+4. Verify, then delete Railway app
 
-### Rolling Back
+### From Render
 
-```bash
-git log --oneline  # Find commit hash
-git checkout <commit-hash>
-```
+Same process as Railway - just export env vars and redeploy.
 
-Railway: **Deployments → Select previous deployment → Redeploy**
+### From Local PC
+
+1. Your `.env` file → Fly.io secrets
+2. Deploy: `fly deploy`
+3. Keep local setup as backup
 
 ---
 
-## Next Steps
+## Support & Resources
 
-1. ✅ Deploy to Railway.app
-2. ✅ Configure Discord webhook
-3. ✅ Customize config.yaml for your strategy
-4. ⏳ Test with low capital first (₹10,000)
-5. ⏳ Monitor signals for 2-3 days
-6. ⏳ Adjust confidence/risk settings
-7. ⏳ Enable personalized mode once comfortable
-8. ⏳ Scale up capital gradually
+**Fly.io Docs:**
+- [Fly.io Documentation](https://fly.io/docs/)
+- [Python Apps on Fly.io](https://fly.io/docs/languages-and-frameworks/python/)
+- [Fly.io CLI Reference](https://fly.io/docs/flyctl/)
 
-**Ready to deploy? Start with Option 1 (Railway) - it's the easiest and most reliable!**
+**Project Docs:**
+- Configuration: `docs/CONFIGURATION.md`
+- Quick Start: `docs/QUICK_START.md`
+- Trading Guide: `docs/SMALL_CAPITAL_GUIDE.md`
 
+**Community:**
+- Fly.io Community: [community.fly.io](https://community.fly.io)
+- Discord: [Fly.io Discord](https://fly.io/discord)
+
+---
+
+## Quick Reference
+
+### Common Commands
+
+```bash
+# Deploy
+fly deploy
+
+# Logs
+fly logs
+
+# Status
+fly status
+
+# Restart
+fly apps restart crypto-alerts
+
+# SSH access
+fly ssh console
+
+# Set secret
+fly secrets set KEY="value"
+
+# Scale memory
+fly scale memory 512
+
+# Dashboard
+fly dashboard
+```
+
+### File Structure
+
+```
+crypto-alerts/
+├── fly.toml              ← Fly.io config
+├── Procfile              ← Process definition
+├── requirements.txt      ← Python dependencies
+├── run.py               ← Entry point
+├── .env                 ← Local env vars (not committed)
+└── config/
+    └── config.yaml      ← Trading configuration
+```
+
+### Environment Variables
+
+**Required:**
+- `DISCORD_WEBHOOK` - Discord webhook URL
+
+**Optional:**
+- `TELEGRAM_BOT_TOKEN` - Telegram bot token
+- `TELEGRAM_CHAT_ID` - Telegram chat ID
+- `COINDCX_API_KEY` - CoinDCX API key (personalized mode)
+- `COINDCX_API_SECRET` - CoinDCX API secret (personalized mode)
+
+---
+
+**Status:** ✅ Updated for Fly.io deployment
+**Last Updated:** November 2, 2025

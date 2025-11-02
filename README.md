@@ -67,11 +67,17 @@ echo "DISCORD_WEBHOOK=your_webhook_url" > .env
 python run.py
 ```
 
-### OR Deploy to Railway
+### OR Deploy to Fly.io (Free Forever)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template)
+**Requirements:** Docker Desktop running
 
-Add `DISCORD_WEBHOOK` environment variable and deploy!
+```bash
+fly launch --no-deploy
+fly secrets set DISCORD_WEBHOOK="your_webhook_url"
+fly deploy --local-only
+```
+
+**See:** `docs/FLY_IO_SETUP_GUIDE.md` for detailed instructions
 
 ## 📊 Example Signal
 
