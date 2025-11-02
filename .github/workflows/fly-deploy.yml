@@ -18,6 +18,14 @@ jobs:
       - name: Setup Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
       
+      - name: Set Fly.io Secrets
+        run: |
+          flyctl secrets set \
+            DISCORD_WEBHOOK="${{ secrets.DISCORD_WEBHOOK }}" \
+            --app crypto-alerts
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
       - name: Deploy to Fly.io
         run: flyctl deploy --remote-only
         env:
