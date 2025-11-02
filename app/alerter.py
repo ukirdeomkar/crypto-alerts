@@ -167,21 +167,23 @@ class Alerter:
         message += f"Leverage: {leverage}x → Exposure: {format_inr(position_size * leverage)}\n"
         message += f"Direction: **{signal['direction']}**\n\n"
         
-        message += f"🎯 **TARGETS:**\n"
+        roe_t1 = (target_1_profit / position_size) * 100
+        roe_t2 = (target_2_profit / position_size) * 100 if len(targets) > 1 else 0
+        roe_sl = -(max_loss / position_size) * 100
+        
+        message += f"🎯 **TARGETS (Set ROE on CoinDCX):**\n"
         net_t1_profit = target_1_profit * targets[0]['exit_percent'] / 100
-        message += f"Target 1 ({targets[0]['exit_percent']}%): {format_inr(targets[0]['price'])} "
-        message += f"({format_percentage(targets[0]['profit_percent'])} = {format_inr(net_t1_profit)} net)\n"
+        message += f"Target 1: {format_inr(targets[0]['price'])} → **ROE: +{roe_t1:.1f}%** (Exit {targets[0]['exit_percent']}% = {format_inr(net_t1_profit)})\n"
         if len(targets) > 1:
             net_t2_profit = target_2_profit * targets[1]['exit_percent'] / 100
-            message += f"Target 2 ({targets[1]['exit_percent']}%): {format_inr(targets[1]['price'])} "
-            message += f"({format_percentage(targets[1]['profit_percent'])} = {format_inr(net_t2_profit)} net)\n"
+            message += f"Target 2: {format_inr(targets[1]['price'])} → **ROE: +{roe_t2:.1f}%** (Exit {targets[1]['exit_percent']}% = {format_inr(net_t2_profit)})\n"
         
         if self.risk_manager and self.risk_manager.transaction_cost > 0:
-            message += f"⚠️ _Fees ({self.risk_manager.transaction_cost}% GST) already deducted above_\n"
+            message += f"_ROE includes {self.risk_manager.transaction_cost}% GST_\n"
         message += "\n"
         
-        message += f"🛡️ **PROTECTION:**\n"
-        message += f"Stop Loss: {format_inr(stop_loss)} ({format_percentage(-stop_loss_distance)} = {format_inr(max_loss)} loss)\n"
+        message += f"🛡️ **STOP LOSS (Set ROE on CoinDCX):**\n"
+        message += f"Price: {format_inr(stop_loss)} → **ROE: {roe_sl:.1f}%** (Max loss: {format_inr(max_loss)})\n"
         message += f"Risk:Reward = 1:{risk_reward:.1f} {'✓' if risk_reward >= 1.5 else '⚠️'}\n\n"
         
         message += f"📈 **SIGNALS:**\n"

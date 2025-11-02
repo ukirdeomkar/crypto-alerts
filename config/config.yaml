@@ -13,7 +13,7 @@ scanner:
   batch_size: 50
 
 signals:
-  min_confidence: 70
+  min_confidence: 60
   max_alerts_per_scan: 3
   cooldown_minutes: 2
   
