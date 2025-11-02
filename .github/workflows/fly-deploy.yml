@@ -18,7 +18,44 @@ jobs:
       - name: Setup Fly CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
       
+      - name: Set Fly.io Secrets
+        run: |
+          echo "Setting environment secrets on Fly.io..."
+          
+          # Required secrets
+          flyctl secrets set DISCORD_WEBHOOK="${{ secrets.DISCORD_WEBHOOK }}" --app crypto-alerts
+          
+          # Optional: Telegram (only if set)
+          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ]; then
+            flyctl secrets set TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}" --app crypto-alerts
+          fi
+          
+          if [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            flyctl secrets set TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}" --app crypto-alerts
+          fi
+          
+          # Optional: CoinDCX API (only if set)
+          if [ -n "${{ secrets.COINDCX_API_KEY }}" ]; then
+            flyctl secrets set COINDCX_API_KEY="${{ secrets.COINDCX_API_KEY }}" --app crypto-alerts
+          fi
+          
+          if [ -n "${{ secrets.COINDCX_API_SECRET }}" ]; then
+            flyctl secrets set COINDCX_API_SECRET="${{ secrets.COINDCX_API_SECRET }}" --app crypto-alerts
+          fi
+          
+          echo "✅ Secrets configured"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
       - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --remote-only --app crypto-alerts
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      
+      - name: Verify Deployment
+        run: |
+          echo "✅ Deployment complete!"
+          echo "Check status: fly status --app crypto-alerts"
+          echo "View logs: fly logs --app crypto-alerts"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
