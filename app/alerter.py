@@ -158,7 +158,7 @@ class Alerter:
         
         risk_reward = targets[0]['profit_percent'] / stop_loss_distance if stop_loss_distance > 0 else 0
         
-        message = f"🪙 **{signal['symbol']}INR PERPETUAL**\n"
+        message = f"🪙 **{signal['symbol']} - INR PERPETUAL**\n"
         message += f"{direction_emoji} **{signal['direction']}** {direction_arrow} • {confidence_level} ({signal['confidence']}%)\n\n"
         
         message += f"📊 **ENTRY DETAILS:**\n"
