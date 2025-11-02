@@ -134,5 +134,8 @@ def is_trading_hours(config):
     end_time = datetime.strptime(trading_hours['end_time'], '%H:%M').time()
     current_time = ist_time.time()
     
-    return start_time <= current_time <= end_time
+    if start_time <= end_time:
+        return start_time <= current_time <= end_time
+    else:
+        return current_time >= start_time or current_time <= end_time
 
