@@ -3,11 +3,11 @@ name: Deploy to Fly.io
 on:
   push:
     branches:
-      - beta-version
+      - main
 
 jobs:
   deploy:
-    name: Deploy to Singapore
+    name: Deploy to Fly.io
     runs-on: ubuntu-latest
     concurrency: deploy-group
     
