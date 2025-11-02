@@ -1,9 +1,9 @@
-name: Crypto Volatility Alerts
+name: Crypto Volatility Alerts (DISABLED)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/15 * * * *"
+  # schedule:
+  #   - cron: "*/15 * * * *"
 
 env:
   CRON_INTERVAL_MINUTES: 15
