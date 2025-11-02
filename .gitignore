@@ -14,3 +14,16 @@ temp.txt
 temp.json
 prev_prices.json
 
+*.log
+logs/*.log
+!logs/.gitkeep
+
+crypto-volatality.py
+raw-data/
+CONFIG.md
+docs.md
+RESTRUCTURE_*.md
+*_FIX_SUMMARY.md
+*_FORMAT_UPDATE.md
+*_TRACKING_FIX.md
+

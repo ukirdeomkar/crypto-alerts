@@ -1,0 +1,12 @@
+app = 'crypto-alerts'
+primary_region = 'sin'
+
+[build]
+
+[env]
+  TZ = 'Asia/Kolkata'
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1

@@ -1,0 +1,94 @@
+mode: "generic"
+
+trading_hours:
+  start_time: "10:55"
+  end_time: "23:05"
+  timezone: "Asia/Kolkata"
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday" , "saturday", "sunday"]
+
+scanner:
+  interval_seconds: 5
+  data_source: "spot"
+  coins_file: "data/futures-coins-filtered.txt"
+  batch_size: 50
+
+signals:
+  min_confidence: 60
+  max_alerts_per_scan: 3
+  cooldown_minutes: 2
+  
+  indicators:
+    rsi_period: 5
+    rsi_oversold: 30
+    rsi_overbought: 70
+    
+    macd_fast: 5
+    macd_slow: 13
+    macd_signal: 5
+    
+    bb_period: 10
+    bb_std: 2
+    
+    volume_surge_multiplier: 2.0
+
+risk:
+  total_capital: 800
+  risk_per_trade_percent: 2.5
+  
+  max_concurrent_positions: 999
+  position_expiry_minutes: 5  # Auto-cleanup positions older than this (generic mode)
+  max_leverage: 10
+  default_leverage: 5
+  
+  transaction_cost_percent: 0.6  # GST: 0.3% entry + 0.3% exit = 0.6% total
+  
+  stop_loss_percent: 0.45
+  take_profit_targets:
+    - target: 1.2
+      exit_percent: 50
+    - target: 1.8
+      exit_percent: 50
+  
+  min_risk_reward_ratio: 1.8
+
+personalized:
+  enabled: false
+  api_endpoint: "https://api.coindcx.com"
+  max_margin_per_trade_percent: 10
+  refresh_interval_seconds: 30
+  track_pnl: true
+  send_position_updates: true
+  update_interval_minutes: 1
+
+alerts:
+  discord:
+    enabled: true
+    webhook_env_var: "DISCORD_WEBHOOK"
+    
+  telegram:
+    enabled: false
+    bot_token_env_var: "TELEGRAM_BOT_TOKEN"
+    chat_id_env_var: "TELEGRAM_CHAT_ID"
+  
+  send_entry_signals: true
+  send_exit_signals: true
+  send_position_updates: true
+  send_daily_summary: true
+  
+  include_charts: false
+  use_mentions: false
+
+logging:
+  level: "INFO"
+  file: "logs/trading.log"
+  max_file_size_mb: 10
+  backup_count: 5
+  log_signals: true
+  log_api_calls: false
+
+performance:
+  cache_price_data_seconds: 5
+  max_api_retries: 3
+  api_timeout_seconds: 10
+  parallel_requests: true
+
