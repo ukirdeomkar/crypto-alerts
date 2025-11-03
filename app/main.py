@@ -6,7 +6,7 @@ from pathlib import Path
 from apscheduler.schedulers.blocking import BlockingScheduler
 import pytz
 
-from app.utils import load_config, setup_logging, load_futures_coins, is_trading_hours, get_env_var
+from app.utils import load_config, setup_logging, load_futures_coins, is_trading_hours, get_current_trading_period, get_env_var
 from app.scanner import PriceScanner
 from app.indicators import TechnicalIndicators
 from app.signal_generator import SignalGenerator
@@ -24,6 +24,7 @@ account_manager = None
 alerter = None
 
 trading_active = False
+current_period_name = None
 daily_stats = {
     'total_signals': 0,
     'trades_executed': 0,
@@ -45,7 +46,15 @@ def initialize_system():
         logger.info("CoinDCX Futures Trading Signal System")
         logger.info("="*60)
         logger.info(f"Mode: {config['mode'].upper()}")
-        logger.info(f"Trading Hours: {config['trading_hours']['start_time']} - {config['trading_hours']['end_time']} IST")
+        
+        trading_hours = config.get('trading_hours', {})
+        periods = trading_hours.get('periods')
+        if periods:
+            logger.info("Trading Periods:")
+            for period in periods:
+                logger.info(f"  - {period['name'].upper()}: {period['start_time']} - {period['end_time']} IST (min conf: {period['min_confidence']}%, max alerts: {period['max_alerts_per_scan']})")
+        else:
+            logger.info(f"Trading Hours: {trading_hours.get('start_time', 'N/A')} - {trading_hours.get('end_time', 'N/A')} IST")
         
         scanner = PriceScanner(config)
         indicators = TechnicalIndicators(config)
@@ -82,10 +91,11 @@ def initialize_system():
         return False
 
 def start_trading_session():
-    global trading_active, daily_stats
+    global trading_active, daily_stats, current_period_name
     
     logger.info("Starting trading session...")
     trading_active = True
+    current_period_name = None
     daily_stats = {
         'total_signals': 0,
         'trades_executed': 0,
@@ -129,6 +139,8 @@ def stop_trading_session():
     logger.info("Trading session stopped. System idle until next trading day.")
 
 def scan_and_signal():
+    global current_period_name
+    
     if not trading_active:
         return
     
@@ -136,12 +148,38 @@ def scan_and_signal():
         expiry_minutes = config['risk'].get('position_expiry_minutes', 5)
         risk_manager.cleanup_expired_positions(max_age_minutes=expiry_minutes)
     
-    if not is_trading_hours(config):
+    is_trading, current_period = get_current_trading_period(config)
+    if not is_trading:
         return
     
+    if current_period:
+        period_name = current_period.get('name', 'default')
+        min_confidence = current_period.get('min_confidence')
+        max_alerts = current_period.get('max_alerts_per_scan')
+        
+        if current_period_name is not None and current_period_name != period_name:
+            logger.info(f"Period changed: {current_period_name} → {period_name}")
+            trading_hours = config.get('trading_hours', {})
+            periods = trading_hours.get('periods', [])
+            old_period = next((p for p in periods if p['name'] == current_period_name), None)
+            if old_period:
+                try:
+                    alerter.send_period_change_alert(old_period, current_period)
+                except Exception as e:
+                    logger.warning(f"Failed to send period change alert: {e}")
+        
+        current_period_name = period_name
+    else:
+        period_name = 'default'
+        min_confidence = config.get('signals', {}).get('min_confidence', 60)
+        max_alerts = config.get('signals', {}).get('max_alerts_per_scan', 3)
+    
     try:
+        from app.utils import get_ist_time
+        current_time_str = get_ist_time().strftime('%H:%M:%S')
+        
         logger.info("="*60)
-        logger.info("Starting scan cycle...")
+        logger.info(f"[{current_time_str}] Starting scan cycle ({period_name.upper()} period - min confidence: {min_confidence}%, max alerts: {max_alerts})...")
         
         coins = load_futures_coins(config['scanner']['coins_file'])
         logger.info(f"Loaded {len(coins)} futures pairs to scan")
@@ -182,7 +220,7 @@ def scan_and_signal():
             if analysis.get('has_data'):
                 coins_analyzed += 1
             
-            signal = signal_generator.generate_signal(coin_symbol, price_data, analysis)
+            signal = signal_generator.generate_signal(coin_symbol, price_data, analysis, min_confidence=min_confidence)
             
             if signal:
                 signals.append(signal)
@@ -198,9 +236,9 @@ def scan_and_signal():
         
         if signals:
             logger.info(f"Found {len(signals)} potential signals")
-            top_signals = signal_generator.filter_top_signals(signals)
+            top_signals = signal_generator.filter_top_signals(signals, max_alerts=max_alerts)
             
-            logger.info(f"Sending top {len(top_signals)} signals:")
+            logger.info(f"Sending top {len(top_signals)} signals ({period_name.upper()} period):")
             
             for signal in top_signals:
                 daily_stats['total_signals'] += 1
@@ -254,15 +292,26 @@ def main():
     ist = pytz.timezone(config['trading_hours']['timezone'])
     scheduler = BlockingScheduler(timezone=ist)
     
-    start_time_parts = config['trading_hours']['start_time'].split(':')
+    trading_hours = config.get('trading_hours', {})
+    periods = trading_hours.get('periods')
+    
+    if periods:
+        first_period_start = periods[0]['start_time']
+        last_period_end = periods[-1]['end_time']
+        start_time_parts = first_period_start.split(':')
+        end_time_parts = last_period_end.split(':')
+    else:
+        start_time_parts = trading_hours['start_time'].split(':')
+        end_time_parts = trading_hours['end_time'].split(':')
+    
     start_hour = int(start_time_parts[0])
     start_minute = int(start_time_parts[1])
-    
-    end_time_parts = config['trading_hours']['end_time'].split(':')
     end_hour = int(end_time_parts[0])
     end_minute = int(end_time_parts[1])
     
-    days = ','.join(['mon', 'tue', 'wed', 'thu', 'fri'])
+    days_list = trading_hours.get('days', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'])
+    days_map = {'monday': 'mon', 'tuesday': 'tue', 'wednesday': 'wed', 'thursday': 'thu', 'friday': 'fri', 'saturday': 'sat', 'sunday': 'sun'}
+    days = ','.join([days_map.get(day, day[:3]) for day in days_list])
     
     scheduler.add_job(
         start_trading_session,
@@ -291,10 +340,14 @@ def main():
     )
     
     logger.info("Scheduler configured:")
-    logger.info(f"  - Trading session starts: {config['trading_hours']['start_time']} IST")
-    logger.info(f"  - Trading session ends: {config['trading_hours']['end_time']} IST")
+    if periods:
+        logger.info(f"  - Trading session starts: {periods[0]['start_time']} IST (first period)")
+        logger.info(f"  - Trading session ends: {periods[-1]['end_time']} IST (last period)")
+    else:
+        logger.info(f"  - Trading session starts: {trading_hours['start_time']} IST")
+        logger.info(f"  - Trading session ends: {trading_hours['end_time']} IST")
     logger.info(f"  - Scan interval: {scan_interval} seconds")
-    logger.info(f"  - Active days: Monday-Friday")
+    logger.info(f"  - Active days: {', '.join([day.capitalize() for day in days_list])}")
     
     if is_trading_hours(config):
         logger.info("Currently in trading hours, starting session now...")

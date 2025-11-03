@@ -63,6 +63,10 @@ def format_inr(amount):
     else:
         return f"₹{amount:.2f}"
 
+def format_price(price):
+    price_str = f"{price:.8f}".rstrip('0').rstrip('.')
+    return f"₹{price_str}"
+
 def format_percentage(value):
     sign = "+" if value >= 0 else ""
     return f"{sign}{value:.2f}%"
@@ -109,9 +113,6 @@ def calculate_profit_loss(entry_price, current_price, position_size, leverage, d
 def validate_signal(signal, config):
     risk_config = config.get('risk', {})
     
-    if signal['confidence'] < config['signals']['min_confidence']:
-        return False, "Confidence too low"
-    
     stop_loss_distance = abs(signal['entry_price'] - signal['stop_loss']) / signal['entry_price'] * 100
     target_distance = abs(signal['targets'][0]['price'] - signal['entry_price']) / signal['entry_price'] * 100
     
@@ -122,20 +123,44 @@ def validate_signal(signal, config):
     
     return True, "Valid"
 
-def is_trading_hours(config):
+def get_current_trading_period(config):
     ist_time = get_ist_time()
     trading_hours = config.get('trading_hours', {})
     
     current_day = ist_time.strftime('%A').lower()
     if current_day not in trading_hours.get('days', []):
-        return False
+        return None, None
     
-    start_time = datetime.strptime(trading_hours['start_time'], '%H:%M').time()
-    end_time = datetime.strptime(trading_hours['end_time'], '%H:%M').time()
+    periods = trading_hours.get('periods')
+    if not periods:
+        signals_config = config.get('signals', {})
+        fallback_period = {
+            'name': 'default',
+            'start_time': trading_hours.get('start_time', '07:30'),
+            'end_time': trading_hours.get('end_time', '17:00'),
+            'min_confidence': signals_config.get('min_confidence', 60),
+            'max_alerts_per_scan': signals_config.get('max_alerts_per_scan', 3)
+        }
+        periods = [fallback_period]
+    
     current_time = ist_time.time()
     
-    if start_time <= end_time:
-        return start_time <= current_time <= end_time
-    else:
-        return current_time >= start_time or current_time <= end_time
+    for period in periods:
+        start_time = datetime.strptime(period['start_time'], '%H:%M').time()
+        end_time = datetime.strptime(period['end_time'], '%H:%M').time()
+        
+        is_in_period = False
+        if start_time <= end_time:
+            is_in_period = start_time <= current_time <= end_time
+        else:
+            is_in_period = current_time >= start_time or current_time <= end_time
+        
+        if is_in_period:
+            return True, period
+    
+    return False, None
+
+def is_trading_hours(config):
+    is_trading, _ = get_current_trading_period(config)
+    return is_trading
 

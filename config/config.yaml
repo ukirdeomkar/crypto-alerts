@@ -1,10 +1,19 @@
 mode: "generic"
 
 trading_hours:
-  start_time: "07:30" # 7:30 AM IST (uses 24 hour format)
-  end_time: "03:00" # 3 AM IST (uses 24 hour format)
   timezone: "Asia/Kolkata"
-  days: ["monday", "tuesday", "wednesday", "thursday", "friday" , "saturday", "sunday"]
+  periods:
+    - name: "active"
+      start_time: "07:30"
+      end_time: "17:00"
+      min_confidence: 60
+      max_alerts_per_scan: 4
+    - name: "passive"
+      start_time: "17:00"
+      end_time: "03:00"
+      min_confidence: 80
+      max_alerts_per_scan: 2
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
 scanner:
   interval_seconds: 5
@@ -13,8 +22,6 @@ scanner:
   batch_size: 50
 
 signals:
-  min_confidence: 69
-  max_alerts_per_scan: 3
   cooldown_minutes: 2
   
   indicators:
