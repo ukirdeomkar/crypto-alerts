@@ -1,20 +1,27 @@
 mode: "generic"
 
 trading_hours:
-  start_time: "07:30" # 7:30 AM IST (uses 24 hour format)
-  end_time: "03:00" # 3 AM IST (uses 24 hour format)
   timezone: "Asia/Kolkata"
-  days: ["monday", "tuesday", "wednesday", "thursday", "friday" , "saturday", "sunday"]
+  periods:
+    - name: "active"
+      start_time: "07:30"
+      end_time: "17:00"
+      min_confidence: 60
+      max_alerts_per_scan: 4
+    - name: "passive"
+      start_time: "17:00"
+      end_time: "03:00"
+      min_confidence: 80
+      max_alerts_per_scan: 2
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
 scanner:
-  interval_seconds: 5
+  interval_seconds: 10
   data_source: "spot"
   coins_file: "data/futures-coins-filtered.txt"
   batch_size: 50
 
 signals:
-  min_confidence: 60
-  max_alerts_per_scan: 3
   cooldown_minutes: 2
   
   indicators:
@@ -32,24 +39,33 @@ signals:
     volume_surge_multiplier: 2.0
 
 risk:
-  total_capital: 800
+  total_capital: 1200
   risk_per_trade_percent: 2.5
   
   max_concurrent_positions: 999
-  position_expiry_minutes: 5  # Auto-cleanup positions older than this (generic mode)
+  position_expiry_minutes: 10  # Max hold time for scalping (also used for cleanup in generic mode)
+  min_hold_minutes: 1         # Min hold time for scalping (prevents over-trading)
   max_leverage: 10
   default_leverage: 5
   
   transaction_cost_percent: 0.6  # GST: 0.3% entry + 0.3% exit = 0.6% total
   
-  stop_loss_percent: 0.45
+  stop_loss_percent: 0.5
   take_profit_targets:
-    - target: 1.2
+    - target: 0.9
       exit_percent: 50
     - target: 1.8
       exit_percent: 50
   
-  min_risk_reward_ratio: 1.8
+  min_risk_reward_ratio: 1.5
+  
+  # Confidence-based position sizing (% of total capital)
+  position_sizing:
+    use_confidence_scaling: true
+    base_size_percent: 15        # Minimum (60-70% confidence)
+    moderate_size_percent: 20    # Medium (71-80% confidence)
+    high_size_percent: 25        # High (81-90% confidence)
+    strong_size_percent: 30      # Very high (91-100% confidence)
 
 personalized:
   enabled: false

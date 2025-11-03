@@ -11,22 +11,26 @@ class SignalGenerator:
         self.config = config
         self.indicators = indicators
         self.risk_manager = risk_manager
-        self.last_alert_time = defaultdict(lambda: datetime.min)
+        self.last_alert_time = defaultdict(lambda: {'LONG': datetime.min, 'SHORT': datetime.min})
         self.cooldown_minutes = config['signals']['cooldown_minutes']
         
-    def generate_signal(self, coin_symbol: str, price_data: Dict, analysis: Dict) -> Optional[Dict]:
+    def generate_signal(self, coin_symbol: str, price_data: Dict, analysis: Dict, min_confidence: int = None) -> Optional[Dict]:
         if not analysis.get('has_data'):
             logger.debug(f"{coin_symbol}: Insufficient data for analysis")
             return None
         
-        if not self._can_send_alert(coin_symbol):
-            logger.debug(f"{coin_symbol}: In cooldown period")
-            return None
-        
         direction, confidence, reasons = self._evaluate_signal(analysis)
         
-        if confidence < self.config['signals']['min_confidence']:
-            logger.debug(f"{coin_symbol}: Confidence {confidence}% below threshold {self.config['signals']['min_confidence']}%")
+        if direction == "NEUTRAL":
+            return None
+        
+        if not self._can_send_alert(coin_symbol, direction):
+            logger.debug(f"{coin_symbol}: {direction} signal in cooldown period")
+            return None
+        
+        confidence_threshold = min_confidence if min_confidence is not None else self.config['signals']['min_confidence']
+        if confidence < confidence_threshold:
+            logger.debug(f"{coin_symbol}: Confidence {confidence}% below threshold {confidence_threshold}%")
             return None
         
         entry_price = price_data['price']
@@ -42,7 +46,7 @@ class SignalGenerator:
             direction
         )
         
-        position_size = self.risk_manager.calculate_position_size(entry_price, stop_loss)
+        position_size = self.risk_manager.calculate_position_size(entry_price, stop_loss, confidence=confidence)
         leverage = self.config['risk']['default_leverage']
         
         signal = {
@@ -61,12 +65,24 @@ class SignalGenerator:
             'analysis': analysis
         }
         
+        momentum = analysis.get('momentum', {})
+        recent_change = abs(momentum.get('change_percent', 0))
+        target_distance = targets[1]['profit_percent'] if len(targets) > 1 else targets[0]['profit_percent']
+        
+        if recent_change > 0:
+            estimated_minutes = (target_distance / recent_change) * 2
+            max_hold = self.config['risk'].get('position_expiry_minutes', 5)
+            
+            if estimated_minutes > max_hold * 1.5:
+                logger.debug(f"{coin_symbol}: Too slow - needs {estimated_minutes:.1f} min but strategy max is {max_hold} min")
+                return None
+        
         is_valid, reason = validate_signal(signal, self.config)
         if not is_valid:
             logger.debug(f"Signal rejected for {coin_symbol}: {reason}")
             return None
         
-        self.last_alert_time[coin_symbol] = datetime.now()
+        self.last_alert_time[coin_symbol][direction] = datetime.now()
         
         return signal
     
@@ -145,16 +161,16 @@ class SignalGenerator:
         
         return direction, confidence, reasons
     
-    def _can_send_alert(self, coin_symbol: str) -> bool:
-        last_alert = self.last_alert_time[coin_symbol]
+    def _can_send_alert(self, coin_symbol: str, direction: str) -> bool:
+        last_alert = self.last_alert_time[coin_symbol][direction]
         cooldown = timedelta(minutes=self.cooldown_minutes)
         return datetime.now() - last_alert >= cooldown
     
     def rank_signals(self, signals: List[Dict]) -> List[Dict]:
         return sorted(signals, key=lambda s: s['confidence'], reverse=True)
     
-    def filter_top_signals(self, signals: List[Dict]) -> List[Dict]:
-        max_alerts = self.config['signals']['max_alerts_per_scan']
+    def filter_top_signals(self, signals: List[Dict], max_alerts: int = None) -> List[Dict]:
+        max_alerts_limit = max_alerts if max_alerts is not None else self.config['signals']['max_alerts_per_scan']
         ranked = self.rank_signals(signals)
-        return ranked[:max_alerts]
+        return ranked[:max_alerts_limit]
 

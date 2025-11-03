@@ -17,7 +17,7 @@ class RiskManager:
         self.active_positions = []
         
     def calculate_position_size(self, entry_price: float, stop_loss: float, 
-                                leverage: Optional[int] = None) -> float:
+                                leverage: Optional[int] = None, confidence: Optional[float] = None) -> float:
         if leverage is None:
             leverage = self.default_leverage
         
@@ -30,7 +30,22 @@ class RiskManager:
             leverage
         )
         
-        max_position = self.total_capital * 0.2
+        position_sizing_config = self.config.get('risk', {}).get('position_sizing', {})
+        use_confidence_scaling = position_sizing_config.get('use_confidence_scaling', False)
+        
+        if use_confidence_scaling and confidence is not None:
+            if confidence >= 91:
+                max_percent = position_sizing_config.get('strong_size_percent', 30)
+            elif confidence >= 81:
+                max_percent = position_sizing_config.get('high_size_percent', 25)
+            elif confidence >= 71:
+                max_percent = position_sizing_config.get('moderate_size_percent', 20)
+            else:
+                max_percent = position_sizing_config.get('base_size_percent', 15)
+        else:
+            max_percent = 20
+        
+        max_position = self.total_capital * (max_percent / 100)
         position_size = min(position_size, max_position)
         
         return round(position_size, 2)

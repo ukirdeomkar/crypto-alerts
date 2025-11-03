@@ -57,6 +57,129 @@ trading_hours:
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 ```
 
+### Period-Based Trading Hours (Advanced) ⏰
+
+**NEW FEATURE:** Configure different confidence levels and alert limits for different times of the day!
+
+**Perfect for part-time traders who want:**
+- More signals during active trading hours
+- Fewer but high-quality signals during passive monitoring
+
+```yaml
+trading_hours:
+  timezone: "Asia/Kolkata"
+  periods:
+    - name: "active"
+      start_time: "07:30"
+      end_time: "17:00"
+      min_confidence: 55           # Lower threshold = more signals
+      max_alerts_per_scan: 4       # More alerts during active hours
+    - name: "passive"
+      start_time: "17:00"
+      end_time: "03:00"
+      min_confidence: 80           # Higher threshold = quality only
+      max_alerts_per_scan: 2       # Fewer alerts during passive hours
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+```
+
+**How It Works:**
+
+**Active Period (7:30 AM - 5:00 PM):**
+- ✅ More frequent signals (55% confidence minimum)
+- ✅ Up to 4 alerts per scan cycle
+- ✅ Perfect for when you're available to trade
+- 📊 Expected: 15-20 signals per day
+
+**Passive Period (5:00 PM - 3:00 AM):**
+- ✅ Only excellent opportunities (80% confidence minimum)
+- ✅ Maximum 2 alerts per scan cycle
+- ✅ Won't miss major moves while you're busy
+- 📊 Expected: 2-5 premium signals
+
+**Example Configurations:**
+
+**Part-Time Trader (Morning + Evening):**
+```yaml
+periods:
+  - name: "morning_active"
+    start_time: "09:00"
+    end_time: "12:00"
+    min_confidence: 50
+    max_alerts_per_scan: 5
+  - name: "lunch_passive"
+    start_time: "12:00"
+    end_time: "14:00"
+    min_confidence: 85
+    max_alerts_per_scan: 1
+  - name: "evening_active"
+    start_time: "14:00"
+    end_time: "18:00"
+    min_confidence: 50
+    max_alerts_per_scan: 5
+  - name: "night_passive"
+    start_time: "18:00"
+    end_time: "09:00"
+    min_confidence: 90
+    max_alerts_per_scan: 1
+```
+
+**Office Hours Trader:**
+```yaml
+periods:
+  - name: "morning_prep"
+    start_time: "08:00"
+    end_time: "09:30"
+    min_confidence: 60
+    max_alerts_per_scan: 3
+  - name: "work_hours"
+    start_time: "09:30"
+    end_time: "18:30"
+    min_confidence: 85
+    max_alerts_per_scan: 1
+  - name: "evening_active"
+    start_time: "18:30"
+    end_time: "23:00"
+    min_confidence: 55
+    max_alerts_per_scan: 4
+```
+
+**IMPORTANT: Configuration Placement**
+
+When using period-based trading hours:
+- ✅ Define `min_confidence` and `max_alerts_per_scan` in EACH period
+- ❌ Do NOT define them in the `signals` section (redundant and ignored)
+
+```yaml
+# CORRECT - Period-based config
+trading_hours:
+  periods:
+    - name: "active"
+      min_confidence: 55          # ✓ Define here
+      max_alerts_per_scan: 4      # ✓ Define here
+
+signals:
+  cooldown_minutes: 3             # ✓ Keep this
+  # min_confidence: NOT HERE!     # ✗ Remove these when using periods
+  # max_alerts_per_scan: NOT HERE!
+```
+
+**Backward Compatibility:**
+
+If you don't use periods, the old format still works:
+
+```yaml
+trading_hours:
+  start_time: "10:00"
+  end_time: "17:00"
+  timezone: "Asia/Kolkata"
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+
+signals:
+  min_confidence: 70              # ✓ Define here when NOT using periods
+  max_alerts_per_scan: 3          # ✓ Define here when NOT using periods
+  cooldown_minutes: 2
+```
+
 ---
 
 ### Scanner Settings 🔍
@@ -86,10 +209,14 @@ scanner:
 
 **Control signal quality and frequency:**
 
+> **NOTE:** If using period-based trading hours, `min_confidence` and `max_alerts_per_scan` are defined in EACH period, not here!
+
 ```yaml
 signals:
-  min_confidence: 80           # Minimum confidence score (0-100)
-  max_alerts_per_scan: 3       # Top N signals per scan
+  # Only define these if NOT using period-based trading hours:
+  # min_confidence: 80           # Minimum confidence score (0-100)
+  # max_alerts_per_scan: 3       # Top N signals per scan
+  
   cooldown_minutes: 2          # Wait time between alerts for same coin
   
   indicators:

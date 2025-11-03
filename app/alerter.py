@@ -2,7 +2,7 @@ import requests
 import logging
 from typing import Dict, Optional
 from datetime import datetime
-from app.utils import format_inr, format_percentage, get_env_var
+from app.utils import format_inr, format_percentage, format_price, get_env_var
 
 logger = logging.getLogger(__name__)
 
@@ -68,28 +68,48 @@ class Alerter:
         ist_time = datetime.now().strftime('%d %b %Y, %H:%M:%S IST')
         
         trading_hours = self.config.get('trading_hours', {})
-        start_time = trading_hours.get('start_time', '11:00')
-        end_time = trading_hours.get('end_time', '17:00')
+        periods = trading_hours.get('periods')
         
         message = f"✅ **SYSTEM STARTED SUCCESSFULLY**\n\n"
         message += f"🕒 Time: {ist_time}\n"
         message += f"📊 Monitoring: {total_coins} futures pairs\n"
-        message += f"⏰ Trading Hours: {start_time} - {end_time} IST\n"
-        message += f"📈 Scan Interval: {self.config['scanner']['interval_seconds']} seconds\n"
-        message += f"🎯 Min Confidence: {self.config['signals']['min_confidence']}%\n\n"
+        
+        if periods:
+            message += f"⏰ **Trading Periods:**\n"
+            for period in periods:
+                message += f"  • {period['name'].upper()}: {period['start_time']} - {period['end_time']} IST\n"
+                message += f"    (min conf: {period['min_confidence']}%, max alerts: {period['max_alerts_per_scan']})\n"
+        else:
+            start_time = trading_hours.get('start_time', '11:00')
+            end_time = trading_hours.get('end_time', '17:00')
+            message += f"⏰ Trading Hours: {start_time} - {end_time} IST\n"
+            message += f"🎯 Min Confidence: {self.config['signals']['min_confidence']}%\n"
+        
+        message += f"\n📈 Scan Interval: {self.config['scanner']['interval_seconds']} seconds\n"
         message += f"Ready to send trading signals! 🚀"
         
         self._send_alert(message, "startup")
     
     def send_session_start_alert(self, total_coins: int, account_info: Optional[Dict] = None):
-        ist_time = datetime.now().strftime('%H:%M:%S IST')
+        ist_time = datetime.now().strftime('%I:%M:%S %p IST')
+        
+        trading_hours = self.config.get('trading_hours', {})
+        periods = trading_hours.get('periods')
         
         message = f"🟢 **TRADING SESSION STARTED**\n\n"
         message += f"🕒 Time: {ist_time}\n"
         message += f"📊 Monitoring: {total_coins} futures pairs\n"
         message += f"🔍 Scan Frequency: Every {self.config['scanner']['interval_seconds']}s\n"
-        message += f"📈 Signal Threshold: {self.config['signals']['min_confidence']}%+\n"
-        message += f"🎯 Max Alerts per Scan: {self.config['signals']['max_alerts_per_scan']}\n\n"
+        
+        if periods:
+            message += f"\n⏰ **Active Periods Today:**\n"
+            for period in periods:
+                message += f"  • {period['name'].upper()}: {period['start_time']}-{period['end_time']} (conf: {period['min_confidence']}%+, alerts: {period['max_alerts_per_scan']})\n"
+        else:
+            message += f"📈 Signal Threshold: {self.config['signals']['min_confidence']}%+\n"
+            message += f"🎯 Max Alerts per Scan: {self.config['signals']['max_alerts_per_scan']}\n"
+        
+        message += "\n"
         
         if account_info:
             message += f"💰 **YOUR ACCOUNT:**\n"
@@ -102,7 +122,7 @@ class Alerter:
         self._send_alert(message, "session_start")
     
     def send_session_end_alert(self, summary: Dict):
-        ist_time = datetime.now().strftime('%H:%M:%S IST')
+        ist_time = datetime.now().strftime('%I:%M:%S %p IST')
         
         message = f"🔴 **TRADING SESSION ENDED**\n\n"
         message += f"🕒 End Time: {ist_time}\n\n"
@@ -122,22 +142,43 @@ class Alerter:
             message += f"No signals generated today.\n"
         
         trading_hours = self.config.get('trading_hours', {})
-        start_time = trading_hours.get('start_time', '11:00')
+        periods = trading_hours.get('periods')
+        if periods:
+            start_time = periods[0]['start_time']
+        else:
+            start_time = trading_hours.get('start_time', '11:00')
         
         message += f"\n✅ Session complete. See you tomorrow at {start_time} IST!"
         
         self._send_alert(message, "session_end")
     
+    def send_period_change_alert(self, old_period: Dict, new_period: Dict):
+        ist_time = datetime.now().strftime('%I:%M:%S %p IST')
+        
+        old_name = old_period.get('name', 'unknown').upper()
+        new_name = new_period.get('name', 'unknown').upper()
+        
+        emoji = "🌅" if new_name == "ACTIVE" else "🌙"
+        
+        message = f"{emoji} **PERIOD CHANGE**\n\n"
+        message += f"🕒 Time: {ist_time}\n"
+        message += f"📊 Switching: {old_name} → {new_name}\n\n"
+        
+        message += f"**{new_name} Period Settings:**\n"
+        message += f"⏰ Duration: {new_period['start_time']} - {new_period['end_time']} IST\n"
+        message += f"🎯 Min Confidence: {new_period['min_confidence']}%\n"
+        message += f"📈 Max Alerts/Scan: {new_period['max_alerts_per_scan']}\n\n"
+        
+        if new_name == "PASSIVE":
+            message += f"🌙 Now in selective mode - only high-quality signals (80%+)"
+        else:
+            message += f"🌅 Now in active mode - more frequent signals (60%+)"
+        
+        self._send_alert(message, "period_change")
+    
     def _format_entry_signal(self, signal: Dict, account_info: Optional[Dict]) -> str:
         direction_emoji = "🟢" if signal['direction'] == "LONG" else "🔴"
         direction_arrow = "↗️" if signal['direction'] == "LONG" else "↘️"
-        
-        if signal['confidence'] >= 90:
-            confidence_level = "STRONG"
-        elif signal['confidence'] >= 40:
-            confidence_level = "MODERATE"
-        else:
-            confidence_level = "WEAK"
         
         entry_price = signal['entry_price']
         stop_loss = signal['stop_loss']
@@ -156,49 +197,48 @@ class Alerter:
             target_1_profit = position_size * leverage * (targets[0]['profit_percent'] / 100)
             target_2_profit = position_size * leverage * (targets[1]['profit_percent'] / 100) if len(targets) > 1 else 0
         
-        risk_reward = targets[0]['profit_percent'] / stop_loss_distance if stop_loss_distance > 0 else 0
-        
-        message = f"🪙 **{signal['symbol']}INR PERPETUAL**\n"
-        message += f"{direction_emoji} **{signal['direction']}** {direction_arrow} • {confidence_level} ({signal['confidence']}%)\n\n"
-        
-        message += f"📊 **ENTRY DETAILS:**\n"
-        message += f"Entry Price: {format_inr(entry_price)}\n"
-        message += f"Position Size: {format_inr(position_size)}\n"
-        message += f"Leverage: {leverage}x → Exposure: {format_inr(position_size * leverage)}\n"
-        message += f"Direction: **{signal['direction']}**\n\n"
-        
         roe_t1 = (target_1_profit / position_size) * 100
         roe_t2 = (target_2_profit / position_size) * 100 if len(targets) > 1 else 0
         roe_sl = -(max_loss / position_size) * 100
         
-        message += f"🎯 **TARGETS (Set ROE on CoinDCX):**\n"
-        net_t1_profit = target_1_profit * targets[0]['exit_percent'] / 100
-        message += f"Target 1: {format_inr(targets[0]['price'])} → **ROE: +{roe_t1:.1f}%** (Exit {targets[0]['exit_percent']}% = {format_inr(net_t1_profit)})\n"
-        if len(targets) > 1:
-            net_t2_profit = target_2_profit * targets[1]['exit_percent'] / 100
-            message += f"Target 2: {format_inr(targets[1]['price'])} → **ROE: +{roe_t2:.1f}%** (Exit {targets[1]['exit_percent']}% = {format_inr(net_t2_profit)})\n"
+        from datetime import timedelta
+        entry_time = datetime.now()
         
-        if self.risk_manager and self.risk_manager.transaction_cost > 0:
-            message += f"_ROE includes {self.risk_manager.transaction_cost}% GST_\n"
-        message += "\n"
+        target_distance = targets[1]['profit_percent'] if len(targets) > 1 else targets[0]['profit_percent']
         
-        message += f"🛡️ **STOP LOSS (Set ROE on CoinDCX):**\n"
-        message += f"Price: {format_inr(stop_loss)} → **ROE: {roe_sl:.1f}%** (Max loss: {format_inr(max_loss)})\n"
-        message += f"Risk:Reward = 1:{risk_reward:.1f} {'✓' if risk_reward >= 1.5 else '⚠️'}\n\n"
+        momentum = signal.get('analysis', {}).get('momentum', {})
+        recent_change = abs(momentum.get('change_percent', 0.5))
         
-        message += f"📈 **SIGNALS:**\n"
+        if recent_change > 0:
+            estimated_minutes = (target_distance / recent_change) * 2
+        else:
+            estimated_minutes = target_distance / 0.4
+        
+        strategy_min_minutes = self.config['risk'].get('min_hold_minutes', 2)
+        
+        hold_minutes = max(strategy_min_minutes, round(estimated_minutes))
+        
+        exit_time = entry_time + timedelta(minutes=hold_minutes)
+        
+        separator = "─" * 20
+        
+        message = f"{separator}\n"
+        message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']}%\n"
+        message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n"
+        message += f"⏱️ **Hold:** {hold_minutes}min\n\n"
+        
+        message += f"**ENTRY:** {format_price(entry_price)}\n"
+        message += f"**SIZE:** {format_inr(position_size)} @ {leverage}x\n\n"
+        
+        message += f"🎯 **TP1:** ROE +{roe_t1:.1f}% → {format_inr(target_1_profit * 0.5)}\n"
+        message += f"🎯 **TP2:** ROE +{roe_t2:.1f}% → {format_inr(target_2_profit * 0.5)}\n"
+        message += f"🛡️ **SL:** ROE {roe_sl:.1f}% → {format_inr(max_loss)}\n\n"
+        
+        message += f"📊 **SIGNALS:**\n"
         for reason in signal['reasons']:
             message += f"✓ {reason}\n"
-        message += "\n"
         
-        message += f"⏰ Valid for: 2 minutes | Time: {datetime.now().strftime('%H:%M:%S')} IST\n"
-        
-        if account_info:
-            message += f"\n💰 **YOUR ACCOUNT:**\n"
-            message += f"Available Margin: {format_inr(account_info['available_margin'])}\n"
-            message += f"Current Positions: {account_info['open_positions_count']}/{self.config['risk']['max_concurrent_positions']}\n"
-            if 'total_pnl' in account_info:
-                message += f"Net P&L Today: {format_inr(account_info['total_pnl'])} ({format_percentage(account_info.get('pnl_percent', 0))})\n"
+        message += f"{separator}"
         
         return message
     
@@ -211,7 +251,7 @@ class Alerter:
         message += f"{emoji} **EXIT** • {reason.upper()}\n\n"
         message += f"Exit Price: {format_inr(exit_price)}\n"
         message += f"P&L: {format_inr(pnl)} ({format_percentage(pnl_percent)})\n"
-        message += f"Time: {datetime.now().strftime('%H:%M:%S')} IST\n"
+        message += f"Time: {datetime.now().strftime('%I:%M:%S %p')} IST\n"
         
         if pnl >= 0:
             message += "\n🎉 Profit secured!"
@@ -275,10 +315,7 @@ class Alerter:
     
     def _send_discord(self, message: str) -> bool:
         try:
-            separator = "─" * 50
-            formatted_message = f"{separator}\n{message}\n{separator}"
-            
-            payload = {"content": formatted_message}
+            payload = {"content": message}
             response = requests.post(
                 self.discord_webhook, 
                 json=payload, 
