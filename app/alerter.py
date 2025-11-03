@@ -203,14 +203,29 @@ class Alerter:
         
         from datetime import timedelta
         entry_time = datetime.now()
-        hold_minutes = self.config['risk'].get('position_expiry_minutes', 5)
+        
+        target_distance = targets[1]['profit_percent'] if len(targets) > 1 else targets[0]['profit_percent']
+        
+        momentum = signal.get('analysis', {}).get('momentum', {})
+        recent_change = abs(momentum.get('change_percent', 0.5))
+        
+        if recent_change > 0:
+            estimated_minutes = (target_distance / recent_change) * 2
+        else:
+            estimated_minutes = target_distance / 0.4
+        
+        strategy_min_minutes = self.config['risk'].get('min_hold_minutes', 2)
+        
+        hold_minutes = max(strategy_min_minutes, round(estimated_minutes))
+        
         exit_time = entry_time + timedelta(minutes=hold_minutes)
         
         separator = "─" * 20
         
         message = f"{separator}\n"
         message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']}%\n"
-        message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n\n"
+        message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n"
+        message += f"⏱️ **Hold:** {hold_minutes}min\n\n"
         
         message += f"**ENTRY:** {format_price(entry_price)}\n"
         message += f"**SIZE:** {format_inr(position_size)} @ {leverage}x\n\n"

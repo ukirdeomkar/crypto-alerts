@@ -65,6 +65,18 @@ class SignalGenerator:
             'analysis': analysis
         }
         
+        momentum = analysis.get('momentum', {})
+        recent_change = abs(momentum.get('change_percent', 0))
+        target_distance = targets[1]['profit_percent'] if len(targets) > 1 else targets[0]['profit_percent']
+        
+        if recent_change > 0:
+            estimated_minutes = (target_distance / recent_change) * 2
+            max_hold = self.config['risk'].get('position_expiry_minutes', 5)
+            
+            if estimated_minutes > max_hold * 1.5:
+                logger.debug(f"{coin_symbol}: Too slow - needs {estimated_minutes:.1f} min but strategy max is {max_hold} min")
+                return None
+        
         is_valid, reason = validate_signal(signal, self.config)
         if not is_valid:
             logger.debug(f"Signal rejected for {coin_symbol}: {reason}")
