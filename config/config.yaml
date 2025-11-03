@@ -16,7 +16,7 @@ trading_hours:
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
 scanner:
-  interval_seconds: 5
+  interval_seconds: 10
   data_source: "spot"
   coins_file: "data/futures-coins-filtered.txt"
   batch_size: 50
