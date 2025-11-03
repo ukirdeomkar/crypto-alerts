@@ -209,7 +209,8 @@ class Alerter:
         separator = "─" * 20
         
         message = f"{separator}\n"
-        message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']}%\n\n"
+        message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']}%\n"
+        message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n\n"
         
         message += f"**ENTRY:** {format_price(entry_price)}\n"
         message += f"**SIZE:** {format_inr(position_size)} @ {leverage}x\n\n"
@@ -218,7 +219,10 @@ class Alerter:
         message += f"🎯 **TP2:** ROE +{roe_t2:.1f}% → {format_inr(target_2_profit * 0.5)}\n"
         message += f"🛡️ **SL:** ROE {roe_sl:.1f}% → {format_inr(max_loss)}\n\n"
         
-        message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n"
+        message += f"📊 **SIGNALS:**\n"
+        for reason in signal['reasons']:
+            message += f"✓ {reason}\n"
+        
         message += f"{separator}"
         
         return message
