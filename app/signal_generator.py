@@ -46,7 +46,7 @@ class SignalGenerator:
             direction
         )
         
-        position_size = self.risk_manager.calculate_position_size(entry_price, stop_loss)
+        position_size = self.risk_manager.calculate_position_size(entry_price, stop_loss, confidence=confidence)
         leverage = self.config['risk']['default_leverage']
         
         signal = {

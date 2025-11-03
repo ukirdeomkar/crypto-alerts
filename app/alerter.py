@@ -239,7 +239,16 @@ class Alerter:
             message += f"✓ {reason}\n"
         message += "\n"
         
-        message += f"⏰ Valid for: 2 minutes | Time: {datetime.now().strftime('%H:%M:%S')} IST\n"
+        from datetime import timedelta
+        entry_time = datetime.now()
+        hold_minutes = self.config['risk'].get('position_expiry_minutes', 5)
+        exit_time = entry_time + timedelta(minutes=hold_minutes)
+        
+        message += f"⏰ **TIMING:**\n"
+        message += f"Entry: {entry_time.strftime('%H:%M:%S')} IST\n"
+        message += f"Hold Time: {hold_minutes} minutes (scalping)\n"
+        message += f"Review/Exit By: {exit_time.strftime('%H:%M:%S')} IST\n"
+        message += f"_Signal valid for 2 minutes from entry time_\n\n"
         
         if account_info:
             message += f"\n💰 **YOUR ACCOUNT:**\n"

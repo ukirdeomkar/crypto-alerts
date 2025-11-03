@@ -74,7 +74,7 @@ def format_percentage(value):
 def calculate_position_size(capital, risk_percent, stop_loss_percent, leverage):
     risk_amount = capital * (risk_percent / 100)
     position_size = (risk_amount / (stop_loss_percent / 100)) / leverage
-    return min(position_size, capital * 0.2)
+    return position_size
 
 def calculate_targets(entry_price, targets_config, direction="LONG"):
     targets = []
