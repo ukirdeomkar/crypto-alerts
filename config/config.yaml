@@ -4,7 +4,7 @@ trading_hours:
   timezone: "Asia/Kolkata"
   periods:
     - name: "active"
-      start_time: "07:30"
+      start_time: "06:30"
       end_time: "17:00"
       min_confidence: 60
       max_alerts_per_scan: 4
