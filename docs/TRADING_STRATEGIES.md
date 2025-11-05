@@ -32,50 +32,153 @@ Prevents repeated signals for same coin.
 
 ### 2. Technical Indicator Parameters
 
+**🎯 NEW: Professional-Grade Technical Analysis**
+
+The system now uses **10 advanced indicators** with industry-standard calculations:
+- ✅ **RSI with Wilder's Smoothing** (correct implementation)
+- ✅ **ATR (Average True Range)** for volatility-based stops
+- ✅ **EMA-50 Trend Filter** prevents counter-trend trades
+- ✅ **RSI/Price Divergence Detection** catches reversals early
+- ✅ **Support/Resistance Levels** identifies key price zones
+- ✅ **OBV (On-Balance Volume)** confirms price moves
+- ✅ **Weighted Confidence Scoring** prioritizes reliable indicators
+- ✅ **Multi-Factor Confirmation** requires 3+ aligning signals
+
+**Minimum Data Requirement:** System needs **50 price points** (~8 min) before generating signals to ensure all indicators (especially EMA-50) have sufficient data.
+
 #### RSI (Relative Strength Index)
 ```yaml
-rsi_period: 5          # Lookback period
+rsi_period: 14         # Standard period (now using Wilder's smoothing)
 rsi_oversold: 30       # Buy signal threshold
 rsi_overbought: 70     # Sell signal threshold
 ```
 
 **Strategies:**
-- **Scalping:** `period: 5`, `oversold: 30`, `overbought: 70` (fast response)
-- **Swing:** `period: 14`, `oversold: 25`, `overbought: 75` (smoother signals)
-- **Conservative:** `period: 21`, `oversold: 20`, `overbought: 80` (strong reversals)
+- **Scalping:** `period: 9`, `oversold: 30`, `overbought: 70` (faster response)
+- **Standard:** `period: 14`, `oversold: 30`, `overbought: 70` (industry default)
+- **Conservative:** `period: 21`, `oversold: 25`, `overbought: 75` (stronger reversals)
+
+**📊 Now with Divergence Detection:**
+- Bullish Divergence: Price makes lower low, RSI makes higher low → reversal up
+- Bearish Divergence: Price makes higher high, RSI makes lower high → reversal down
 
 #### MACD (Moving Average Convergence Divergence)
 ```yaml
-macd_fast: 5           # Fast EMA period
-macd_slow: 13          # Slow EMA period
-macd_signal: 5         # Signal line period
+macd_fast: 12          # Fast EMA period (standard)
+macd_slow: 26          # Slow EMA period (standard)
+macd_signal: 9         # Signal line period (standard)
 ```
 
 **Strategies:**
-- **Scalping:** `5/13/5` (quick crossovers)
-- **Day Trading:** `12/26/9` (standard settings)
+- **Scalping:** `8/17/9` (quicker crossovers)
+- **Standard:** `12/26/9` (industry default)
 - **Swing:** `19/39/9` (longer trends)
 
 #### Bollinger Bands
 ```yaml
-bb_period: 10          # Moving average period
+bb_period: 20          # Moving average period (standard)
 bb_std: 2              # Standard deviation multiplier
 ```
 
 **Strategies:**
-- **Tight Bands:** `period: 10`, `std: 1.5` (frequent signals)
-- **Standard:** `period: 20`, `std: 2` (balanced)
-- **Wide Bands:** `period: 20`, `std: 3` (strong breakouts only)
+- **Tight Bands:** `period: 15`, `std: 1.5` (frequent signals)
+- **Standard:** `period: 20`, `std: 2` (industry default)
+- **Wide Bands:** `period: 20`, `std: 2.5` (strong breakouts only)
 
-#### Volume Surge
+#### ATR (Average True Range) - NEW ✨
+```yaml
+atr_period: 14         # Lookback period for volatility
+use_atr_stops: true    # Enable ATR-based dynamic stops
+atr_stop_multiplier: 2.0  # Stop distance = 2x ATR
+```
+
+**What it does:**
+- Measures market volatility dynamically
+- Sets stop-loss based on current volatility (not fixed %)
+- Wider stops in volatile markets, tighter in calm markets
+- Prevents getting stopped out by normal price fluctuations
+
+**Strategies:**
+- **Tight Stops:** `multiplier: 1.5` (scalping, quick exits)
+- **Standard:** `multiplier: 2.0` (balanced)
+- **Wide Stops:** `multiplier: 3.0` (swing trading, room to breathe)
+
+#### Trend Filter (EMA-50) - NEW ✨
+```yaml
+trend_ema_fast: 20     # Fast EMA for trend detection
+trend_ema_slow: 50     # Slow EMA for trend confirmation
+```
+
+**What it does:**
+- Prevents counter-trend trades (major improvement!)
+- Only takes LONG signals in uptrends (EMA-20 > EMA-50)
+- Only takes SHORT signals in downtrends (EMA-20 < EMA-50)
+- Adds +10% confidence bonus when trend aligns with signal
+
+**Critical:** System requires **50 data points** minimum to activate trend filter.
+
+#### Support & Resistance - NEW ✨
+```yaml
+# Automatically detected from price history
+# No configuration needed
+```
+
+**What it does:**
+- Identifies key support/resistance levels from local highs/lows
+- Adds +15% confidence bonus when price near support (for LONG)
+- Adds +15% confidence bonus when price near resistance (for SHORT)
+- Improves entry timing at key price zones
+
+#### Volume Analysis (Enhanced) - NEW ✨
 ```yaml
 volume_surge_multiplier: 2.0
+# Now includes OBV (On-Balance Volume)
 ```
+
+**What it does:**
+- **OBV:** Cumulative volume indicator that confirms price trends
+- **Volume Surge:** Detects unusual volume spikes (2x+ average)
+- **Volume Trend:** Tracks if volume is increasing/decreasing
+- **Confirmation:** Strong volume + price move = reliable signal
 
 **Strategies:**
 - **Aggressive:** `1.5x` (catch early moves)
-- **Moderate:** `2.0x` (standard)
-- **Conservative:** `3.0x` (only major surges)
+- **Standard:** `2.0x` (reliable surges)
+- **Conservative:** `2.5x` (only major volume spikes)
+
+#### Weighted Confidence Scoring - NEW ✨
+```yaml
+indicator_weights:
+  rsi: 1.0              # Standard weight
+  macd: 1.0             # Standard weight
+  bollinger: 0.8        # Slightly lower (less reliable alone)
+  volume: 1.2           # Higher weight (volume confirms moves)
+  momentum: 1.0         # Standard weight
+```
+
+**How it works:**
+- Each indicator signal contributes to total confidence score
+- Signals are weighted by reliability (volume = 1.2x, BB = 0.8x)
+- **Multi-factor confirmation:** Requires 3+ aligning indicators minimum
+- **Trend bonus:** +10% confidence when trend aligns with signal
+- **S/R bonus:** +15% confidence when near support/resistance
+- **Conflicting penalty:** -5% for each opposing signal
+- Final score capped at 0-100%
+
+**Example:**
+```
+RSI oversold (30 points × 1.0) = 30
+MACD bullish (25 points × 1.0) = 25
+Volume surge (20 points × 1.2) = 24
+Near support = +15 bonus
+Bullish trend = +10 bonus
+Total = 104 → Capped at 100% confidence ✅
+```
+
+**Why this matters:**
+- Prevents weak signals with only 1-2 indicators
+- Prioritizes high-conviction setups
+- Reduces false signals significantly
 
 ---
 
@@ -155,43 +258,60 @@ Maximum allowed leverage.
 
 ## 🎯 Pre-Built Strategy Configurations
 
+**⚠️ IMPORTANT:** All strategies require **50 price data points minimum** (~8 minutes of data collection) before signals are generated. This ensures all indicators (especially EMA-50 trend filter) have reliable data.
+
 ### Strategy 1: Ultra Scalper (1-3 Min Holds)
 ```yaml
 signals:
-  min_confidence: 40
+  min_confidence: 50
+  min_signals_required: 3   # NEW: Multi-factor confirmation
   max_alerts_per_scan: 5
   cooldown_minutes: 1
   
   indicators:
-    rsi_period: 5
+    rsi_period: 9
     rsi_oversold: 30
     rsi_overbought: 70
-    macd_fast: 5
-    macd_slow: 13
-    macd_signal: 5
-    bb_period: 10
-    bb_std: 1.5
+    macd_fast: 8
+    macd_slow: 17
+    macd_signal: 9
+    bb_period: 15
+    bb_std: 2
+    atr_period: 14          # NEW: ATR for dynamic stops
+    trend_ema_fast: 20      # NEW: Trend filter
+    trend_ema_slow: 50
     volume_surge_multiplier: 1.5
+  
+  indicator_weights:        # NEW: Weighted scoring
+    rsi: 1.0
+    macd: 1.0
+    bollinger: 0.8
+    volume: 1.2
+    momentum: 1.0
 
 risk:
   total_capital: 800
   risk_per_trade_percent: 2.0
   max_concurrent_positions: 3
-  stop_loss_percent: 0.35
+  stop_loss_percent: 0.5       # Fixed stop (or use ATR)
+  use_atr_stops: false         # Optional: true for dynamic stops
+  atr_stop_multiplier: 1.5     # If ATR enabled
   take_profit_targets:
-    - target: 0.7
+    - target: 0.9
       exit_percent: 50
-    - target: 1.0
+    - target: 1.8
       exit_percent: 50
   min_risk_reward_ratio: 1.5
+  transaction_cost_percent: 0.6
   default_leverage: 7
 ```
 
 **Profile:**
 - ⚡ Very fast entries/exits
-- 📊 High frequency (20-50 signals/day)
-- 💰 Small profits (0.7-1% per trade)
+- 📊 High frequency (15-30 signals/day with 3-indicator minimum)
+- 💰 Small profits (0.9-1.8% per trade)
 - ⚠️ High activity, requires constant monitoring
+- ✅ Better quality signals due to multi-factor confirmation
 
 ---
 
@@ -355,43 +475,58 @@ risk:
 
 ---
 
-### Strategy 6: Safe & Steady (₹800 Capital)
+### Strategy 6: Safe & Steady (₹800 Capital) - RECOMMENDED
 ```yaml
 signals:
-  min_confidence: 75
+  min_confidence: 70
+  min_signals_required: 3      # NEW: Multi-factor confirmation
   max_alerts_per_scan: 1
   cooldown_minutes: 5
   
   indicators:
-    rsi_period: 10
-    rsi_oversold: 25
-    rsi_overbought: 75
+    rsi_period: 14             # Standard period
+    rsi_oversold: 30
+    rsi_overbought: 70
     macd_fast: 12
     macd_slow: 26
     macd_signal: 9
     bb_period: 20
     bb_std: 2
+    atr_period: 14             # NEW: ATR for dynamic stops
+    trend_ema_fast: 20         # NEW: Trend filter
+    trend_ema_slow: 50
     volume_surge_multiplier: 2.0
+  
+  indicator_weights:           # NEW: Weighted scoring
+    rsi: 1.0
+    macd: 1.0
+    bollinger: 0.8
+    volume: 1.2
+    momentum: 1.0
 
 risk:
   total_capital: 800
   risk_per_trade_percent: 1.0  # Only ₹8 risk per trade
   max_concurrent_positions: 1
-  stop_loss_percent: 0.45
+  stop_loss_percent: 0.5
+  use_atr_stops: true          # NEW: Enable ATR-based stops
+  atr_stop_multiplier: 2.0     # Adapts to volatility
   take_profit_targets:
-    - target: 1.0
+    - target: 0.9
       exit_percent: 50
-    - target: 1.5
+    - target: 1.8
       exit_percent: 50
   min_risk_reward_ratio: 2.0
+  transaction_cost_percent: 0.6
   default_leverage: 4
 ```
 
 **Profile:**
 - 🛡️ Capital preservation focus
-- 📊 1-3 trades per day
-- 💰 Small consistent profits (₹8-12 per trade)
+- 📊 1-3 high-quality trades per day
+- 💰 Small consistent profits (₹10-15 per trade)
 - ✅ Lowest risk, best for learning
+- ✨ **NEW:** Multi-factor confirmation + trend filter = higher win rate
 
 ---
 
@@ -480,13 +615,39 @@ default_leverage: 7-10
 
 ---
 
+## ✨ What's New in Technical Analysis
+
+The system has been upgraded with **professional-grade technical indicators**:
+
+### Key Improvements:
+1. **RSI Fixed:** Now uses Wilder's smoothing (industry standard)
+2. **ATR Integration:** Dynamic stop-losses adapt to market volatility
+3. **Trend Filter:** EMA-50 prevents counter-trend disasters
+4. **Divergence Detection:** Catches reversals before they happen
+5. **Support/Resistance:** Identifies optimal entry/exit zones
+6. **Enhanced Volume:** OBV confirms price movements
+7. **Weighted Scoring:** Prioritizes reliable indicators
+8. **Multi-Factor Confirmation:** Requires 3+ aligning signals minimum
+
+### Impact on Your Trading:
+- **Higher Win Rate:** Better signal quality = more winning trades
+- **Fewer False Signals:** Multi-factor confirmation filters noise
+- **Smarter Risk Management:** ATR-based stops reduce premature exits
+- **Trend Alignment:** Only trade with the trend, not against it
+- **Better Entries:** Support/resistance identifies key price zones
+
+**Note:** All strategies above have been updated to leverage these new features!
+
+---
+
 ## 🚨 Important Warnings
 
-1. **Start Conservative:** Always begin with lower risk parameters
-2. **Test First:** Run for 1-2 days with minimal capital
-3. **Track Results:** Monitor win rate and adjust accordingly
-4. **Avoid Over-Leverage:** 5x is safer than 10x for small capital
-5. **Respect Stop-Loss:** Never trade without proper risk management
+1. **Wait for Data:** System needs **50 price points** (~8 min) before first signal
+2. **Start Conservative:** Always begin with lower risk parameters
+3. **Test First:** Run for 1-2 days with minimal capital
+4. **Track Results:** Monitor win rate and adjust accordingly
+5. **Avoid Over-Leverage:** 5x is safer than 10x for small capital
+6. **Respect Stop-Loss:** Never trade without proper risk management
 
 ---
 

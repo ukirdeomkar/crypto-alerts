@@ -15,10 +15,16 @@ class PriceScanner:
         self.max_retries = config['performance']['max_api_retries']
         self.cache_duration = config['performance']['cache_price_data_seconds']
         
+        # Configurable history periods
+        self.max_history = config['scanner'].get('max_history_periods', 100)
+        self.min_history = config['scanner'].get('min_history_periods', 50)
+        
         self.price_cache = {}
         self.cache_timestamp = None
-        self.price_history = defaultdict(lambda: deque(maxlen=100))
-        self.volume_history = defaultdict(lambda: deque(maxlen=20))
+        self.price_history = defaultdict(lambda: deque(maxlen=self.max_history))
+        self.volume_history = defaultdict(lambda: deque(maxlen=self.max_history))
+        self.high_history = defaultdict(lambda: deque(maxlen=self.max_history))
+        self.low_history = defaultdict(lambda: deque(maxlen=self.max_history))
         
     def fetch_all_tickers(self) -> Optional[Dict]:
         for attempt in range(self.max_retries):
@@ -83,6 +89,8 @@ class PriceScanner:
                     'timestamp': price_data['timestamp']
                 })
                 self.volume_history[coin_symbol].append(price_data['volume'])
+                self.high_history[coin_symbol].append(price_data['high'])
+                self.low_history[coin_symbol].append(price_data['low'])
                 
             return price_data
             
@@ -122,6 +130,8 @@ class PriceScanner:
                             'timestamp': price_data['timestamp']
                         })
                         self.volume_history[coin_symbol].append(price_data['volume'])
+                        self.high_history[coin_symbol].append(price_data['high'])
+                        self.low_history[coin_symbol].append(price_data['low'])
                         results[coin_symbol] = price_data
                         
                 except (ValueError, TypeError) as e:
@@ -130,18 +140,34 @@ class PriceScanner:
         
         return results
     
-    def get_price_history(self, coin_symbol: str, periods: int = 20) -> List[float]:
+    def get_price_history(self, coin_symbol: str, periods: int = None) -> List[float]:
         history = self.price_history.get(coin_symbol, deque())
+        if periods is None:
+            return [item['price'] for item in list(history)]
         return [item['price'] for item in list(history)[-periods:]]
     
     def get_volume_history(self, coin_symbol: str) -> List[float]:
         return list(self.volume_history.get(coin_symbol, deque()))
     
+    def get_high_history(self, coin_symbol: str, periods: int = None) -> List[float]:
+        history = self.high_history.get(coin_symbol, deque())
+        if periods is None:
+            return list(history)
+        return list(history)[-periods:]
+    
+    def get_low_history(self, coin_symbol: str, periods: int = None) -> List[float]:
+        history = self.low_history.get(coin_symbol, deque())
+        if periods is None:
+            return list(history)
+        return list(history)[-periods:]
+    
     def get_average_volume(self, coin_symbol: str) -> float:
         volumes = self.get_volume_history(coin_symbol)
         return sum(volumes) / len(volumes) if volumes else 0
     
-    def has_sufficient_history(self, coin_symbol: str, min_periods: int = 20) -> bool:
+    def has_sufficient_history(self, coin_symbol: str, min_periods: int = None) -> bool:
+        if min_periods is None:
+            min_periods = self.min_history
         return len(self.price_history.get(coin_symbol, deque())) >= min_periods
     
     def clear_old_history(self, hours: int = 24):

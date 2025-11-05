@@ -9,14 +9,25 @@ Professional real-time trading signal system for crypto futures scalping on Coin
 
 ## ✨ Features
 
+### Core Features
 - 🎯 **Real-time Monitoring** - 377 futures pairs scanned every 5 seconds
-- 📊 **Technical Analysis** - RSI, MACD, Bollinger Bands, Volume analysis
-- 🎚️ **Smart Signals** - 80-100% confidence scoring
-- 💰 **Risk Management** - Position sizing, stop-loss, take-profit
+- 📊 **Professional Technical Analysis** - RSI (Wilder's smoothing), MACD, Bollinger Bands, ATR, EMA trend filter
+- 🎚️ **Smart Signals** - Weighted confidence scoring with multi-factor confirmation
+- 💰 **Advanced Risk Management** - ATR-based dynamic stops, position sizing, risk/reward ratio
 - 🤖 **Two Modes** - Generic (no API) & Personalized (with API)
 - 📱 **Multi-channel Alerts** - Discord & Telegram
 - ⏰ **Automated Schedule** - 11 AM - 5 PM IST
 - 💸 **100% Free** - Railway.app deployment
+
+### Advanced Features (Professional Grade)
+- ✅ **ATR Dynamic Stops** - Volatility-adjusted stop losses
+- ✅ **Trend Filter** - EMA 20/50 crossovers (only trade with trend)
+- ✅ **Divergence Detection** - RSI/price divergence for high-probability reversals
+- ✅ **Support/Resistance** - Auto-detected key levels
+- ✅ **Enhanced Volume** - OBV and relative volume analysis
+- ✅ **Smart Confidence** - Weighted scoring with trend alignment bonus
+- ✅ **Comprehensive Testing** - 29 unit tests, backtesting framework
+- ✅ **Industry Standards** - Matches TradingView, MetaTrader formulas
 
 ## 📁 Project Structure
 

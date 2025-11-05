@@ -77,9 +77,10 @@ def initialize_system():
         
         try:
             coins = load_futures_coins(config['scanner']['coins_file'])
-            alerter.send_startup_alert(len(coins))
+            # Startup alert will be sent after price history build completes
+            logger.info("Skipping immediate startup alert - will send after warmup period")
         except Exception as e:
-            logger.warning(f"Could not send startup alert: {e}")
+            logger.warning(f"Could not load coins: {e}")
         
         return True
         
@@ -110,6 +111,28 @@ def start_trading_session():
         coins = load_futures_coins(config['scanner']['coins_file'])
         logger.info(f"Loaded {len(coins)} futures coins to monitor")
         
+        # Log scanner configuration with banner
+        logger.info("")
+        logger.info("="*70)
+        logger.info("🚀 CRYPTO ALERTS - TECHNICAL ANALYSIS SYSTEM INITIALIZED")
+        logger.info("="*70)
+        logger.info(f"📊 Scanner Configuration:")
+        logger.info(f"   • Scan interval: {config['scanner']['interval_seconds']} seconds")
+        logger.info(f"   • Min history required: {scanner.min_history} data points")
+        logger.info(f"   • Max history storage: {scanner.max_history} data points")
+        logger.info(f"   • Monitoring: {len(coins)} futures pairs")
+        logger.info(f"")
+        logger.info(f"🎯 Signal Generation:")
+        logger.info(f"   • Min confidence threshold: {config['trading_hours']['periods'][0]['min_confidence']}%")
+        logger.info(f"   • Min signals required: {config['signals'].get('min_signals_required', 0)} indicators")
+        logger.info(f"   • Cooldown period: {config['signals']['cooldown_minutes']} minutes")
+        logger.info(f"   • Max alerts per scan: {config['trading_hours']['periods'][0]['max_alerts_per_scan']}")
+        logger.info(f"")
+        logger.info(f"⏳ Estimated time to first analysis: ~{scanner.min_history * config['scanner']['interval_seconds'] / 60:.0f} minutes")
+        logger.info(f"   (Need to collect {scanner.min_history} data points at {config['scanner']['interval_seconds']}s intervals)")
+        logger.info("="*70)
+        logger.info("")
+        
         account_info = None
         if account_manager:
             account_manager.refresh_account_data()
@@ -117,7 +140,20 @@ def start_trading_session():
             logger.info(f"Account Balance: ₹{account_info['total_balance']:.2f}")
             logger.info(f"Available Margin: ₹{account_info['available_margin']:.2f}")
         
-        alerter.send_session_start_alert(len(coins), account_info)
+        # Send warmup notification instead of "ready" message
+        scan_interval = config['scanner']['interval_seconds']
+        min_periods = scanner.min_history
+        estimated_minutes = (min_periods * scan_interval) / 60
+        
+        warmup_message = f"🔄 **SYSTEM WARMING UP...**\n\n"
+        warmup_message += f"📊 Building price history for {len(coins)} coins\n"
+        warmup_message += f"⏳ Need {min_periods} data points per coin\n"
+        warmup_message += f"⏰ Estimated time: ~{estimated_minutes:.0f} minutes\n\n"
+        warmup_message += f"🔍 Scan interval: {scan_interval} seconds\n"
+        warmup_message += f"📈 You'll receive progress updates at 20%, 40%, 60%, 80%, and 100%\n\n"
+        warmup_message += f"Please wait... System will be ready soon! 🚀"
+        
+        alerter._send_alert(warmup_message, "warmup")
         
     except Exception as e:
         logger.error(f"Error starting trading session: {e}")
@@ -198,10 +234,12 @@ def scan_and_signal():
         signals = []
         history_status = {}
         
+        min_periods = scanner.min_history
+        
         for coin_symbol, price_data in price_data_batch.items():
             current_history = len(scanner.get_price_history(coin_symbol))
             
-            if current_history < 20:
+            if current_history < min_periods:
                 if coin_symbol in ['BTC', 'ETH', 'SOL', 'BNB', 'XRP']:
                     history_status[coin_symbol] = current_history
                 continue
@@ -210,15 +248,23 @@ def scan_and_signal():
             
             price_history = scanner.get_price_history(coin_symbol)
             volume_history = scanner.get_volume_history(coin_symbol)
+            high_history = scanner.get_high_history(coin_symbol)
+            low_history = scanner.get_low_history(coin_symbol)
             
             analysis = indicators.analyze_coin(
                 price_history,
+                high_history,
+                low_history,
                 price_data['volume'],
                 volume_history
             )
             
             if analysis.get('has_data'):
                 coins_analyzed += 1
+            else:
+                # Debug: Log why analysis failed for first few coins
+                if coins_analyzed < 3:
+                    logger.debug(f"{coin_symbol} analysis failed - RSI:{analysis['rsi'] is not None}, MACD:{analysis['macd'] is not None}, BB:{analysis['bollinger_bands'] is not None}, ATR:{analysis['atr'] is not None}, Trend:{analysis['trend'] is not None}")
             
             signal = signal_generator.generate_signal(coin_symbol, price_data, analysis, min_confidence=min_confidence)
             
@@ -227,10 +273,90 @@ def scan_and_signal():
                 logger.info(f"  ✓ Signal found: {coin_symbol} ({signal['direction']}, {signal['confidence']}% confidence)")
         
         if history_status and coins_with_history == 0:
-            status_str = ", ".join([f"{coin}:{count}/20" for coin, count in list(history_status.items())[:5]])
-            logger.info(f"Building price history... Sample: {status_str}")
-            logger.info(f"⏳ Need 20 data points per coin (currently at scan #{list(history_status.values())[0]}/20)")
-            logger.info(f"⏰ Estimated time to first analysis: {(20 - list(history_status.values())[0]) * 5} seconds")
+            status_str = ", ".join([f"{coin}:{count}/{min_periods}" for coin, count in list(history_status.items())[:5]])
+            current_count = list(history_status.values())[0]
+            progress_percent = (current_count / min_periods) * 100
+            
+            # Progress bar
+            bar_length = 30
+            filled = int((current_count / min_periods) * bar_length)
+            bar = '█' * filled + '░' * (bar_length - filled)
+            
+            logger.info(f"📊 BUILDING PRICE HISTORY - Progress: {progress_percent:.0f}% [{bar}]")
+            logger.info(f"   Sample coins: {status_str}")
+            logger.info(f"   Current: Scan #{current_count}/{min_periods} | Remaining: {min_periods - current_count} scans (~{(min_periods - current_count) * 10} seconds)")
+            
+            # Discord notifications at milestones: 20%, 40%, 60%, 80%
+            if not hasattr(scan_and_signal, '_progress_milestones'):
+                scan_and_signal._progress_milestones = set()
+            
+            milestones = [20, 40, 60, 80]
+            for milestone in milestones:
+                if progress_percent >= milestone and milestone not in scan_and_signal._progress_milestones:
+                    scan_and_signal._progress_milestones.add(milestone)
+                    remaining_time = (min_periods - current_count) * 10
+                    alerter.send_custom_message(
+                        title=f"📊 Price History Build - {milestone}% Complete",
+                        description=f"Building historical data for technical analysis...",
+                        fields=[
+                            {"name": "Progress", "value": f"{current_count}/{min_periods} data points", "inline": True},
+                            {"name": "Completion", "value": f"{milestone}%", "inline": True},
+                            {"name": "Time Remaining", "value": f"~{remaining_time // 60} min {remaining_time % 60} sec", "inline": True},
+                            {"name": "Sample Coins", "value": status_str[:200], "inline": False}
+                        ],
+                        color=0xFFA500  # Orange color for progress
+                    )
+                    logger.info(f"📢 Discord: Sent {milestone}% progress update")
+            
+            # Debug: Check volume history length too
+            if history_status:
+                sample_coin = list(history_status.keys())[0]
+                vol_len = len(scanner.get_volume_history(sample_coin))
+                logger.debug(f"   Storage check - {sample_coin}: price_history={current_count}, volume_history={vol_len}")
+        
+        elif coins_with_history > 0 and coins_with_history < len(price_data_batch):
+            # Partial ready
+            logger.info(f"⚡ {coins_with_history}/{len(price_data_batch)} coins ready for analysis (building history for remaining coins...)")
+        
+        elif coins_with_history == len(price_data_batch) and not hasattr(scan_and_signal, '_first_analysis_logged'):
+            # First time all coins are ready!
+            logger.info(f"")
+            logger.info(f"{'='*60}")
+            logger.info(f"✅ PRICE HISTORY BUILD COMPLETE!")
+            logger.info(f"{'='*60}")
+            logger.info(f"📈 All {coins_with_history} coins now have {min_periods}+ data points")
+            logger.info(f"{'='*60}")
+            logger.info(f"")
+            
+            # Send 100% completion Discord message
+            alerter.send_custom_message(
+                title="✅ SYSTEM READY - Analysis Active!",
+                description="Price history build complete. All technical indicators are now active and scanning for signals.",
+                fields=[
+                    {"name": "Status", "value": "🟢 READY", "inline": True},
+                    {"name": "Coins Monitored", "value": f"{coins_with_history}", "inline": True},
+                    {"name": "Data Points Collected", "value": f"{min_periods}+ per coin", "inline": True},
+                    {"name": "Active Period", "value": f"{config['trading_hours']['periods'][0]['name'].upper()}: {config['trading_hours']['periods'][0]['min_confidence']}% min confidence", "inline": False},
+                    {"name": "Next Step", "value": "🚀 Now scanning for trading opportunities every 10 seconds...", "inline": False}
+                ],
+                color=0x00FF00  # Green color for success
+            )
+            logger.info(f"📢 Discord: Sent system ready notification")
+            
+            # Also send session start info now that we're ready
+            trading_hours = config.get('trading_hours', {})
+            periods = trading_hours.get('periods')
+            ready_message = f"🟢 **TRADING SIGNALS NOW ACTIVE**\n\n"
+            ready_message += f"📊 Monitoring: {coins_with_history} coins with {min_periods}+ data points\n"
+            ready_message += f"🔍 Scan Frequency: Every {config['scanner']['interval_seconds']}s\n\n"
+            if periods:
+                ready_message += f"⏰ **Active Periods Today:**\n"
+                for period in periods:
+                    ready_message += f"  • {period['name'].upper()}: {period['start_time']}-{period['end_time']} (conf: {period['min_confidence']}%+, alerts: {period['max_alerts_per_scan']})\n"
+            ready_message += f"\n✅ System is ready. Watching for high-probability setups! 👀"
+            alerter._send_alert(ready_message, "ready")
+            
+            scan_and_signal._first_analysis_logged = True
         
         logger.info(f"Analysis complete: {coins_analyzed}/{len(price_data_batch)} coins analyzed, {coins_with_history} with sufficient history")
         

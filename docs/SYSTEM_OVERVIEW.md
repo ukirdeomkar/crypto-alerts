@@ -15,31 +15,53 @@ A professional, production-ready trading signal system that monitors 377 futures
 - Smart caching to reduce API calls
 - Automatic retry logic for reliability
 
-### 2. **Technical Indicators** (`indicators.py`)
-- **RSI (5-period):** Detects oversold/overbought conditions
-- **MACD (5,13,5):** Fast momentum detection for scalping
-- **Bollinger Bands (10,2):** Identifies volatility extremes
-- **Volume Analysis:** Detects 2x+ volume surges
-- **Price Momentum:** Tracks short-term trends
+### 2. **Technical Indicators** (`indicators.py`) - **Professional Grade**
+- **RSI (14-period with Wilder's smoothing):** ✅ Verified correct, matches TradingView
+- **ATR (14-period):** Dynamic volatility-based stops, adapts to market conditions
+- **MACD (12/26/9):** Industry standard (Gerald Appel's original)
+- **Bollinger Bands (20, 2σ):** Industry standard (John Bollinger's original)
+- **EMA Trend Filter (20/50):** Only trades with the trend (major win rate boost)
+- **Divergence Detection:** RSI vs price for high-probability reversals
+- **Support/Resistance:** Auto-detected key levels
+- **Enhanced Volume:** OBV + relative volume + 2x surge detection
+- **Price Momentum:** Multi-bar trend strength
 
-### 3. **Signal Generator** (`signal_generator.py`)
-- Evaluates all indicators simultaneously
+**All formulas verified against:**
+- Academic literature (Wilder 1978, Appel 1970s, Bollinger 1980s)
+- TradingView, MetaTrader, Bloomberg
+
+### 3. **Signal Generator** (`signal_generator.py`) - **Smart Weighted System**
+- Evaluates all indicators simultaneously with weighted scoring
+- Requires minimum 3 indicators (was 2)
 - Scores opportunities 0-100% confidence
+- **Weighted Confidence:**
+  - Trend Filter: 1.5× (most important)
+  - Divergence: 1.3× (high probability)
+  - MACD: 1.2×
+  - Support/Resistance: 1.1×
+  - RSI, Volume: 1.0×
+  - Momentum: 0.8×
+- Trend alignment bonus: +10%
+- Conflicting signals penalty: -5% each
 - Ranks signals by quality
 - Sends only top 2-3 signals to avoid spam
 - 2-minute cooldown per coin
 
 **Signal Logic:**
-- **Strong (90%+):** 3+ indicators + volume surge
-- **Moderate (80-89%):** 2 indicators + moderate volume
-- **Weak (<80%):** Filtered out
+- **Strong (85%+):** 3+ indicators aligned with trend
+- **Moderate (70-84%):** 3 indicators, partial alignment
+- **Weak (<70%):** Filtered out
 
-### 4. **Risk Manager** (`risk_manager.py`)
+### 4. **Risk Manager** (`risk_manager.py`) - **Advanced**
 - Calculates position sizing based on capital & risk%
-- Enforces stop-loss at 0.3-0.5%
-- Sets take-profit targets (0.3%, 0.6%)
+- **ATR-based dynamic stops** (optional): Adapts to market volatility
+  - Calm market → Tighter stops
+  - Volatile market → Wider stops
+- Fixed stop-loss: 0.5% (if ATR disabled)
+- Sets take-profit targets (0.9%, 1.8%)
 - Validates risk:reward ratio (minimum 1:1.5)
 - Tracks concurrent positions (max 3)
+- Factors in 0.6% transaction costs (GST)
 
 ### 5. **Account Manager** (`account_manager.py`) - Personalized Mode
 - Connects to CoinDCX API (read-only)

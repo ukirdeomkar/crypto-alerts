@@ -188,20 +188,42 @@ signals:
 
 ```yaml
 scanner:
-  interval_seconds: 5        # How often to scan (1-60 seconds)
-  data_source: "spot"        # Use spot prices for futures signals
+  interval_seconds: 10              # How often to scan (5-60 seconds)
+  data_source: "spot"               # Use spot prices for futures signals
   coins_file: "data/futures-coins-filtered.txt"
-  batch_size: 50             # Process 50 coins per API call
+  batch_size: 50                    # Process 50 coins per API call
+  max_history_periods: 100          # Maximum data points to store per coin
+  min_history_periods: 50           # Minimum data points before analysis starts
 ```
+
+**New History Management Parameters (Configurable!):**
+
+| Parameter | Default | Range | Description |
+|-----------|---------|-------|-------------|
+| `max_history_periods` | 100 | 50-200 | Maximum historical data points stored per coin |
+| `min_history_periods` | 50 | 20-100 | Minimum data points required before generating signals |
+
+**Why This Matters:**
+- **`min_history_periods`**: Must be ≥ 50 for EMA-50 trend filter to work properly
+  - Set to 30 for faster signals (but trend filter won't work until 50)
+  - Set to 50+ for full indicator suite with trend filter active
+- **`max_history_periods`**: Higher = more memory usage, but better long-term analysis
+  - 100 periods = ~16 minutes of data at 10-second intervals
+  - 200 periods = ~33 minutes of data
+
+**⚠️ IMPORTANT:** 
+- If you lower `min_history_periods` below 50, the trend filter (EMA-50) won't activate
+- RSI needs 14 periods minimum, MACD needs 26, Bollinger Bands needs 20
+- Recommended: Keep at 50 for professional-grade analysis
 
 **Recommendations:**
 
-| Trading Style | Interval | Why |
-|--------------|----------|-----|
-| **Ultra-fast scalping (30s-2min)** | 1-3 seconds | Catch quick moves |
-| **Fast scalping (1-4min)** | 3-5 seconds | Balance speed & API usage |
-| **Moderate scalping (3-10min)** | 5-10 seconds | Less noise, quality signals |
-| **Swing trading (>15min)** | 15-30 seconds | Long-term moves only |
+| Trading Style | Interval | min_history | Why |
+|--------------|----------|-------------|-----|
+| **Ultra-fast scalping (30s-2min)** | 5 seconds | 30 | Faster signals (no trend filter) |
+| **Fast scalping (1-4min)** | 10 seconds | 50 | Full indicators with trend filter |
+| **Moderate scalping (3-10min)** | 10-15 seconds | 50 | Quality signals, less noise |
+| **Swing trading (>15min)** | 30-60 seconds | 60 | Long-term trends only |
 
 ---
 
@@ -218,20 +240,37 @@ signals:
   # max_alerts_per_scan: 3       # Top N signals per scan
   
   cooldown_minutes: 2          # Wait time between alerts for same coin
+  min_signals_required: 3      # NEW: Minimum indicators needed (was 2)
   
   indicators:
-    rsi_period: 5              # RSI period (lower = faster)
+    # UPDATED: Industry-standard parameters (November 2025)
+    rsi_period: 14             # RSI period (Wilder's original: 14)
     rsi_oversold: 30           # Buy signal threshold
     rsi_overbought: 70         # Sell signal threshold
     
-    macd_fast: 5               # MACD fast line
-    macd_slow: 13              # MACD slow line
-    macd_signal: 5             # MACD signal line
+    macd_fast: 12              # MACD fast line (Appel's original: 12)
+    macd_slow: 26              # MACD slow line (Appel's original: 26)
+    macd_signal: 9             # MACD signal line (Appel's original: 9)
     
-    bb_period: 10              # Bollinger Bands period
+    bb_period: 20              # Bollinger Bands period (Bollinger's original: 20)
     bb_std: 2                  # Standard deviations
     
+    # NEW: Additional professional indicators
+    atr_period: 14             # Average True Range period
+    trend_ema_fast: 20         # Fast EMA for trend filter
+    trend_ema_slow: 50         # Slow EMA for trend filter
+    
     volume_surge_multiplier: 2.0  # Volume surge = 2x average
+  
+  # NEW: Weighted confidence scoring
+  indicator_weights:
+    rsi: 1.0
+    macd: 1.2
+    trend: 1.5                 # Trend filter most important
+    volume: 1.0
+    momentum: 0.8
+    divergence: 1.3            # Divergence highly valued
+    support_resistance: 1.1
 ```
 
 **Signal Quality Presets:**
@@ -275,14 +314,20 @@ risk:
   max_leverage: 10               # Maximum allowed leverage
   default_leverage: 5            # Default leverage for signals
   
-  stop_loss_percent: 0.3         # Stop loss distance (%)
+  # NEW: ATR-based dynamic stops (adapts to market volatility)
+  use_atr_stops: true            # Enable ATR-based stops (optional)
+  atr_stop_multiplier: 2.0       # Stop = Entry ± (ATR × 2.0)
+  
+  stop_loss_percent: 0.5         # Fixed stop loss (if ATR disabled)
   take_profit_targets:
-    - target: 0.3                # Target 1: +0.3%
+    - target: 0.9                # Target 1: +0.9%
       exit_percent: 50           # Exit 50% of position
-    - target: 0.6                # Target 2: +0.6%
+    - target: 1.8                # Target 2: +1.8%
       exit_percent: 50           # Exit remaining 50%
   
   min_risk_reward_ratio: 1.5     # Minimum risk:reward (1:1.5)
+  transaction_cost_percent: 0.6  # GST fees (0.3% entry + 0.3% exit)
+  position_expiry_minutes: 10    # Auto-cleanup in generic mode
 ```
 
 **Risk Profiles:**

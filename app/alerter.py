@@ -296,6 +296,30 @@ class Alerter:
         
         return message
     
+    def send_custom_message(self, title: str, description: str, fields: list, color: int = 0x3498db):
+        """Send a custom embedded message (Discord rich embed)"""
+        sent = False
+        
+        if self.discord_enabled:
+            if self._send_discord_embed(title, description, fields, color):
+                sent = True
+        
+        if self.telegram_enabled:
+            # Fallback to simple message for Telegram
+            message = f"**{title}**\n\n{description}\n\n"
+            for field in fields:
+                message += f"{field['name']}: {field['value']}\n"
+            if self._send_telegram(message):
+                sent = True
+        
+        if not sent:
+            logger.warning(f"Custom message not sent (no channels configured): {title}")
+            print(f"\n{'='*60}")
+            print(f"{title}\n{description}")
+            for field in fields:
+                print(f"{field['name']}: {field['value']}")
+            print('='*60)
+    
     def _send_alert(self, message: str, alert_type: str = "general"):
         sent = False
         
@@ -326,6 +350,30 @@ class Alerter:
             return True
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to send Discord alert: {e}")
+            return False
+    
+    def _send_discord_embed(self, title: str, description: str, fields: list, color: int) -> bool:
+        """Send a rich embedded message to Discord"""
+        try:
+            embed = {
+                "title": title,
+                "description": description,
+                "color": color,
+                "fields": fields,
+                "timestamp": datetime.utcnow().isoformat()
+            }
+            
+            payload = {"embeds": [embed]}
+            response = requests.post(
+                self.discord_webhook,
+                json=payload,
+                timeout=10
+            )
+            response.raise_for_status()
+            logger.debug("Discord embed sent successfully")
+            return True
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to send Discord embed: {e}")
             return False
     
     def _send_telegram(self, message: str) -> bool:
