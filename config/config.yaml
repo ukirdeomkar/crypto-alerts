@@ -6,7 +6,7 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "19:00"
-      min_confidence: 15          # VOLATILE SCALPER - Low threshold for maximum signals
+      min_confidence: 60          # VOLATILE SCALPER - Low threshold for maximum signals
       max_alerts_per_scan: 6      # Catch multiple opportunities
     - name: "passive"
       start_time: "19:00"

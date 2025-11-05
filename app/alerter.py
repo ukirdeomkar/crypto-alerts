@@ -223,7 +223,7 @@ class Alerter:
         separator = "─" * 20
         
         message = f"{separator}\n"
-        message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']}%\n"
+        message += f"{direction_emoji} **{signal['symbol']}** {signal['direction']} {direction_arrow} • {signal['confidence']:.2f}%\n"
         message += f"⏰ **IN:** {entry_time.strftime('%I:%M:%S %p')} | **OUT:** {exit_time.strftime('%I:%M:%S %p')}\n"
         message += f"⏱️ **Hold:** {hold_minutes}min\n\n"
         
