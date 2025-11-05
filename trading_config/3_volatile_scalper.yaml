@@ -1,0 +1,134 @@
+# VOLATILE SCALPER STRATEGY - Maximum Volatility Capture
+# Perfect for: Active traders, volatile markets, 4-6 hours monitoring
+# Expected: 15-40 signals/day, 55-65% win rate
+# ⚡ Optimized for catching quick market moves and intraday volatility
+
+mode: "generic"
+
+trading_hours:
+  timezone: "Asia/Kolkata"
+  periods:
+    - name: "active"
+      start_time: "06:30"
+      end_time: "17:00"
+      min_confidence: 30          # Lower threshold for more signals
+      max_alerts_per_scan: 6      # Catch multiple opportunities
+    - name: "passive"
+      start_time: "17:00"
+      end_time: "03:00"
+      min_confidence: 50          # Still reasonable quality
+      max_alerts_per_scan: 3
+  days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+scanner:
+  interval_seconds: 10
+  data_source: "spot"
+  coins_file: "data/futures-coins-filtered.txt"
+  batch_size: 50
+  max_history_periods: 100
+  min_history_periods: 30         # Fast warmup (RSI-9 + MACD-17 OK)
+
+signals:
+  cooldown_minutes: 1             # Fast re-entry
+  min_signals_required: 1         # Single indicator sufficient
+  
+  indicators:
+    # FAST-REACTING PARAMETERS - Catch moves early
+    rsi_period: 9                 # Much faster RSI
+    rsi_oversold: 35              # Less extreme (catches more)
+    rsi_overbought: 65
+    
+    macd_fast: 8                  # Faster MACD
+    macd_slow: 17
+    macd_signal: 9
+    
+    bb_period: 15                 # Tighter bands
+    bb_std: 1.8                   # More sensitive
+    
+    atr_period: 14
+    
+    trend_ema_fast: 20
+    trend_ema_slow: 50
+    
+    volume_surge_multiplier: 1.5  # Lower volume requirement
+  
+  indicator_weights:
+    rsi: 1.0
+    macd: 1.1
+    trend: 1.2                    # Lower trend weight (allow counter-trend)
+    volume: 1.3                   # Higher volume weight
+    momentum: 1.0                 # Higher momentum weight
+    divergence: 1.2
+    support_resistance: 1.1
+
+risk:
+  total_capital: 1200
+  risk_per_trade_percent: 2.5     # Moderate-high risk
+  
+  max_concurrent_positions: 5     # Multiple active positions
+  position_expiry_minutes: 8      # Shorter holds for scalping
+  min_hold_minutes: 1
+  max_leverage: 8
+  default_leverage: 6             # Higher leverage
+  
+  transaction_cost_percent: 0.6
+  
+  use_atr_stops: true
+  atr_stop_multiplier: 1.8        # Tighter stops for scalping
+  stop_loss_percent: 0.45
+  take_profit_targets:
+    - target: 0.7                 # Quick profits
+      exit_percent: 50
+    - target: 1.4
+      exit_percent: 50
+  
+  min_risk_reward_ratio: 1.5      # Lower RR for frequency
+  
+  position_sizing:
+    use_confidence_scaling: true
+    base_size_percent: 18
+    moderate_size_percent: 22
+    high_size_percent: 28
+    strong_size_percent: 35
+
+personalized:
+  enabled: false
+  api_endpoint: "https://api.coindcx.com"
+  max_margin_per_trade_percent: 10
+  refresh_interval_seconds: 30
+  track_pnl: true
+  send_position_updates: true
+  update_interval_minutes: 1
+
+alerts:
+  discord:
+    enabled: true
+    webhook_env_var: "DISCORD_WEBHOOK"
+    
+  telegram:
+    enabled: false
+    bot_token_env_var: "TELEGRAM_BOT_TOKEN"
+    chat_id_env_var: "TELEGRAM_CHAT_ID"
+  
+  send_entry_signals: true
+  send_exit_signals: true
+  send_position_updates: true
+  send_daily_summary: true
+  
+  include_charts: false
+  use_mentions: false
+
+logging:
+  level: "INFO"
+  file: "logs/trading.log"
+  max_file_size_mb: 10
+  backup_count: 5
+  log_signals: true
+  log_api_calls: false
+
+performance:
+  cache_price_data_seconds: 5
+  max_api_retries: 3
+  api_timeout_seconds: 10
+  parallel_requests: true
+
