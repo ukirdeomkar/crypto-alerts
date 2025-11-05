@@ -2,6 +2,14 @@
 
 Complete guide to understanding configuration parameters and building different trading strategies.
 
+## 🔄 Recent Updates
+
+**ATR Stops Disabled:** Dynamic ATR-based stops have been disabled by default (`use_atr_stops: false`) because they can cause inconsistent Risk:Reward ratios, leading to signal rejections. Fixed percentage stops are now recommended for reliable signal validation.
+
+**Generic Mode Configuration:** `max_concurrent_positions` is set to `999` (unlimited) for generic mode. Position limits are only relevant for future personalized mode with CoinDCX API integration.
+
+**min_signals_required Fix:** Corrected off-by-one logic. Set to `0` for single indicator, `1` for 2+ indicators, `2` for 3+ indicators.
+
 ---
 
 ## 📊 Configuration Parameters Explained
@@ -87,21 +95,23 @@ bb_std: 2              # Standard deviation multiplier
 
 #### ATR (Average True Range) - NEW ✨
 ```yaml
-atr_period: 14         # Lookback period for volatility
-use_atr_stops: true    # Enable ATR-based dynamic stops
-atr_stop_multiplier: 2.0  # Stop distance = 2x ATR
+atr_period: 14            # Lookback period for volatility
+use_atr_stops: false      # DISABLED by default (use fixed stops)
+atr_stop_multiplier: 2.0  # (not used when disabled)
+stop_loss_percent: 0.35   # Use fixed percentage stops instead
 ```
 
 **What it does:**
 - Measures market volatility dynamically
-- Sets stop-loss based on current volatility (not fixed %)
-- Wider stops in volatile markets, tighter in calm markets
-- Prevents getting stopped out by normal price fluctuations
+- Can set stop-loss based on current volatility (not fixed %)
+- **CURRENTLY DISABLED:** ATR stops can cause inconsistent Risk:Reward ratios, making signals fail validation
+- **Recommended:** Use fixed `stop_loss_percent` for consistent R:R calculation
 
-**Strategies:**
-- **Tight Stops:** `multiplier: 1.5` (scalping, quick exits)
-- **Standard:** `multiplier: 2.0` (balanced)
-- **Wide Stops:** `multiplier: 3.0` (swing trading, room to breathe)
+**Why Disabled:**
+- Fixed stops ensure predictable Risk:Reward ratios
+- ATR stops can be too wide in volatile markets, rejecting otherwise valid signals
+- Better for generic mode where all signals need consistent validation
+- Re-enable only if you understand R:R implications and want dynamic stops
 
 #### Trend Filter (EMA-50) - NEW ✨
 ```yaml
@@ -198,12 +208,19 @@ Percentage of capital risked per trade.
 - **Moderate:** 1.5-2.5% (₹12-20 per trade on ₹800)
 - **Aggressive:** 3-5% (₹24-40 per trade on ₹800)
 
-#### `max_concurrent_positions` (1-10)
+#### `max_concurrent_positions` (999 for generic mode)
 Maximum open trades at once.
 
+**Generic Mode (Alert-Based):** Set to `999` (unlimited)
+- System just sends alerts, doesn't track positions
+- You manage positions manually on CoinDCX
+- No limit needed
+
+**Personalized Mode (Future Feature - API Integration):**
 - **Focused:** 1-2 positions (concentrated risk)
 - **Balanced:** 3-5 positions (diversified)
 - **Portfolio:** 6-10 positions (spread risk)
+- System tracks and limits actual open positions via CoinDCX API
 
 #### `stop_loss_percent` (0.3-2%)
 Distance from entry to stop loss.
@@ -264,7 +281,7 @@ Maximum allowed leverage.
 ```yaml
 signals:
   min_confidence: 50
-  min_signals_required: 3   # NEW: Multi-factor confirmation
+  min_signals_required: 2   # Require 3+ indicators (2 = need 3+)
   max_alerts_per_scan: 5
   cooldown_minutes: 1
   
@@ -277,12 +294,12 @@ signals:
     macd_signal: 9
     bb_period: 15
     bb_std: 2
-    atr_period: 14          # NEW: ATR for dynamic stops
-    trend_ema_fast: 20      # NEW: Trend filter
+    atr_period: 14          # ATR calculated but not used for stops
+    trend_ema_fast: 20      # Trend filter
     trend_ema_slow: 50
     volume_surge_multiplier: 1.5
   
-  indicator_weights:        # NEW: Weighted scoring
+  indicator_weights:        # Weighted scoring
     rsi: 1.0
     macd: 1.0
     bollinger: 0.8
@@ -292,10 +309,10 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 2.0
-  max_concurrent_positions: 3
-  stop_loss_percent: 0.5       # Fixed stop (or use ATR)
-  use_atr_stops: false         # Optional: true for dynamic stops
-  atr_stop_multiplier: 1.5     # If ATR enabled
+  max_concurrent_positions: 999  # Generic mode (unlimited)
+  stop_loss_percent: 0.5         # Fixed stop for consistent R:R
+  use_atr_stops: false           # Disabled for reliable validation
+  atr_stop_multiplier: 1.5       # (not used)
   take_profit_targets:
     - target: 0.9
       exit_percent: 50
@@ -336,7 +353,7 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 1.5
-  max_concurrent_positions: 2
+  max_concurrent_positions: 999  # Generic mode (unlimited)
   stop_loss_percent: 0.45
   take_profit_targets:
     - target: 1.2
@@ -376,7 +393,7 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 3.0
-  max_concurrent_positions: 4
+  max_concurrent_positions: 999  # Generic mode (unlimited)
   stop_loss_percent: 0.6
   take_profit_targets:
     - target: 1.5
@@ -416,7 +433,7 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 2.0
-  max_concurrent_positions: 2
+  max_concurrent_positions: 999  # Generic mode (unlimited)
   stop_loss_percent: 1.0
   take_profit_targets:
     - target: 2.5
@@ -456,7 +473,7 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 2.5
-  max_concurrent_positions: 2
+  max_concurrent_positions: 999  # Generic mode (unlimited)
   stop_loss_percent: 0.4
   take_profit_targets:
     - target: 1.5
@@ -479,7 +496,7 @@ risk:
 ```yaml
 signals:
   min_confidence: 70
-  min_signals_required: 3      # NEW: Multi-factor confirmation
+  min_signals_required: 2      # Require 3+ indicators (2 = need 3+)
   max_alerts_per_scan: 1
   cooldown_minutes: 5
   
@@ -492,12 +509,12 @@ signals:
     macd_signal: 9
     bb_period: 20
     bb_std: 2
-    atr_period: 14             # NEW: ATR for dynamic stops
-    trend_ema_fast: 20         # NEW: Trend filter
+    atr_period: 14             # ATR calculated but not used for stops
+    trend_ema_fast: 20         # Trend filter
     trend_ema_slow: 50
     volume_surge_multiplier: 2.0
   
-  indicator_weights:           # NEW: Weighted scoring
+  indicator_weights:           # Weighted scoring
     rsi: 1.0
     macd: 1.0
     bollinger: 0.8
@@ -507,10 +524,10 @@ signals:
 risk:
   total_capital: 800
   risk_per_trade_percent: 1.0  # Only ₹8 risk per trade
-  max_concurrent_positions: 1
-  stop_loss_percent: 0.5
-  use_atr_stops: true          # NEW: Enable ATR-based stops
-  atr_stop_multiplier: 2.0     # Adapts to volatility
+  max_concurrent_positions: 999  # Generic mode (unlimited)
+  stop_loss_percent: 0.5       # Fixed stop for consistent R:R
+  use_atr_stops: false         # Disabled for reliable validation
+  atr_stop_multiplier: 2.0     # (not used)
   take_profit_targets:
     - target: 0.9
       exit_percent: 50
@@ -526,7 +543,8 @@ risk:
 - 📊 1-3 high-quality trades per day
 - 💰 Small consistent profits (₹10-15 per trade)
 - ✅ Lowest risk, best for learning
-- ✨ **NEW:** Multi-factor confirmation + trend filter = higher win rate
+- ✨ Multi-factor confirmation + trend filter = higher win rate
+- 🎯 Fixed stops for consistent Risk:Reward validation
 
 ---
 
@@ -557,10 +575,11 @@ min_risk_reward_ratio: 2.5-3.0
 ### More Aggressive
 ```yaml
 risk_per_trade_percent: 3-5
-max_concurrent_positions: 5-10
+max_concurrent_positions: 999      # Generic mode (you manage manually)
 stop_loss_percent: 0.7-1.2
 min_risk_reward_ratio: 1.5-2.0
 default_leverage: 7-10
+use_atr_stops: false               # Keep disabled for consistent R:R
 ```
 
 ---
@@ -658,22 +677,25 @@ The system has been upgraded with **professional-grade technical indicators**:
 **Week 1:** Use **Safe & Steady** to learn
 ```yaml
 risk_per_trade_percent: 1.0
-max_concurrent_positions: 1
+max_concurrent_positions: 999  # Generic mode - you manage manually
 default_leverage: 3
+use_atr_stops: false          # Fixed stops recommended
 ```
 
 **Week 2-3:** Move to **Conservative Scalper**
 ```yaml
 risk_per_trade_percent: 1.5
-max_concurrent_positions: 2
+max_concurrent_positions: 999  # Generic mode - you manage manually
 default_leverage: 5
+use_atr_stops: false          # Fixed stops recommended
 ```
 
 **Week 4+:** If profitable, try **Aggressive Day Trader**
 ```yaml
 risk_per_trade_percent: 2.5
-max_concurrent_positions: 3
+max_concurrent_positions: 999  # Generic mode - you manage manually
 default_leverage: 5
+use_atr_stops: false          # Fixed stops recommended
 ```
 
 ---

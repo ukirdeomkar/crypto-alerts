@@ -30,7 +30,7 @@ scanner:
 
 signals:
   cooldown_minutes: 1             # Fast re-entry
-  min_signals_required: 1         # Single indicator sufficient
+  min_signals_required: 0         # Single indicator sufficient (0 = need 1+)
   
   indicators:
     # FAST-REACTING PARAMETERS - Catch moves early
@@ -65,7 +65,7 @@ risk:
   total_capital: 1200
   risk_per_trade_percent: 2.5     # Moderate-high risk
   
-  max_concurrent_positions: 5     # Multiple active positions
+  max_concurrent_positions: 999   # Generic mode (not limited)
   position_expiry_minutes: 8      # Shorter holds for scalping
   min_hold_minutes: 1
   max_leverage: 8
@@ -73,8 +73,8 @@ risk:
   
   transaction_cost_percent: 0.6
   
-  use_atr_stops: true
-  atr_stop_multiplier: 1.8        # Tighter stops for scalping
+  use_atr_stops: false            # Disabled for consistent R:R
+  atr_stop_multiplier: 1.8        # (not used when disabled)
   stop_loss_percent: 0.45
   take_profit_targets:
     - target: 0.7                 # Quick profits

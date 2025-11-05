@@ -236,6 +236,14 @@ def scan_and_signal():
         
         min_periods = scanner.min_history
         
+        # TEMPORARY DEBUG: Track all coins analyzed
+        analyzed_coins_list = []
+        coins_with_signals = []
+        
+        # DEBUG: Counter for detailed logging (limit to avoid spam)
+        coins_actually_analyzed = 0
+        max_debug_coins = 10
+        
         for coin_symbol, price_data in price_data_batch.items():
             current_history = len(scanner.get_price_history(coin_symbol))
             
@@ -245,6 +253,7 @@ def scan_and_signal():
                 continue
             
             coins_with_history += 1
+            analyzed_coins_list.append(coin_symbol)
             
             price_history = scanner.get_price_history(coin_symbol)
             volume_history = scanner.get_volume_history(coin_symbol)
@@ -259,18 +268,82 @@ def scan_and_signal():
                 volume_history
             )
             
-            if analysis.get('has_data'):
+            has_data = analysis.get('has_data', False)
+            
+            # Only count and log coins that ACTUALLY get analyzed
+            if has_data:
                 coins_analyzed += 1
-            else:
-                # Debug: Log why analysis failed for first few coins
-                if coins_analyzed < 3:
-                    logger.debug(f"{coin_symbol} analysis failed - RSI:{analysis['rsi'] is not None}, MACD:{analysis['macd'] is not None}, BB:{analysis['bollinger_bands'] is not None}, ATR:{analysis['atr'] is not None}, Trend:{analysis['trend'] is not None}")
-            
-            signal = signal_generator.generate_signal(coin_symbol, price_data, analysis, min_confidence=min_confidence)
-            
-            if signal:
-                signals.append(signal)
-                logger.info(f"  ✓ Signal found: {coin_symbol} ({signal['direction']}, {signal['confidence']}% confidence)")
+                coins_actually_analyzed += 1
+                
+                # DEBUG: Show details for first 10 successfully analyzed coins
+                show_debug = coins_actually_analyzed <= max_debug_coins
+                
+                if show_debug:
+                    rsi = analysis.get('rsi', 'N/A')
+                    rsi_val = f"{rsi:.1f}" if isinstance(rsi, (int, float)) else str(rsi)
+                    
+                    macd = analysis.get('macd', {})
+                    macd_hist = f"{macd.get('histogram', 0):.2f}" if isinstance(macd, dict) else 'N/A'
+                    
+                    bb = analysis.get('bollinger_bands', {})
+                    bb_pos = f"{bb.get('position', 0):.1f}%" if isinstance(bb, dict) else 'N/A'
+                    
+                    trend = analysis.get('trend', {})
+                    trend_status = trend.get('trend', 'N/A') if isinstance(trend, dict) else 'N/A'
+                    
+                    vol_surge = analysis.get('volume_surge', False)
+                    vol_status = "🔥" if vol_surge else "📉"
+                    
+                    divergence = analysis.get('divergence', {})
+                    bull_div = "✅" if divergence.get('bullish_divergence') else "❌"
+                    bear_div = "✅" if divergence.get('bearish_divergence') else "❌"
+                    
+                    logger.info(f"🔍 [{coins_actually_analyzed}] ANALYZING {coin_symbol}:")
+                    logger.info(f"   📊 RSI:{rsi_val} | MACD:{macd_hist} | BB:{bb_pos} | Trend:{trend_status}")
+                    logger.info(f"   🔥 Vol:{vol_status} | Div: Bull{bull_div}/Bear{bear_div}")
+                
+                signal = signal_generator.generate_signal(coin_symbol, price_data, analysis, min_confidence=min_confidence)
+                
+                if signal:
+                    signals.append(signal)
+                    coins_with_signals.append(coin_symbol)
+                    logger.info(f"   🎯 SIGNAL: {coin_symbol} - {signal['direction']} @ {signal['confidence']}%")
+                else:
+                    if show_debug:
+                        logger.info(f"   ⭕ No signal (below threshold or in cooldown)")
+            # Don't log anything for coins that fail has_data check
+        
+        # Show summary after first 10
+        if coins_actually_analyzed > max_debug_coins:
+            logger.info(f"... ({coins_actually_analyzed - max_debug_coins} more coins analyzed silently)")
+        
+        # TEMPORARY DEBUG: Show ALL analysis details
+        logger.info(f"")
+        logger.info(f"{'='*80}")
+        logger.info(f"🔍 DEBUG SUMMARY")
+        logger.info(f"{'='*80}")
+        logger.info(f"Total coins fetched from API: {len(price_data_batch)}")
+        logger.info(f"Coins with sufficient history: {len(analyzed_coins_list)}")
+        logger.info(f"Coins that generated signals: {len(coins_with_signals)}")
+        logger.info(f"")
+        
+        if len(analyzed_coins_list) > 0:
+            logger.info(f"📋 ALL COINS ANALYZED ({len(analyzed_coins_list)} total):")
+            # Show in chunks of 20 for readability
+            for i in range(0, len(analyzed_coins_list), 20):
+                chunk = analyzed_coins_list[i:i+20]
+                logger.info(f"   {', '.join(chunk)}")
+        
+        if len(coins_with_signals) > 0:
+            logger.info(f"")
+            logger.info(f"🎯 COINS WITH SIGNALS ({len(coins_with_signals)} total):")
+            logger.info(f"   {', '.join(coins_with_signals)}")
+        else:
+            logger.info(f"")
+            logger.info(f"⚠️  NO SIGNALS GENERATED (all {len(analyzed_coins_list)} coins analyzed but none met criteria)")
+        
+        logger.info(f"{'='*80}")
+        logger.info(f"")
         
         if history_status and coins_with_history == 0:
             status_str = ", ".join([f"{coin}:{count}/{min_periods}" for coin, count in list(history_status.items())[:5]])

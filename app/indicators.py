@@ -390,7 +390,7 @@ class TechnicalIndicators:
                 rsi is not None, 
                 macd is not None, 
                 bb is not None,
-                atr is not None,
-                trend is not None
+                atr is not None
+                # Trend is optional - will activate after 50 periods
             ])
         }

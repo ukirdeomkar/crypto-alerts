@@ -40,7 +40,11 @@ class SignalGenerator:
         
         confidence_threshold = min_confidence if min_confidence is not None else self.config['signals']['min_confidence']
         if confidence < confidence_threshold:
-            logger.debug(f"{coin_symbol}: Confidence {confidence}% below threshold {confidence_threshold}%")
+            if not hasattr(self, '_confidence_rejection_count'):
+                self._confidence_rejection_count = 0
+            if self._confidence_rejection_count < 5:
+                logger.info(f"   ⚠️  {coin_symbol}: Confidence {confidence:.1f}% < threshold {confidence_threshold}%")
+                self._confidence_rejection_count += 1
             return None
         
         entry_price = price_data['price']
@@ -51,6 +55,14 @@ class SignalGenerator:
             atr_multiplier = self.config['risk'].get('atr_stop_multiplier', 2.0)
             stop_distance = (atr * atr_multiplier) / entry_price * 100
             stop_loss = calculate_stop_loss(entry_price, stop_distance, direction)
+            
+            # Debug ATR vs fixed stops (first 3 only)
+            if not hasattr(self, '_atr_debug_count'):
+                self._atr_debug_count = 0
+            if self._atr_debug_count < 3:
+                fixed_stop = self.config['risk']['stop_loss_percent']
+                logger.info(f"   📏 {coin_symbol}: ATR stop={stop_distance:.2f}% (vs fixed {fixed_stop}%)")
+                self._atr_debug_count += 1
         else:
             stop_loss = calculate_stop_loss(
                 entry_price, 
@@ -98,7 +110,11 @@ class SignalGenerator:
         
         is_valid, reason = validate_signal(signal, self.config)
         if not is_valid:
-            logger.debug(f"Signal rejected for {coin_symbol}: {reason}")
+            if not hasattr(self, '_validation_rejection_count'):
+                self._validation_rejection_count = 0
+            if self._validation_rejection_count < 5:
+                logger.info(f"   ❌ {coin_symbol}: REJECTED - {reason}")
+                self._validation_rejection_count += 1
             return None
         
         self.last_alert_time[coin_symbol][direction] = datetime.now()
@@ -224,12 +240,16 @@ class SignalGenerator:
         
         min_signals_required = self.config['signals'].get('min_signals_required', 0)
         
-        # Debug: Log signal counts for troubleshooting (first 5 only)
+        # Debug: Log signal counts for troubleshooting (first 10 only)
         if len(buy_signals) > 0 or len(sell_signals) > 0:
             if not hasattr(self, '_debug_count'):
                 self._debug_count = 0
-            if self._debug_count < 5:
-                logger.debug(f"Signal detected - Buy:{len(buy_signals)} Sell:{len(sell_signals)} (Required:{min_signals_required})")
+            if self._debug_count < 10:
+                logger.info(f"   📊 Signals detected - Buy:{len(buy_signals)} Sell:{len(sell_signals)} (Need >{min_signals_required})")
+                if len(buy_signals) > 0:
+                    logger.info(f"      BUY: {', '.join(buy_signals[:3])}")
+                if len(sell_signals) > 0:
+                    logger.info(f"      SELL: {', '.join(sell_signals[:3])}")
                 self._debug_count += 1
         
         if len(buy_signals) > len(sell_signals) and len(buy_signals) > min_signals_required:

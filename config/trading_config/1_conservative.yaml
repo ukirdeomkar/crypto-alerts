@@ -1,6 +1,6 @@
-# BALANCED STRATEGY - Best of Both Worlds
-# Perfect for: Intermediate traders, part-time monitoring, ₹2000-5000 capital
-# Expected: 5-15 signals/day, 60-70% win rate
+# CONSERVATIVE STRATEGY - Quality Over Quantity
+# Perfect for: Beginners, small capital, learning phase
+# Expected: 2-5 signals/day, 65-75% win rate
 
 mode: "generic"
 
@@ -10,12 +10,12 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "17:00"
-      min_confidence: 55          # Moderate quality
-      max_alerts_per_scan: 4
+      min_confidence: 70          # High quality only
+      max_alerts_per_scan: 3
     - name: "passive"
       start_time: "17:00"
       end_time: "03:00"
-      min_confidence: 70          # Higher quality when passive
+      min_confidence: 80          # Even higher quality
       max_alerts_per_scan: 2
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
@@ -25,70 +25,70 @@ scanner:
   coins_file: "data/futures-coins-filtered.txt"
   batch_size: 50
   max_history_periods: 100
-  min_history_periods: 40         # Faster warmup
+  min_history_periods: 50         # Full warmup for all indicators
 
 signals:
-  cooldown_minutes: 2             # Standard
-  min_signals_required: 2         # Require 2+ indicators
+  cooldown_minutes: 3             # Prevent overtrading
+  min_signals_required: 2         # Require 3+ indicators to align (2 = need 3+)
   
   indicators:
-    # Slightly faster parameters for more signals
-    rsi_period: 11
-    rsi_oversold: 32
-    rsi_overbought: 68
+    # Industry-standard parameters - proven and reliable
+    rsi_period: 14
+    rsi_oversold: 30
+    rsi_overbought: 70
     
-    macd_fast: 10
-    macd_slow: 21
+    macd_fast: 12
+    macd_slow: 26
     macd_signal: 9
     
-    bb_period: 18
-    bb_std: 1.9
+    bb_period: 20
+    bb_std: 2
     
     atr_period: 14
     
     trend_ema_fast: 20
     trend_ema_slow: 50
     
-    volume_surge_multiplier: 1.8  # Slightly lower threshold
+    volume_surge_multiplier: 2.0  # Only significant volume spikes
   
   indicator_weights:
     rsi: 1.0
     macd: 1.2
-    trend: 1.3                    # Good trend weight
-    volume: 1.1                   # Increased volume weight
-    momentum: 0.9
-    divergence: 1.2
+    trend: 1.5                    # Heavy weight on trend
+    volume: 1.0
+    momentum: 0.8
+    divergence: 1.3
     support_resistance: 1.1
 
 risk:
   total_capital: 1200
-  risk_per_trade_percent: 2.0     # Moderate risk
+  risk_per_trade_percent: 1.5     # Conservative risk
   
-  max_concurrent_positions: 3     # Multiple positions OK
-  position_expiry_minutes: 10
-  min_hold_minutes: 1
-  max_leverage: 7
-  default_leverage: 5             # Standard leverage
+  max_concurrent_positions: 999   # Generic mode (not limited)
+  position_expiry_minutes: 15     # Longer holds
+  min_hold_minutes: 2
+  max_leverage: 5
+  default_leverage: 4             # Lower leverage
   
   transaction_cost_percent: 0.6
   
-  use_atr_stops: true
-  atr_stop_multiplier: 2.0
-  stop_loss_percent: 0.5
+  use_atr_stops: false            # Disabled for consistent R:R
+  atr_stop_multiplier: 2.5        # (not used when disabled)
+  stop_loss_percent: 0.6
   take_profit_targets:
-    - target: 0.9
+    - target: 1.2                 # Larger targets
       exit_percent: 50
-    - target: 1.8
+    - target: 2.0
       exit_percent: 50
   
-  min_risk_reward_ratio: 1.7      # Balanced RR
+  min_risk_reward_ratio: 2.0      # Higher RR required
   
   position_sizing:
     use_confidence_scaling: true
-    base_size_percent: 15
-    moderate_size_percent: 20
-    high_size_percent: 25
-    strong_size_percent: 30
+    base_size_percent: 12
+    moderate_size_percent: 18
+    high_size_percent: 22
+    strong_size_percent: 28
 
 personalized:
   enabled: false

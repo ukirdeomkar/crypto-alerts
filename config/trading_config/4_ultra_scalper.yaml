@@ -65,7 +65,7 @@ risk:
   total_capital: 1200
   risk_per_trade_percent: 3.0     # High risk per trade
   
-  max_concurrent_positions: 8     # Many simultaneous positions
+  max_concurrent_positions: 999   # Generic mode (not limited)
   position_expiry_minutes: 5      # Very short holds
   min_hold_minutes: 0.5           # 30 seconds minimum
   max_leverage: 10
@@ -73,8 +73,8 @@ risk:
   
   transaction_cost_percent: 0.6
   
-  use_atr_stops: true
-  atr_stop_multiplier: 1.5        # Very tight stops
+  use_atr_stops: false            # Disabled for consistent R:R
+  atr_stop_multiplier: 1.5        # (not used when disabled)
   stop_loss_percent: 0.4
   take_profit_targets:
     - target: 0.5                 # Ultra-quick profits
