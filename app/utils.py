@@ -114,9 +114,13 @@ def validate_signal(signal, config):
     risk_config = config.get('risk', {})
     
     stop_loss_distance = abs(signal['entry_price'] - signal['stop_loss']) / signal['entry_price'] * 100
-    target_distance = abs(signal['targets'][0]['price'] - signal['entry_price']) / signal['entry_price'] * 100
     
-    risk_reward = target_distance / stop_loss_distance if stop_loss_distance > 0 else 0
+    blended_target = 0
+    for target in signal['targets']:
+        target_distance = abs(target['price'] - signal['entry_price']) / signal['entry_price'] * 100
+        blended_target += target_distance * (target['exit_percent'] / 100)
+    
+    risk_reward = blended_target / stop_loss_distance if stop_loss_distance > 0 else 0
     
     if risk_reward < risk_config['min_risk_reward_ratio']:
         return False, f"Risk:Reward {risk_reward:.2f} below minimum {risk_config['min_risk_reward_ratio']}"

@@ -230,6 +230,13 @@ class SignalGenerator:
             elif momentum['trend'] == 'bearish':
                 sell_signals.append(f"Volume Surge ({multiplier:.1f}x)")
                 weighted_sell_confidence.append(surge_strength * self.indicator_weights['volume'])
+            elif momentum['trend'] == 'neutral':
+                if len(buy_signals) > len(sell_signals):
+                    buy_signals.append(f"Volume Surge ({multiplier:.1f}x)")
+                    weighted_buy_confidence.append(surge_strength * self.indicator_weights['volume'])
+                elif len(sell_signals) > len(buy_signals):
+                    sell_signals.append(f"Volume Surge ({multiplier:.1f}x)")
+                    weighted_sell_confidence.append(surge_strength * self.indicator_weights['volume'])
         
         if momentum['trend'] == 'bullish' and momentum['strength'] > 0.5:
             buy_signals.append(f"Bullish Momentum ({momentum['change_percent']:.2f}%)")

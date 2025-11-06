@@ -153,39 +153,52 @@ class TechnicalIndicators:
         }
     
     def detect_divergence(self, prices: List[float], indicator_values: List[float], 
-                         lookback: int = 5) -> Dict[str, bool]:
-        if len(prices) < lookback * 2 or len(indicator_values) < lookback * 2:
+                         lookback: int = 10) -> Dict[str, bool]:
+        if len(prices) < lookback or len(indicator_values) < lookback:
             return {
                 'bullish_divergence': False,
                 'bearish_divergence': False,
                 'divergence_strength': 0
             }
         
-        recent_prices = prices[-lookback:]
-        recent_indicators = indicator_values[-lookback:]
+        recent_prices = np.array(prices[-lookback:])
+        recent_indicators = np.array(indicator_values[-lookback:])
         
-        price_high_idx = np.argmax(recent_prices)
-        price_low_idx = np.argmin(recent_prices)
-        indicator_high_idx = np.argmax(recent_indicators)
-        indicator_low_idx = np.argmin(recent_indicators)
+        price_lows = []
+        price_highs = []
+        indicator_lows = []
+        indicator_highs = []
+        
+        for i in range(1, len(recent_prices) - 1):
+            if recent_prices[i] < recent_prices[i-1] and recent_prices[i] < recent_prices[i+1]:
+                price_lows.append((i, recent_prices[i]))
+                indicator_lows.append((i, recent_indicators[i]))
+            
+            if recent_prices[i] > recent_prices[i-1] and recent_prices[i] > recent_prices[i+1]:
+                price_highs.append((i, recent_prices[i]))
+                indicator_highs.append((i, recent_indicators[i]))
         
         bullish_div = False
         bearish_div = False
         strength = 0
         
-        if price_low_idx > 0 and indicator_low_idx > 0:
-            price_making_lower_low = recent_prices[price_low_idx] < recent_prices[0]
-            indicator_making_higher_low = recent_indicators[indicator_low_idx] > recent_indicators[0]
-            if price_making_lower_low and indicator_making_higher_low:
-                bullish_div = True
-                strength = abs(price_low_idx - indicator_low_idx) / lookback * 100
+        if len(price_lows) >= 2 and len(indicator_lows) >= 2:
+            last_two_price_lows = sorted(price_lows, key=lambda x: x[0])[-2:]
+            last_two_ind_lows = sorted(indicator_lows, key=lambda x: x[0])[-2:]
+            
+            if last_two_price_lows[1][1] < last_two_price_lows[0][1]:
+                if last_two_ind_lows[1][1] > last_two_ind_lows[0][1]:
+                    bullish_div = True
+                    strength = 25
         
-        if price_high_idx > 0 and indicator_high_idx > 0:
-            price_making_higher_high = recent_prices[price_high_idx] > recent_prices[0]
-            indicator_making_lower_high = recent_indicators[indicator_high_idx] < recent_indicators[0]
-            if price_making_higher_high and indicator_making_lower_high:
-                bearish_div = True
-                strength = abs(price_high_idx - indicator_high_idx) / lookback * 100
+        if len(price_highs) >= 2 and len(indicator_highs) >= 2:
+            last_two_price_highs = sorted(price_highs, key=lambda x: x[0])[-2:]
+            last_two_ind_highs = sorted(indicator_highs, key=lambda x: x[0])[-2:]
+            
+            if last_two_price_highs[1][1] > last_two_price_highs[0][1]:
+                if last_two_ind_highs[1][1] < last_two_ind_highs[0][1]:
+                    bearish_div = True
+                    strength = 25
         
         return {
             'bullish_divergence': bullish_div,

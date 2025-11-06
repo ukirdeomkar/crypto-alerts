@@ -34,19 +34,22 @@ class RiskManager:
         use_confidence_scaling = position_sizing_config.get('use_confidence_scaling', False)
         
         if use_confidence_scaling and confidence is not None:
-            if confidence >= 91:
-                max_percent = position_sizing_config.get('strong_size_percent', 30)
-            elif confidence >= 81:
-                max_percent = position_sizing_config.get('high_size_percent', 25)
-            elif confidence >= 71:
-                max_percent = position_sizing_config.get('moderate_size_percent', 20)
+            if confidence >= 75:
+                max_percent = position_sizing_config.get('strong_size_percent', 35)
+            elif confidence >= 65:
+                max_percent = position_sizing_config.get('high_size_percent', 28)
+            elif confidence >= 55:
+                max_percent = position_sizing_config.get('moderate_size_percent', 22)
             else:
-                max_percent = position_sizing_config.get('base_size_percent', 15)
+                max_percent = position_sizing_config.get('base_size_percent', 18)
         else:
             max_percent = 20
         
         max_position = self.total_capital * (max_percent / 100)
         position_size = min(position_size, max_position)
+        
+        max_capital_limit = self.total_capital * 0.95
+        position_size = min(position_size, max_capital_limit)
         
         return round(position_size, 2)
     
