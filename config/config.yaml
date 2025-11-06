@@ -6,12 +6,12 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "19:00"
-      min_confidence: 50          # VOLATILE SCALPER - Low threshold for maximum signals
+      min_confidence: 55          # CALIBRATED: Good-strong signals (4-5 indicators)
       max_alerts_per_scan: 6      # Catch multiple opportunities
     - name: "passive"
       start_time: "19:00"
       end_time: "03:00"
-      min_confidence: 70          # Still reasonable quality
+      min_confidence: 70          # CALIBRATED: Strong signals only (5+ indicators)
       max_alerts_per_scan: 3
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
@@ -25,7 +25,7 @@ scanner:
 
 signals:
   cooldown_minutes: 1             # VOLATILE SCALPER - Fast re-entry
-  min_signals_required: 0         # VOLATILE SCALPER - Single indicator sufficient (0 = need 1+)
+  min_signals_required: 3        
   
   indicators:
     # VOLATILE SCALPER - Fast-reacting parameters for catching quick moves

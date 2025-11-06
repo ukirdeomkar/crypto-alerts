@@ -11,12 +11,12 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "17:00"
-      min_confidence: 30          # Lower threshold for more signals
+      min_confidence: 40          # CALIBRATED: Early momentum (3-4 indicators)
       max_alerts_per_scan: 6      # Catch multiple opportunities
     - name: "passive"
       start_time: "17:00"
       end_time: "03:00"
-      min_confidence: 50          # Still reasonable quality
+      min_confidence: 55          # CALIBRATED: Good quality (4 indicators)
       max_alerts_per_scan: 3
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 

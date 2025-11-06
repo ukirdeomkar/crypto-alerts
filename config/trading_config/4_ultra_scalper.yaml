@@ -11,12 +11,12 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "17:00"
-      min_confidence: 15          # Very low threshold
+      min_confidence: 30          # CALIBRATED: Aggressive (2-3 indicators)
       max_alerts_per_scan: 8      # Maximum signals
     - name: "passive"
       start_time: "17:00"
       end_time: "03:00"
-      min_confidence: 35          # Still aggressive
+      min_confidence: 45          # CALIBRATED: Moderate aggressive (3-4 indicators)
       max_alerts_per_scan: 4
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 

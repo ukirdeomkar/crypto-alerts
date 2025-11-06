@@ -10,12 +10,12 @@ trading_hours:
     - name: "active"
       start_time: "06:30"
       end_time: "17:00"
-      min_confidence: 70          # High quality only
+      min_confidence: 65          # CALIBRATED: Strong quality (5 indicators)
       max_alerts_per_scan: 3
     - name: "passive"
       start_time: "17:00"
       end_time: "03:00"
-      min_confidence: 80          # Even higher quality
+      min_confidence: 75          # CALIBRATED: Exceptional quality (5-6 indicators)
       max_alerts_per_scan: 2
   days: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 

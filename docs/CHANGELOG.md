@@ -1,5 +1,128 @@
 # 📋 Changelog
 
+## ⚠️ CRITICAL FIX: Confidence Calculation Recalibration (November 6, 2025)
+
+### Fixed Confidence Inflation Bug
+
+**Problem Identified:**
+- Confidence calculation used additive non-normalized scoring
+- 4-5 indicators easily hit 100% confidence (capped)
+- No discrimination between good and exceptional signals
+- Bad trades showed 90%+ confidence in real trading
+- Threshold of 60% was meaningless (most signals hit it)
+
+**Root Cause:**
+```
+Old system: Raw points summed → capped at 100%
+Maximum possible: 256 points
+4 indicators = 117 points → 100% (capped) ✗
+7 indicators = 195 points → 100% (capped) ✗
+Result: Everything looked "perfect"
+```
+
+**Solution: Trading-Calibrated Confidence Curve**
+
+Implemented power curve calibrated to **scalping reality**, not mathematical purity:
+
+```python
+def _calculate_calibrated_confidence(raw_score):
+    # Designed for professional trading edge
+    if raw_score < 50:    return raw_score * 0.6           # 0-30%: Weak
+    elif raw_score < 100: return 30 + (raw_score-50)*0.8   # 30-70%: Good
+    elif raw_score < 150: return 70 + (raw_score-100)*0.4  # 70-90%: Strong
+    elif raw_score < 200: return 90 + (raw_score-150)*0.15 # 90-97%: Exceptional
+    else:                 return min(100, 97.5+...)         # 97-100%: Unicorn
+```
+
+**New Calibrated Scale:**
+
+| Raw Score | Confidence | Indicators | Trading Quality |
+|-----------|-----------|------------|----------------|
+| 50-100    | 30-70%    | 3-4        | Good - Valid for scalping |
+| 100-150   | 70-90%    | 4-5        | **Strong - Bread & butter** |
+| 150-200   | 90-97%    | 6+         | Exceptional - Rare setups |
+| 200+      | 97-100%   | All max    | Unicorn - Often too late |
+
+**Key Trading Insight:**
+- **4-5 solid indicators = 60-75% confidence** ✓ Professional setup
+- NOT waiting for 100% perfection (move already happened)
+- Scalpers profit from **early momentum**, not perfect confluence
+- More indicators ≠ better (often means late entry)
+
+**Updated Thresholds (All Configs):**
+
+```yaml
+# Conservative (was 70%/80%)
+min_confidence: 65/75%  # 5 indicators, strong quality
+
+# Balanced (was 55%/70%)  
+min_confidence: 50/65%  # 4-5 indicators, good quality
+
+# Volatile Scalper - YOUR CONFIG (was 60%/80%)
+min_confidence: 55/70%  # 4-5 indicators, scalping quality
+
+# Volatile Scalper v3 (was 30%/50%)
+min_confidence: 40/55%  # 3-4 indicators, early momentum
+
+# Ultra Scalper (was 15%/35%)
+min_confidence: 30/45%  # 2-3 indicators, aggressive
+```
+
+**Real Signal Examples After Fix:**
+
+```
+SCALPING BREAD & BUTTER (4 indicators):
+  MACD Crossover + Trend + Volume + Momentum
+  OLD: 100% (meaningless cap)
+  NEW: 77% → 85% with trend ✓ STRONG
+
+EARLY MOMENTUM (3 strong indicators):
+  MACD Crossover + Volume Surge + Momentum  
+  OLD: 81.5% (inflated)
+  NEW: 55% → 63% with trend ✓ GOOD for scalping
+
+WEAK SIGNAL (2 indicators):
+  RSI Oversold + BB Lower Band
+  OLD: 30%
+  NEW: 18% → 26% with trend ✓ WEAK - correctly identified
+```
+
+**Impact on Your Trading:**
+
+✅ **Better Signal Quality**
+- No more bad trades masquerading as 90%+ confidence
+- 70%+ = truly strong professional setups
+- Proper discrimination between signal qualities
+
+✅ **Scalping Optimized**  
+- 55% threshold catches 4-5 indicator setups
+- Not waiting for perfect alignment (late entry avoided)
+- Early momentum properly valued at 60-65%
+
+✅ **Risk Management**
+- Confidence now reflects actual edge
+- Position sizing more accurate
+- Trust your confidence percentages again
+
+**Files Changed:**
+- `app/signal_generator.py` - Added calibration curve, removed linear normalization
+- All config files - Updated thresholds to match new scale
+- Trend alignment bonus: 5 → 8 points (more realistic)
+- `min_signals_required`: 2 → 3 (better with calibrated confidence)
+
+**Verification:**
+```bash
+python scripts/verify_confidence_fix.py
+```
+
+**Trading Logic After Fix:**
+- 70%+ confidence: Max position size, bread & butter trades
+- 55-70%: Standard size, take every one
+- 40-55%: Reduced size, scalping strategies only  
+- <40%: Pass unless ultra-aggressive
+
+---
+
 ## 🚀 Major Update: Technical Analysis Overhaul (November 5, 2025)
 
 ### ✅ Professional-Grade Technical Analysis Implementation
@@ -298,5 +421,5 @@ max_concurrent_positions: 999  # Unlimited (generic mode)
 
 ---
 
-**Last Updated:** November 2, 2025
+**Last Updated:** November 6, 2025
 

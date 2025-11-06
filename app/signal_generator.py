@@ -255,18 +255,22 @@ class SignalGenerator:
         if len(buy_signals) > len(sell_signals) and len(buy_signals) > min_signals_required:
             direction = "LONG"
             reasons = buy_signals
-            raw_confidence = sum(weighted_buy_confidence)
+            raw_score = sum(weighted_buy_confidence)
             
             conflicting_signals_penalty = len(sell_signals) * 5
-            confidence = max(0, min(100, raw_confidence - conflicting_signals_penalty))
+            adjusted_score = max(0, raw_score - conflicting_signals_penalty)
+            
+            confidence = self._calculate_calibrated_confidence(adjusted_score)
             
         elif len(sell_signals) > len(buy_signals) and len(sell_signals) > min_signals_required:
             direction = "SHORT"
             reasons = sell_signals
-            raw_confidence = sum(weighted_sell_confidence)
+            raw_score = sum(weighted_sell_confidence)
             
             conflicting_signals_penalty = len(buy_signals) * 5
-            confidence = max(0, min(100, raw_confidence - conflicting_signals_penalty))
+            adjusted_score = max(0, raw_score - conflicting_signals_penalty)
+            
+            confidence = self._calculate_calibrated_confidence(adjusted_score)
             
         else:
             return "NEUTRAL", 0, [], signal_details
@@ -274,13 +278,28 @@ class SignalGenerator:
         if trend:
             trend_alignment_bonus = 0
             if direction == "LONG" and trend.get('bullish_trend'):
-                trend_alignment_bonus = 10
+                trend_alignment_bonus = 8
             elif direction == "SHORT" and trend.get('bearish_trend'):
-                trend_alignment_bonus = 10
+                trend_alignment_bonus = 8
             
             confidence = min(100, confidence + trend_alignment_bonus)
         
         return direction, confidence, reasons, signal_details
+    
+    def _calculate_calibrated_confidence(self, raw_score: float) -> float:
+        if raw_score <= 0:
+            return 0
+        
+        if raw_score < 50:
+            return raw_score * 0.6
+        elif raw_score < 100:
+            return 30 + (raw_score - 50) * 0.8
+        elif raw_score < 150:
+            return 70 + (raw_score - 100) * 0.4
+        elif raw_score < 200:
+            return 90 + (raw_score - 150) * 0.15
+        else:
+            return min(100, 97.5 + (raw_score - 200) * 0.05)
     
     def _can_send_alert(self, coin_symbol: str, direction: str) -> bool:
         last_alert = self.last_alert_time[coin_symbol][direction]

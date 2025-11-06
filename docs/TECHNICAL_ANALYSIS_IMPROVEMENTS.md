@@ -134,34 +134,63 @@ def detect_support_resistance(self, prices):
 
 ---
 
-### 7. **Smart Confidence Scoring** ✓
-**Old System**: Simple additive (RSI=25, MACD=20, etc.)
-**New System**: Weighted with penalties and bonuses
+### 7. **Smart Confidence Scoring** ✓ **[UPDATED Nov 6, 2025]**
+**Old System**: Simple additive (RSI=25, MACD=20, etc.) → capped at 100%
+**Problem**: 4-5 indicators hit 100%, no discrimination, bad trades showed 90%+ confidence
+**New System**: Trading-calibrated confidence curve with weighted scoring
 
 ```python
 indicator_weights = {
     'rsi': 1.0,
     'macd': 1.2,
     'trend': 1.5,        # Trend most important
-    'volume': 1.0,
-    'momentum': 0.8,
+    'volume': 1.3,
+    'momentum': 1.0,
     'divergence': 1.3,   # Divergence very valuable
     'support_resistance': 1.1
 }
+
+def _calculate_calibrated_confidence(raw_score):
+    # Calibrated for scalping reality - NOT linear normalization
+    if raw_score < 50:    return raw_score * 0.6           # 0-30%: Weak (1-2 indicators)
+    elif raw_score < 100: return 30 + (raw_score-50)*0.8   # 30-70%: Good (3-4 indicators)
+    elif raw_score < 150: return 70 + (raw_score-100)*0.4  # 70-90%: Strong (4-5 indicators)
+    elif raw_score < 200: return 90 + (raw_score-150)*0.15 # 90-97%: Exceptional (6+ indicators)
+    else:                 return min(100, 97.5+...)         # 97-100%: Unicorn (all max - often too late)
 ```
 
-**Improvements**:
+**Key Improvements**:
 - ✅ Weighted indicators by reliability
 - ✅ Penalties for conflicting signals
-- ✅ Bonus for trend alignment (+10%)
+- ✅ Bonus for trend alignment (+8 points)
 - ✅ Extra weight for divergences
-- ✅ Considers signal strength (not just presence)
+- ✅ **Trading-calibrated power curve** (not linear)
+- ✅ **4-5 indicators = 60-75%** (professional scalping setup)
+- ✅ Distinguishes good vs exceptional signals
 
-**Example**:
+**Trading Reality:**
 ```
-Old: RSI oversold (25) + MACD bullish (20) = 45% confidence
-New: RSI oversold (25*1.0) + MACD bullish (25*1.2) + Trend aligned (+10) = 65% confidence
+4 indicators (MACD+Trend+Volume+Momentum):
+  Raw score: 117.5 points
+  OLD: 100% (capped, meaningless)
+  NEW: 77% → 85% with trend ✓ STRONG
+
+3 strong indicators (MACD Crossover+Volume Surge+Momentum):
+  Raw score: 81.5 points
+  OLD: 81.5% (inflated)
+  NEW: 55% → 63% with trend ✓ GOOD for scalping
+
+7 indicators (all firing):
+  Raw score: 195 points
+  OLD: 100% (capped)
+  NEW: 96% → 100% with trend ✓ EXCEPTIONAL (rare)
 ```
+
+**Why Calibration Matters:**
+- **Scalpers need early entry** - not perfect confluence (move already happened)
+- **4-5 indicators IS strong** - waiting for 7+ means late entry
+- **Confidence reflects edge** - 75% means 75% of professional setup quality
+- **No more inflation** - bad trades won't show 90%+ anymore
 
 ---
 
