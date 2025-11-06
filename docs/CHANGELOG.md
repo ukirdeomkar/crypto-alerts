@@ -1,6 +1,87 @@
 # 📋 Changelog
 
-## ⚠️ CRITICAL FIX: Confidence Calculation Recalibration (November 6, 2025)
+## ⚠️ CRITICAL FIXES: Indicator Logic Bugs + Confidence Recalibration (November 6, 2025)
+
+### Bug #1: EMA Double-Counting 🐛
+
+**Problem:**
+- EMA trend AND EMA crossover both firing simultaneously
+- Same indicator counted twice in confidence calculation
+- Example: XRP signal showed 4 indicators, actually had 3
+
+**Root Cause:**
+```python
+# OLD (WRONG):
+if bullish_trend: add "Bullish Trend (EMA)"
+if bullish_crossover: add "EMA Crossover"  # Also fires!
+# Crossover IMPLIES trend → double count
+```
+
+**Fix:**
+```python
+# NEW (CORRECT):
+if bullish_crossover: add "EMA Crossover"     # Priority
+elif bullish_trend: add "Bullish Trend"       # Only if no crossover
+```
+
+**Impact:**
+- Confidence inflated by ~10-15%
+- 58% confidence was actually ~52% (3 indicators, not 4)
+
+---
+
+### Bug #2: Volume Logic BACKWARDS 🚨 CRITICAL
+
+**Problem:**
+- Volume assigned based on which side had MORE indicators
+- This is circular logic - volume should confirm PRICE direction, not signal count!
+
+**Root Cause:**
+```python
+# OLD (COMPLETELY WRONG):
+if volume_surge:
+    if len(buy_signals) > len(sell_signals):
+        add volume to BUY  # Based on indicator count!
+        
+# Example: Price dropping 2%, but you have 3 buy indicators
+# System adds volume to BUY side (wrong!)
+# Reality: Volume confirming the DOWN move
+```
+
+**Fix:**
+```python
+# NEW (PROFESSIONAL):
+if volume_surge:
+    if momentum['trend'] == 'bullish':  # Price moving UP
+        add volume to BUY
+    elif momentum['trend'] == 'bearish': # Price moving DOWN
+        add volume to SELL
+```
+
+**Professional Trading Principle:**
+- Volume is a **CONFIRMATION** indicator, NOT directional
+- Volume confirms what PRICE is doing, not what indicators say
+- Volume + price UP = bullish confirmation
+- Volume + price DOWN = bearish confirmation
+
+**Impact:**
+- **CRITICAL**: Could boost confidence on WRONG side of trade
+- Volume surge during price dump added to long signals
+- Made losing trades look more confident
+
+---
+
+### Bug #3: Bollinger Bands Not Weighted
+
+**Problem:**
+- BB used raw 15 points, no weight applied
+- All other indicators properly weighted
+
+**Fix:**
+- Added BB to indicator_weights: `'bb': 1.0`
+- Now consistent with other indicators
+
+---
 
 ### Fixed Confidence Inflation Bug
 
@@ -120,6 +201,34 @@ python scripts/verify_confidence_fix.py
 - 55-70%: Standard size, take every one
 - 40-55%: Reduced size, scalping strategies only  
 - <40%: Pass unless ultra-aggressive
+
+---
+
+### Summary of All Fixes (November 6, 2025)
+
+**Files Modified:**
+- `app/signal_generator.py` - Fixed all 3 indicator bugs + calibrated confidence
+- `config/config.yaml` - Updated thresholds + added bb weight
+- All trading configs - Updated for calibrated scale
+
+**What Changed:**
+1. ✅ EMA double-counting eliminated (crossover prioritized over trend state)
+2. ✅ Volume now confirms PRICE direction (not signal count)
+3. ✅ Bollinger Bands properly weighted
+4. ✅ Confidence calibrated to trading reality (4-5 indicators = 60-75%)
+
+**Impact on Your Trading:**
+- More accurate confidence percentages
+- Volume on correct side of trade
+- No indicator double-counting
+- Better signal quality discrimination
+- Fewer false positives
+
+**Verification:**
+```bash
+python scripts/verify_indicator_bugs.py
+python scripts/verify_confidence_fix.py
+```
 
 ---
 

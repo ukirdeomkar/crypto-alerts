@@ -55,6 +55,7 @@ signals:
     momentum: 1.0                 # Higher momentum weight
     divergence: 1.2
     support_resistance: 1.1
+    bb: 1.0
 
 risk:
   total_capital: 1200

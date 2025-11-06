@@ -21,7 +21,8 @@ class SignalGenerator:
             'volume': 1.0,
             'momentum': 0.8,
             'divergence': 1.3,
-            'support_resistance': 1.1
+            'support_resistance': 1.1,
+            'bb': 1.0
         })
         
     def generate_signal(self, coin_symbol: str, price_data: Dict, analysis: Dict, min_confidence: int = None) -> Optional[Dict]:
@@ -174,7 +175,13 @@ class SignalGenerator:
                 weighted_sell_confidence.append(histogram_strength * self.indicator_weights['macd'])
         
         if trend:
-            if trend.get('bullish_trend'):
+            if trend.get('bullish_crossover'):
+                buy_signals.append("EMA Bullish Crossover")
+                weighted_buy_confidence.append(30 * self.indicator_weights['trend'])
+            elif trend.get('bearish_crossover'):
+                sell_signals.append("EMA Bearish Crossover")
+                weighted_sell_confidence.append(30 * self.indicator_weights['trend'])
+            elif trend.get('bullish_trend'):
                 trend_str = trend.get('trend_strength', 0)
                 strength = min(25, trend_str * 2)
                 buy_signals.append(f"Bullish Trend (EMA)")
@@ -184,21 +191,14 @@ class SignalGenerator:
                 strength = min(25, trend_str * 2)
                 sell_signals.append(f"Bearish Trend (EMA)")
                 weighted_sell_confidence.append(strength * self.indicator_weights['trend'])
-            
-            if trend.get('bullish_crossover'):
-                buy_signals.append("EMA Bullish Crossover")
-                weighted_buy_confidence.append(30 * self.indicator_weights['trend'])
-            elif trend.get('bearish_crossover'):
-                sell_signals.append("EMA Bearish Crossover")
-                weighted_sell_confidence.append(30 * self.indicator_weights['trend'])
         
         if bb:
             if bb['at_lower']:
                 buy_signals.append("BB Lower Band Bounce")
-                weighted_buy_confidence.append(15)
+                weighted_buy_confidence.append(15 * self.indicator_weights['bb'])
             elif bb['at_upper']:
                 sell_signals.append("BB Upper Band Rejection")
-                weighted_sell_confidence.append(15)
+                weighted_sell_confidence.append(15 * self.indicator_weights['bb'])
         
         if rsi_divergence.get('bullish_divergence'):
             buy_signals.append("Bullish Divergence (RSI)")
@@ -224,10 +224,10 @@ class SignalGenerator:
             multiplier = volume['multiplier']
             surge_strength = min(30, multiplier * 10)
             
-            if len(buy_signals) > len(sell_signals):
+            if momentum['trend'] == 'bullish':
                 buy_signals.append(f"Volume Surge ({multiplier:.1f}x)")
                 weighted_buy_confidence.append(surge_strength * self.indicator_weights['volume'])
-            elif len(sell_signals) > len(buy_signals):
+            elif momentum['trend'] == 'bearish':
                 sell_signals.append(f"Volume Surge ({multiplier:.1f}x)")
                 weighted_sell_confidence.append(surge_strength * self.indicator_weights['volume'])
         
