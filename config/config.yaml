@@ -5,11 +5,11 @@ trading_hours:
   periods:
     - name: "active"
       start_time: "06:30"
-      end_time: "19:00"
-      min_confidence: 55          # CALIBRATED: Good-strong signals (4-5 indicators)
-      max_alerts_per_scan: 6      # Catch multiple opportunities
+      end_time: "17:00"
+      min_confidence: 45          # CALIBRATED: Good-strong signals (4-5 indicators)
+      max_alerts_per_scan: 3      # Catch multiple opportunities
     - name: "passive"
-      start_time: "19:00"
+      start_time: "17:00"
       end_time: "03:00"
       min_confidence: 70          # CALIBRATED: Strong signals only (5+ indicators)
       max_alerts_per_scan: 3
